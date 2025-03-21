@@ -1,0 +1,94 @@
+[
+    {
+      "state": 1,
+      "question": "How many years of professional experience do you have in total?",
+      "expected_answer_type": "number_or_fresher_intern and relevant to current role",
+      "max_followups": 2,
+      "response_categories": {
+        "years": "Candidate has professional experience measured in years",
+        "fresher": "Candidate is a fresher or recent graduate with no full-time experience",
+        "intern": "Candidate has internship or training experience but no full-time role"
+      },
+      "follow_up_instructions": {
+        "years": "Out of {extracted_value} years, how many years are relevant to this role?",
+        "fresher": "Do you have any internship experience related to this role?",
+        "intern": "How many months of internship experience do you have related to this role?",
+        "default": "Could you clarify how many years of professional experience you have?"
+      }
+    },
+    {
+      "state": 2,
+      "question": "What is your current or last CTC?",
+      "expected_answer_type": "amount_with_unit",
+      "max_followups": 2,
+      "response_categories": {
+        "amount": "Candidate has provided a specific amount or range for their CTC",
+        "not_comfortable": "Candidate has explicitly refused to share their CTC information",
+        "irrelevant": "Candidate has provided an answer that doesn't address the CTC question"
+      },
+      "follow_up_instructions": {
+        "amount": "Out of {extracted_value}, how much is fixed and how much is variable?",
+        "not_comfortable": "I understand. Let's move to the next question.",
+        "irrelevant": "Could you share your CTC figure or a range if you're comfortable?",
+        "default": "Could you share your CTC figure or a range if you're comfortable?"
+      }
+    },
+    {
+      "state": 3,
+      "question": "What is your expected CTC?",
+      "expected_answer_type": "amount_or_hike_or_range",
+      "max_followups": 2,
+      "response_categories": {
+        "amount": "Candidate has provided a specific amount for their expected CTC",
+        "hike": "Candidate has provided a percentage hike expectation",
+        "range": "Candidate has provided a range for their expected CTC",
+        "not_comfortable": "Candidate has explicitly refused to share their expected CTC",
+        "irrelevant": "Candidate has provided an answer that doesn't address the expected CTC question"
+      },
+      "follow_up_instructions": {
+        "amount": "",
+        "hike": "",
+        "range": "",
+        "not_comfortable": "",
+        "irrelevant": "Could you share your expected CTC or a percentage hike you're looking for?",
+        "default": "Could you share your expected CTC or a percentage hike you're looking for?"
+      }
+    },
+    {
+      "state": 4,
+      "question": "Do you currently have any other offers from other companies?",
+      "expected_answer_type": "yes_or_no_with_amount",
+      "max_followups": 2,
+      "response_categories": {
+        "yes": "Candidate has confirmed they have other offers",
+        "no": "Candidate has confirmed they don't have other offers",
+        "irrelevant": "Candidate has provided an answer that doesn't clearly indicate yes or no"
+      },
+      "follow_up_instructions": {
+        "yes": "What amount are they offering?",
+        "no": "",
+        "irrelevant": "I need to know if you have other offers currently. Could you please answer with a yes or no?",
+        "default": "I need to know if you have other offers currently. Could you please answer with a yes or no?"
+      }
+    },
+    {
+      "state": 5,
+      "question": "What is the duration of your notice period?",
+      "expected_answer_type": "notice_period_duration",
+      "max_followups": 2,
+      "response_categories": {
+        "short_notice": "Candidate has a notice period less than 61 days",
+        "long_notice": "Candidate has a notice period of 90 days or more",
+        "immediate": "Candidate can join immediately with no notice period",
+        "irrelevant": "Candidate has provided an answer that doesn't clearly indicate their notice period"
+      },
+      "follow_up_instructions": {
+        "long_notice": "Can you reduce your notice period?",
+        "short_notice": "",
+        "immediate": "",
+        "irrelevant": "Could you please specify your notice period in days or months?",
+        "default": "Could you please specify your notice period in days or months?"
+      },
+      "notice_period_threshold": 60
+    }
+  ]

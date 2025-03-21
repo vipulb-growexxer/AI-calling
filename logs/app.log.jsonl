@@ -1,0 +1,32 @@
+{"level": "INFO", "message": "Initializing DemoServer", "time": "2025-03-21 14:40:03,162"}
+{"level": "INFO", "message": "ConversationManager initialized", "time": "2025-03-21 14:40:03,198"}
+{"level": "INFO", "message": "WebSocketManager initialized", "time": "2025-03-21 14:40:03,198"}
+{"level": "INFO", "message": "DemoServer initialized", "time": "2025-03-21 14:40:03,198"}
+{"level": "INFO", "message": "Loaded 5 questions into Memory A", "time": "2025-03-21 14:40:03,199"}
+{"level": "INFO", "message": "Generating full audio for text: How many years of professional...", "time": "2025-03-21 14:40:03,199"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-21 14:40:04,606"}
+{"level": "INFO", "message": "Generated 23016 bytes of audio", "time": "2025-03-21 14:40:04,672"}
+{"level": "INFO", "message": "Pre-generated audio for state 1", "time": "2025-03-21 14:40:04,672"}
+{"level": "INFO", "message": "Generating full audio for text: What is your current or last C...", "time": "2025-03-21 14:40:04,673"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-21 14:40:05,258"}
+{"level": "INFO", "message": "Generated 15586 bytes of audio", "time": "2025-03-21 14:40:05,281"}
+{"level": "INFO", "message": "Pre-generated audio for state 2", "time": "2025-03-21 14:40:05,281"}
+{"level": "INFO", "message": "Generating full audio for text: What is your expected CTC?...", "time": "2025-03-21 14:40:05,281"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-21 14:40:05,735"}
+{"level": "INFO", "message": "Generated 14471 bytes of audio", "time": "2025-03-21 14:40:05,757"}
+{"level": "INFO", "message": "Pre-generated audio for state 3", "time": "2025-03-21 14:40:05,757"}
+{"level": "INFO", "message": "Generating full audio for text: Do you currently have any othe...", "time": "2025-03-21 14:40:05,757"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-21 14:40:06,327"}
+{"level": "INFO", "message": "Generated 23388 bytes of audio", "time": "2025-03-21 14:40:06,355"}
+{"level": "INFO", "message": "Pre-generated audio for state 4", "time": "2025-03-21 14:40:06,355"}
+{"level": "INFO", "message": "Generating full audio for text: What is the duration of your n...", "time": "2025-03-21 14:40:06,355"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-21 14:40:06,892"}
+{"level": "INFO", "message": "Generated 17072 bytes of audio", "time": "2025-03-21 14:40:06,908"}
+{"level": "INFO", "message": "Pre-generated audio for state 5", "time": "2025-03-21 14:40:06,908"}
+{"level": "INFO", "message": "Starting DemoServer", "time": "2025-03-21 14:40:06,908"}
+{"level": "INFO", "message": "Setting up server routes", "time": "2025-03-21 14:40:06,908"}
+{"level": "INFO", "message": "Configuring server to listen on 0.0.0.0:8000", "time": "2025-03-21 14:40:06,909"}
+{"level": "INFO", "message": "Starting server on 0.0.0.0:8000", "time": "2025-03-21 14:40:06,909"}
+{"level": "INFO", "message": "Server started successfully", "time": "2025-03-21 14:40:06,910"}
+{"level": "INFO", "message": "127.0.0.1 [21/Mar/2025:14:40:31 +0530] "GET /health HTTP/1.1" 200 153 "-" "python-requests/2.31.0"", "time": "2025-03-21 14:40:31,580"}
+{"level": "INFO", "message": "127.0.0.1 [21/Mar/2025:14:41:18 +0530] "GET /health HTTP/1.1" 200 153 "-" "python-requests/2.31.0"", "time": "2025-03-21 14:41:18,993"}

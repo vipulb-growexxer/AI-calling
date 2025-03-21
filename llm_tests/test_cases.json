@@ -1,0 +1,225 @@
+{
+  "test_cases": [
+    {
+      "state": 1,
+      "question": "How many years of professional experience do you have in total?",
+      "scenarios": [
+        {
+          "name": "Experienced candidate",
+          "initial_response": "I have around 8 years of professional experience in total.",
+          "expected_pattern": "years",
+          "expected_followup": true,
+          "followup_response": "About 6 years are directly relevant to this role.",
+          "should_advance": true
+        },
+        {
+          "name": "Fresher candidate",
+          "initial_response": "I'm a fresher, just graduated from college.",
+          "expected_pattern": "fresher",
+          "expected_followup": true,
+          "followup_response": "Yes, I did a 6-month internship related to this role.",
+          "should_advance": true
+        },
+        {
+          "name": "Intern candidate",
+          "initial_response": "I'm currently doing an internship.",
+          "expected_pattern": "intern",
+          "expected_followup": true,
+          "followup_response": "I have 3 months of internship experience related to this role.",
+          "should_advance": true
+        },
+        {
+          "name": "Irrelevant response - first attempt",
+          "initial_response": "I believe I'm qualified for this position.",
+          "expected_pattern": "irrelevant",
+          "expected_followup": true,
+          "followup_response": "I have 4 years of experience.",
+          "should_advance": true
+        },
+        {
+          "name": "Irrelevant response - max attempts",
+          "initial_response": "I believe I'm qualified for this position.",
+          "expected_pattern": "irrelevant",
+          "expected_followup": true,
+          "followup_response": "I think I'm a good fit for your company.",
+          "followup_response2": "I'm really interested in this role.",
+          "should_advance": true,
+          "max_attempts_reached": true
+        }
+      ]
+    },
+    {
+      "state": 2,
+      "question": "What is your current or last CTC?",
+      "scenarios": [
+        {
+          "name": "Amount provided",
+          "initial_response": "My current CTC is 12 lakhs per annum.",
+          "expected_pattern": "amount",
+          "expected_followup": true,
+          "followup_response": "Out of that, 10 lakhs is fixed and 2 lakhs is variable.",
+          "should_advance": true
+        },
+        {
+          "name": "Not comfortable sharing",
+          "initial_response": "I'm not comfortable sharing my CTC details at this stage.",
+          "expected_pattern": "not_comfortable",
+          "expected_followup": false,
+          "should_advance": true
+        },
+        {
+          "name": "Indirect refusal",
+          "initial_response": "I'd prefer to discuss this later in the process if that's okay.",
+          "expected_pattern": "not_comfortable",
+          "expected_followup": false,
+          "should_advance": true
+        },
+        {
+          "name": "Irrelevant response - first attempt",
+          "initial_response": "I'm looking for growth opportunities in my career.",
+          "expected_pattern": "irrelevant",
+          "expected_followup": true,
+          "followup_response": "My current package is 8 lakhs.",
+          "should_advance": true
+        },
+        {
+          "name": "Irrelevant response - max attempts",
+          "initial_response": "I'm looking for growth opportunities in my career.",
+          "expected_pattern": "irrelevant",
+          "expected_followup": true,
+          "followup_response": "I want to work with a company that values innovation.",
+          "followup_response2": "I'm really passionate about this field.",
+          "should_advance": true,
+          "max_attempts_reached": true
+        }
+      ]
+    },
+    {
+      "state": 3,
+      "question": "What is your expected CTC?",
+      "scenarios": [
+        {
+          "name": "Amount provided",
+          "initial_response": "I'm expecting 18 lakhs per annum.",
+          "expected_pattern": "amount",
+          "expected_followup": false,
+          "should_advance": true
+        },
+        {
+          "name": "Hike percentage",
+          "initial_response": "I'm looking for a 30% hike on my current package.",
+          "expected_pattern": "hike",
+          "expected_followup": false,
+          "should_advance": true
+        },
+        {
+          "name": "Range provided",
+          "initial_response": "I'm looking for something between 15-20 lakhs.",
+          "expected_pattern": "range",
+          "expected_followup": false,
+          "should_advance": true
+        },
+        {
+          "name": "Not comfortable sharing",
+          "initial_response": "I'd prefer to discuss compensation later in the process.",
+          "expected_pattern": "not_comfortable",
+          "expected_followup": false,
+          "should_advance": true
+        },
+        {
+          "name": "Irrelevant response - first attempt",
+          "initial_response": "I'm looking for good growth opportunities.",
+          "expected_pattern": "irrelevant",
+          "expected_followup": true,
+          "followup_response": "I'm expecting around 15 lakhs.",
+          "should_advance": true
+        },
+        {
+          "name": "Irrelevant response - max attempts",
+          "initial_response": "I'm looking for good growth opportunities.",
+          "expected_pattern": "irrelevant",
+          "expected_followup": true,
+          "followup_response": "I want a company with good work-life balance.",
+          "followup_response2": "I'm interested in working on challenging projects.",
+          "should_advance": true,
+          "max_attempts_reached": true
+        }
+      ]
+    },
+    {
+      "state": 4,
+      "question": "Do you currently have any other offers from other companies?",
+      "scenarios": [
+        {
+          "name": "Yes with amount",
+          "initial_response": "Yes, I have another offer.",
+          "expected_pattern": "yes",
+          "expected_followup": true,
+          "followup_response": "They're offering 20 lakhs per annum.",
+          "should_advance": true
+        },
+        {
+          "name": "No response",
+          "initial_response": "No, I don't have any other offers at the moment.",
+          "expected_pattern": "no",
+          "expected_followup": false,
+          "should_advance": true
+        },
+        {
+          "name": "Irrelevant response - first attempt",
+          "initial_response": "I'm currently in the interview process with a few companies.",
+          "expected_pattern": "irrelevant",
+          "expected_followup": true,
+          "followup_response": "No, I don't have any concrete offers yet.",
+          "should_advance": true
+        },
+        {
+          "name": "Irrelevant response - max attempts",
+          "initial_response": "I'm currently in the interview process with a few companies.",
+          "expected_pattern": "irrelevant",
+          "expected_followup": true,
+          "followup_response": "I'm in the final rounds with two other companies.",
+          "followup_response2": "I'm expecting to hear back from them soon.",
+          "should_advance": true,
+          "max_attempts_reached": true
+        }
+      ]
+    },
+    {
+      "state": 5,
+      "question": "What is the duration of your notice period?",
+      "scenarios": [
+        {
+          "name": "Short notice period",
+          "initial_response": "My notice period is 30 days.",
+          "expected_pattern": "short_notice",
+          "expected_followup": false,
+          "should_advance": true
+        },
+        {
+          "name": "Long notice period with reduction",
+          "initial_response": "My notice period is 90 days.",
+          "expected_pattern": "long_notice",
+          "expected_followup": true,
+          "followup_response": "Yes, I can reduce it to 45 days.",
+          "should_advance": true
+        },
+        {
+          "name": "Immediate joining",
+          "initial_response": "I can join immediately.",
+          "expected_pattern": "immediate",
+          "expected_followup": false,
+          "should_advance": true
+        },
+        {
+          "name": "Irrelevant response",
+          "initial_response": "It depends on my current project timeline.",
+          "expected_pattern": "irrelevant",
+          "expected_followup": true,
+          "followup_response": "My notice period is 2 months.",
+          "should_advance": true
+        }
+      ]
+    }
+  ]
+}
