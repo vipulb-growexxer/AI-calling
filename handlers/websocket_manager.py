@@ -88,54 +88,161 @@ class WebSocketManager:
             self.outboxes[ws_id] = asyncio.Queue()
             self.marks[ws_id] = []
             
-            self.logger.info(f"Connection initialized for {ws_id}, waiting for messages")
+            # Initialize stream_sid and call_sid
+            stream_sid = None
+            call_sid = None
             
-            # Prepare tasks for concurrent processing
-            tasks = [
-                asyncio.create_task(self._handle_client_messages(ws_id)),
-                asyncio.create_task(self._handle_deepgram_sending(ws_id)),
-                asyncio.create_task(self._handle_deepgram_receiving(ws_id)),
-                asyncio.create_task(self._heartbeat(ws_id))  # Add heartbeat task
-            ]
+            # Initialize Deepgram connection
+            self.deepgram_ready_events[ws_id] = asyncio.Event()
+            await self.connect_to_deepgram(ws_id)
             
-            # Wait for tasks to complete or be cancelled, or until exit event is set
-            try:
-                self.logger.info(f"Starting WebSocket tasks for {ws_id}")
-                done, pending = await asyncio.wait(
-                    tasks + [asyncio.create_task(self.exit_events[ws_id].wait())],
-                    return_when=asyncio.FIRST_COMPLETED
-                )
+            # Start the Deepgram receiver task
+            deepgram_task = asyncio.create_task(self._handle_deepgram_receiving(ws_id))
+            
+            # Start heartbeat task
+            heartbeat_task = asyncio.create_task(self._heartbeat(ws_id))
+            
+            # Process incoming messages
+            async for message in client_ws:
+                if isinstance(message, str):
+                    try:
+                        data = json.loads(message)
+                        event_type = data.get('event', 'unknown')
+                        
+                        # Only log non-media events or log media events occasionally
+                        if event_type != 'media' or random.random() < 0.02:
+                            self.logger.info(f"Received message: {event_type} for {ws_id}")
+                        
+                        # Handle different events from Twilio
+                        if data.get('event') == 'connected':
+                            # Store the stream SID for later use
+                            stream_sid = data.get('streamSid')
+                            self.logger.info(f"Connected event data: {data}")
+                            self.stream_sids[ws_id] = stream_sid
+                            self.logger.info(f"Connected to stream {stream_sid} for {ws_id}")
+                            
+                            # Get call SID from parameters
+                            if 'start' in data and 'callSid' in data['start']:
+                                call_sid = data['start']['callSid']
+                                self.call_sids[ws_id] = call_sid
+                                self.logger.info(f"Call SID: {call_sid} for {ws_id}")
+                                
+                                # Initialize conversation in Memory B
+                                await self.memory_b.initialize_conversation(call_sid)
+                            
+                        elif data.get('event') == 'start':
+                            # Extract call SID if not already set
+                            if not call_sid and 'callSid' in data['start']:
+                                call_sid = data['start']['callSid']
+                                self.call_sids[ws_id] = call_sid
+                                self.logger.info(f"Call SID from start event: {call_sid} for {ws_id}")
+                                
+                                # Initialize conversation in Memory B
+                                await self.memory_b.initialize_conversation(call_sid)
+                            
+                            # Extract stream SID if present in the start event
+                            if 'streamSid' in data['start']:
+                                stream_sid = data['start']['streamSid']
+                                self.stream_sids[ws_id] = stream_sid
+                                self.logger.info(f"Stream SID from start event: {stream_sid} for {ws_id}")
+                            
+                            # Log the full start event data for debugging
+                            self.logger.info(f"Start event data: {data}")
+                            
+                            # Play greeting message immediately when start event is received
+                            # This is the correct place to play the greeting as we now have the stream SID
+                            greeting_message = "Hello, this is an AI screening call. Please say something to start the call."
+                            self.logger.info(f"Playing immediate greeting: {greeting_message} for {ws_id}")
+                            try:
+                                # Set speaking flag to prevent interruptions
+                                self.speaking_flags[ws_id].set()
+                                self.logger.info(f"Set speaking flag for immediate greeting playback: {ws_id}")
+                                
+                                # Warm up LLM asynchronously while playing greeting
+                                asyncio.create_task(self.conversation_manager.warm_up_llm())
+                                
+                                # Stream the greeting audio
+                                await self._stream_elevenlabs_audio(ws_id, greeting_message)
+                                self.logger.info(f"Completed streaming immediate greeting audio for {ws_id}")
+                                
+                                # Send mark to indicate end of greeting
+                                await self._send_mark(ws_id)
+                                self.logger.info(f"Sent mark after immediate greeting for {ws_id}")
+                                
+                                # Clear speaking flag to allow for user response
+                                self.speaking_flags[ws_id].clear()
+                                self.logger.info(f"Cleared speaking flag after immediate greeting for {ws_id}")
+                            except Exception as e:
+                                self.logger.error(f"Error playing immediate greeting: {e}")
+                                import traceback
+                                self.logger.error(traceback.format_exc())
+                        
+                        elif data.get('event') == 'media':
+                            # Only log media messages occasionally (1 in 50) to reduce noise
+                            if random.random() < 0.02:  # ~2% chance to log
+                                self.logger.debug(f"Received media message for {ws_id}")
+                            
+                            # Process incoming audio
+                            if 'media' in data and 'payload' in data['media']:
+                                # Decode base64 audio
+                                audio_data = base64.b64decode(data['media']['payload'])
+                                
+                                # Add to buffer
+                                self.audio_buffers[ws_id].extend(audio_data)
+                                
+                                # If buffer is full, send to Deepgram
+                                if len(self.audio_buffers[ws_id]) >= self.BUFFER_SIZE:
+                                    # Only send if Deepgram is ready
+                                    if self.deepgram_ready_events[ws_id].is_set() and ws_id in self.deepgram_connections:
+                                        try:
+                                            # Send audio to Deepgram
+                                            await self.deepgram_connections[ws_id].send(bytes(self.audio_buffers[ws_id]))
+                                            # Clear buffer
+                                            self.audio_buffers[ws_id] = bytearray()
+                                        except Exception as e:
+                                            self.logger.error(f"Error sending audio to Deepgram: {e}")
+                        
+                        elif data.get('event') == 'mark':
+                            # Handle mark event (when AI finishes speaking)
+                            if 'mark' in data and 'name' in data['mark']:
+                                mark_name = data['mark']['name']
+                                if mark_name in self.marks[ws_id]:
+                                    self.logger.info(f"Mark received: {mark_name} for {ws_id}")
+                                    # Clear speaking flag to allow processing user input
+                                    self.speaking_flags[ws_id].clear()
+                                    
+                                    # Special handling for end call mark
+                                    if mark_name == "end call":
+                                        self.logger.info(f"End call mark received for {ws_id}")
+                                        # Set exit event to clean up resources
+                                        self.exit_events[ws_id].set()
+                                        
+                        elif data.get('event') == 'closed':
+                            # Handle connection closed event
+                            self.logger.info(f"Connection closed for {ws_id}")
+                            self.exit_events[ws_id].set()
+                            break
+                            
+                    except json.JSONDecodeError:
+                        self.logger.warning(f"Invalid JSON message: {message[:100]}... for {ws_id}")
+                    except Exception as e:
+                        self.logger.error(f"Error processing message: {e} for {ws_id}")
+                        import traceback
+                        self.logger.error(traceback.format_exc())
                 
-                # If exit_event was triggered, cancel other tasks
-                if any(task.get_name() == '_handle_client_messages' for task in done):
-                    self.logger.info(f"Client message handler completed for {ws_id}, cleaning up")
-                else:
-                    self.logger.info(f"WebSocket task completed or exit event set for {ws_id}")
-                
-                # Cancel any pending tasks
-                for task in pending:
-                    task.cancel()
-                    self.logger.info(f"Cancelled pending task for {ws_id}")
-                
-                # Wait for all tasks to complete (with cancellation)
-                await asyncio.gather(*pending, return_exceptions=True)
-                self.logger.info(f"All tasks completed for {ws_id}")
-                
-            except Exception as task_error:
-                self.logger.error(f"Error in WebSocket tasks for {ws_id}: {task_error}")
-                import traceback
-                self.logger.error(traceback.format_exc())
+                elif isinstance(message, bytes):
+                    self.logger.info(f"Received binary message of {len(message)} bytes for {ws_id}")
+                    
+            self.logger.info(f"WebSocket connection closed for {ws_id}")
             
         except Exception as e:
-            self.logger.error(f"Critical error in WebSocket handler for {ws_id}: {e}")
+            self.logger.error(f"Error in WebSocket handler: {e}")
             import traceback
             self.logger.error(traceback.format_exc())
-        finally:
-            # Ensure cleanup happens even if an error occurs
-            self.logger.info(f"Cleaning up WebSocket connection for {ws_id}")
-            self._cleanup_connection(ws_id)
             
-            # Log final state
+        finally:
+            # Clean up resources
+            self._cleanup_connection(ws_id)
             self.logger.info(f"WebSocket handler for {ws_id} completed")
     
     async def _handle_client_messages(self, ws_id):
@@ -193,9 +300,9 @@ class WebSocketManager:
                     chunk = base64.b64decode(media["payload"])
                     
                     if chunk:
-                        # Log every 20th media chunk to avoid excessive logging
-                        if len(self.audio_buffers[ws_id]) % 20 == 0:
-                            self.logger.info(f"Received media chunk: {len(chunk)} bytes for {ws_id}")
+                        # Only log media messages occasionally (1 in 50) to reduce noise
+                        if random.random() < 0.02:  # ~2% chance to log
+                            self.logger.debug(f"Received media chunk: {len(chunk)} bytes for {ws_id}")
                         self.audio_buffers[ws_id].extend(chunk)
                         if chunk == b'':
                             empty_byte_received = True
@@ -323,46 +430,97 @@ class WebSocketManager:
                         
                     self.logger.info(f"Processing after {elapsed_time}s silence: {self.accumulated_texts[ws_id]}")
                     
+                    # Start timing - Deepgram processing complete
+                    deepgram_end_time = time.time()
+                    self.logger.info(f"LATENCY_DEEPGRAM: Processing completed at {deepgram_end_time}")
+                    
                     # Process the response through conversation manager
                     self.logger.info(f"Sending user response to conversation manager for {ws_id}")
+                    
+                    # Start timing - LLM processing
+                    llm_start_time = time.time()
+                    self.logger.info(f"LATENCY_LLM: Processing started at {llm_start_time}")
+                    
                     state_change, followup_question, error = await self.conversation_manager.process_response(
                         call_sid, 
                         self.accumulated_texts[ws_id].strip()
                     )
+                    
+                    # End timing - LLM processing
+                    llm_end_time = time.time()
+                    llm_duration = llm_end_time - llm_start_time
+                    self.logger.info(f"LATENCY_LLM: Processing completed at {llm_end_time}, duration: {llm_duration:.2f}s")
                     
                     if error:
                         self.logger.error(f"Error processing response for {ws_id}: {error}")
                     
                     # If we have a follow-up question to play
                     if followup_question:
+                        # Start timing - ElevenLabs processing
+                        elevenlabs_start_time = time.time()
+                        self.logger.info(f"LATENCY_ELEVENLABS: Processing started at {elevenlabs_start_time}")
+                        
                         self.logger.info(f"Playing follow-up: {followup_question[:50]}... for {ws_id}")
                         # Stream audio directly from ElevenLabs to Twilio
                         await self._stream_elevenlabs_audio(ws_id, followup_question)
+                        
+                        # End timing - ElevenLabs processing
+                        elevenlabs_end_time = time.time()
+                        elevenlabs_duration = elevenlabs_end_time - elevenlabs_start_time
+                        self.logger.info(f"LATENCY_ELEVENLABS: Processing completed at {elevenlabs_end_time}, duration: {elevenlabs_duration:.2f}s")
+                        
+                        # Calculate total latency
+                        total_latency = elevenlabs_end_time - deepgram_end_time
+                        self.logger.info(f"LATENCY_TOTAL: From user silence to AI speaking: {total_latency:.2f}s")
+                        
                         await self._send_mark(ws_id)
                         self.speaking_flags[ws_id].set()
                     
                     # If we need to change state
                     if state_change:
                         self.logger.info(f"State change detected for {ws_id}, advancing state")
+                        
+                        # Start timing - State advancement
+                        state_change_start_time = time.time()
+                        self.logger.info(f"LATENCY_STATE_CHANGE: Processing started at {state_change_start_time}")
+                        
                         advance_success, next_audio_or_text, advance_error = await self.conversation_manager.advance_state(call_sid)
+                        
+                        # End timing - State advancement
+                        state_change_end_time = time.time()
+                        state_change_duration = state_change_end_time - state_change_start_time
+                        self.logger.info(f"LATENCY_STATE_CHANGE: Processing completed at {state_change_end_time}, duration: {state_change_duration:.2f}s")
                         
                         if advance_error:
                             self.logger.error(f"Error advancing state for {ws_id}: {advance_error}")
                         
                         if advance_success and next_audio_or_text:
-                            # Check if it's text (for end message) or audio (for pre-generated questions)
-                            if isinstance(next_audio_or_text, str):
-                                self.logger.info(f"Playing end message for {ws_id}: {next_audio_or_text[:50]}...")
-                                # It's the end message text, stream directly from ElevenLabs
-                                await self._stream_elevenlabs_audio(ws_id, next_audio_or_text)
-                                await self._send_mark(ws_id, "end call")
-                            else:
+                            # Start timing - ElevenLabs processing for state change
+                            elevenlabs_state_start_time = time.time()
+                            self.logger.info(f"LATENCY_ELEVENLABS_STATE: Processing started at {elevenlabs_state_start_time}")
+                            
+                            if isinstance(next_audio_or_text, bytes):
+                                # Play pre-generated audio
                                 self.logger.info(f"Playing pre-generated audio for {ws_id}")
-                                # It's pre-generated audio from Memory A
                                 await self._stream_audio(ws_id, next_audio_or_text)
-                                await self._send_mark(ws_id)
+                            else:
+                                # Generate and stream audio
+                                self.logger.info(f"Playing generated audio for {ws_id}: {next_audio_or_text[:50]}...")
+                                await self._stream_elevenlabs_audio(ws_id, next_audio_or_text)
                                 
+                            # End timing - ElevenLabs processing for state change
+                            elevenlabs_state_end_time = time.time()
+                            elevenlabs_state_duration = elevenlabs_state_end_time - elevenlabs_state_start_time
+                            self.logger.info(f"LATENCY_ELEVENLABS_STATE: Processing completed at {elevenlabs_state_end_time}, duration: {elevenlabs_state_duration:.2f}s")
+                            
+                            # Calculate total latency for state change
+                            total_state_latency = elevenlabs_state_end_time - deepgram_end_time
+                            self.logger.info(f"LATENCY_TOTAL_STATE: From user silence to AI speaking next question: {total_state_latency:.2f}s")
+                            
+                            await self._send_mark(ws_id)
                             self.speaking_flags[ws_id].set()
+                        else:
+                            self.logger.warning(f"No audio to play after state advancement for {ws_id}")
                     
                     # Clear accumulated text
                     self.accumulated_texts[ws_id] = ""
@@ -451,7 +609,7 @@ class WebSocketManager:
             self.logger.error(traceback.format_exc())
             return None
     
-    async def _stream_audio(self, ws_id, audio_data): #for memory A
+    async def _stream_audio(self, ws_id, audio_data): 
         """Stream audio data to Twilio"""
         try:
             if ws_id not in self.active_connections or not self.stream_sids.get(ws_id):
@@ -468,30 +626,51 @@ class WebSocketManager:
         except Exception as e:
             self.logger.error(f"Error streaming audio: {e}")
     
-    async def _stream_elevenlabs_audio(self, ws_id, text): # for follow up questions
+    async def _stream_elevenlabs_audio(self, ws_id, text): 
         """Stream audio directly from ElevenLabs to Twilio"""
         try:
-            if ws_id not in self.active_connections or not self.stream_sids.get(ws_id):
+            if ws_id not in self.active_connections:
+                self.logger.warning(f"Cannot stream audio - connection not active for {ws_id}")
                 return
+            
+            # Debug: Log the stream SID
+            self.logger.info(f"Stream SID for {ws_id} is {self.stream_sids.get(ws_id)}")
+            
+            # Temporarily allow streaming even if stream SID is None for debugging
+            if not self.stream_sids.get(ws_id):
+                self.logger.warning(f"Stream SID is None for {ws_id}, but continuing for debugging")
             
             self.logger.info(f"Streaming audio for text: {text[:30]}...")
             
             # Get audio chunks from ElevenLabs and stream directly to Twilio
+            chunk_count = 0
+            total_bytes = 0
+            
+            self.logger.info(f"Starting to stream audio chunks for {ws_id}")
             async for chunk in self.conversation_manager.elevenlabs_service.text_to_speech(text):
                 # Create payload for Twilio (chunk is already base64 encoded)
                 payload = {
                     "event": "media",
-                    "streamSid": self.stream_sids[ws_id],
+                    "streamSid": self.stream_sids.get(ws_id),
                     "media": {"payload": chunk},
                 }
                 
                 # Send chunk to Twilio
                 await self.active_connections[ws_id].send(json.dumps(payload))
                 
-            self.logger.info(f"Finished streaming audio for text: {text[:30]}")
+                chunk_count += 1
+                total_bytes += len(chunk)
+                
+                # Log progress occasionally
+                if chunk_count % 10 == 0:
+                    self.logger.info(f"Streamed {chunk_count} chunks ({total_bytes} bytes) for {ws_id}")
+            
+            self.logger.info(f"Finished streaming audio: {chunk_count} chunks, {total_bytes} bytes for {ws_id}")
                 
         except Exception as e:
             self.logger.error(f"Error streaming ElevenLabs audio: {e}")
+            import traceback
+            self.logger.error(traceback.format_exc())
     
     async def _send_mark(self, ws_id, occasion="default"):
         """Send a mark message to Twilio"""
@@ -530,6 +709,29 @@ class WebSocketManager:
                     pass
         except Exception as e:
             self.logger.error(f"Error in heartbeat for {ws_id}: {e}")
+
+    async def connect_to_deepgram(self, ws_id):
+        """Connect to Deepgram for speech recognition"""
+        try:
+            self.logger.info(f"Connecting to Deepgram for {ws_id}")
+            
+            # Create a new Deepgram connection using the connect method
+            deepgram_ws = await self.deepgram_service.connect()
+            
+            if not deepgram_ws:
+                self.logger.error(f"Failed to create Deepgram socket for {ws_id}")
+                return False
+                
+            self.deepgram_connections[ws_id] = deepgram_ws
+            self.deepgram_ready_events[ws_id].set()
+            self.logger.info(f"Connected to Deepgram for {ws_id}")
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Error connecting to Deepgram for {ws_id}: {e}")
+            import traceback
+            self.logger.error(traceback.format_exc())
+            return False
 
     def _cleanup_connection(self, ws_id):
         """Clean up resources when a connection closes"""

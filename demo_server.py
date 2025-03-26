@@ -10,6 +10,7 @@ import logging
 from aiohttp import web
 import json
 import uuid
+import websockets
 
 from memory.memory_a import MemoryA
 from memory.memory_b import MemoryB
@@ -87,9 +88,6 @@ class DemoServer:
         # HTTP routes
         self.app.router.add_post('/webhook', self.handle_webhook)
         
-        # WebSocket route
-        self.app.router.add_get('/websocket', self.handle_websocket)
-        
         # Health check
         self.app.router.add_get('/health', self.health_check)
         
@@ -109,59 +107,6 @@ class DemoServer:
             self.logger.error(f"Error handling webhook: {e}")
             return web.Response(status=500, text=str(e))
             
-    async def handle_websocket(self, request):
-        """Handle WebSocket connections"""
-        ws = web.WebSocketResponse()
-        await ws.prepare(request)
-        
-        try:
-            self.logger.info("New WebSocket connection established")
-            
-            # Send greeting message
-            greeting = "This is an AI generated call, say 'start' to begin the interview."
-            self.logger.info(f"Sending greeting: {greeting}")
-            
-            # Generate greeting audio
-            try:
-                greeting_audio = await self.elevenlabs_service.text_to_speech_full(greeting)
-            except Exception as e:
-                self.logger.error(f"Error generating greeting audio: {e}")
-                greeting_audio = None
-            
-            # Send greeting audio
-            if greeting_audio:
-                self.logger.info(f"Generated greeting audio: {len(greeting_audio)} bytes")
-                
-                # Manually start the conversation with a unique ID for each connection
-                demo_call_id = f"demo-call-{uuid.uuid4()}"
-                try:
-                    await self.memory_b.initialize_conversation(demo_call_id)
-                except Exception as e:
-                    self.logger.error(f"Error starting conversation in Memory B: {e}")
-                
-                self.logger.info(f"Started conversation in Memory B with ID: {demo_call_id}")
-                
-                # Connect to WebSocket with more robust error handling
-                try:
-                    await self.websocket_manager.handle_websocket(ws)
-                except Exception as ws_error:
-                    self.logger.error(f"WebSocket handling error: {ws_error}")
-                    import traceback
-                    self.logger.error(traceback.format_exc())
-            else:
-                self.logger.error("Failed to generate greeting audio")
-            
-            return ws
-            
-        except Exception as e:
-            self.logger.error(f"Error handling WebSocket connection: {e}")
-            import traceback
-            self.logger.error(traceback.format_exc())
-            return ws
-        finally:
-            # Ensure logging continues even if an error occurs
-            self.logger.info("WebSocket connection handling completed")
-            
     async def health_check(self, request):
         """Simple health check endpoint"""
         return web.Response(text="OK")
@@ -172,6 +117,9 @@ class DemoServer:
             # Initialize Memory A with questions
             await self.memory_a.initialize_with_questions("questions.json")
             
+            # Pre-warm the LLM to reduce cold start latency
+            await self.conversation_manager.warm_up_llm()
+            
             # Pre-generate audio for all questions
             await self.memory_a.pre_generate_audio(self.elevenlabs_service)
             
@@ -181,33 +129,29 @@ class DemoServer:
             # Add routes
             self.app.router.add_get('/health', self.health_check)
             self.app.router.add_post('/webhook', self.handle_webhook)
-            self.app.router.add_get('/websocket', self.handle_websocket)
             
-            # Create runner and site
+            # Start the web server
             runner = web.AppRunner(self.app)
             await runner.setup()
+            site = web.TCPSite(runner, '0.0.0.0', 8000)
+            await site.start()
+            self.logger.info("Web server started on port 8000")
             
-            # Try multiple ports if 8000 is in use
-            ports_to_try = [8000, 8001, 8002, 8003, 8004, 8005]
-            for port in ports_to_try:
-                try:
-                    site = web.TCPSite(runner, '0.0.0.0', port)
-                    await site.start()
-                    self.logger.info(f"Server started on port {port}")
-                    break  # Continue execution rather than returning
-                except OSError as port_error:
-                    self.logger.warning(f"Port {port} is in use: {port_error}")
-            else:
-                # If no ports are available
-                raise RuntimeError("Could not find an available port to start the server")
+            # Start WebSocket server on port 8001 using websockets library
+            port = 8001
             
-            self.logger.info("Server initialization complete")
+            # This is the websocket function that is activated when a client (Twilio) connects
+            ws_server = await websockets.serve(
+                lambda websocket: self.websocket_manager.handle_websocket(client_ws=websocket),
+                '0.0.0.0',
+                port
+            )
+            self.logger.info(f"WebSocket server started on port {port}")
             
-            # Keep the server running
-            while True:
-                await asyncio.sleep(3600)  # Sleep for an hour and keep checking
-                self.logger.info("Server heartbeat - still active")
-        
+            # Wait for server to close
+            await ws_server.wait_closed()
+            self.logger.info("WebSocket server closed")
+            
         except Exception as e:
             self.logger.error(f"Error starting server: {e}")
             import traceback

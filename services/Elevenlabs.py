@@ -24,7 +24,8 @@ class ElevenLabsService:
             voice_id=self.tts_voice_id,
             model_id=self.elevenlabs_model,
             voice_settings=self.voice_settings,
-            output_format="ulaw_8000"
+            output_format="ulaw_8000",
+            optimize_streaming_latency=4
         )
         for chunk in audio_stream:
             yield base64.b64encode(chunk).decode('utf-8')
@@ -92,7 +93,8 @@ async def generate_audio(api_key, voice_id, text, model="eleven_flash_v2"):
             voice_id=voice_id,
             model_id=model,
             voice_settings=voice_settings,
-            output_format="mp3_44100_128"  # Use valid format instead of just "mp3"
+            output_format="mp3_44100_128",  # Use valid format instead of just "mp3"
+            optimize_streaming_latency=4
         )
         
         # If audio_data is a generator, collect all chunks

@@ -1,32 +1,1216 @@
-{"level": "INFO", "message": "Initializing DemoServer", "time": "2025-03-21 14:40:03,162"}
-{"level": "INFO", "message": "ConversationManager initialized", "time": "2025-03-21 14:40:03,198"}
-{"level": "INFO", "message": "WebSocketManager initialized", "time": "2025-03-21 14:40:03,198"}
-{"level": "INFO", "message": "DemoServer initialized", "time": "2025-03-21 14:40:03,198"}
-{"level": "INFO", "message": "Loaded 5 questions into Memory A", "time": "2025-03-21 14:40:03,199"}
-{"level": "INFO", "message": "Generating full audio for text: How many years of professional...", "time": "2025-03-21 14:40:03,199"}
-{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-21 14:40:04,606"}
-{"level": "INFO", "message": "Generated 23016 bytes of audio", "time": "2025-03-21 14:40:04,672"}
-{"level": "INFO", "message": "Pre-generated audio for state 1", "time": "2025-03-21 14:40:04,672"}
-{"level": "INFO", "message": "Generating full audio for text: What is your current or last C...", "time": "2025-03-21 14:40:04,673"}
-{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-21 14:40:05,258"}
-{"level": "INFO", "message": "Generated 15586 bytes of audio", "time": "2025-03-21 14:40:05,281"}
-{"level": "INFO", "message": "Pre-generated audio for state 2", "time": "2025-03-21 14:40:05,281"}
-{"level": "INFO", "message": "Generating full audio for text: What is your expected CTC?...", "time": "2025-03-21 14:40:05,281"}
-{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-21 14:40:05,735"}
-{"level": "INFO", "message": "Generated 14471 bytes of audio", "time": "2025-03-21 14:40:05,757"}
-{"level": "INFO", "message": "Pre-generated audio for state 3", "time": "2025-03-21 14:40:05,757"}
-{"level": "INFO", "message": "Generating full audio for text: Do you currently have any othe...", "time": "2025-03-21 14:40:05,757"}
-{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-21 14:40:06,327"}
-{"level": "INFO", "message": "Generated 23388 bytes of audio", "time": "2025-03-21 14:40:06,355"}
-{"level": "INFO", "message": "Pre-generated audio for state 4", "time": "2025-03-21 14:40:06,355"}
-{"level": "INFO", "message": "Generating full audio for text: What is the duration of your n...", "time": "2025-03-21 14:40:06,355"}
-{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-21 14:40:06,892"}
-{"level": "INFO", "message": "Generated 17072 bytes of audio", "time": "2025-03-21 14:40:06,908"}
-{"level": "INFO", "message": "Pre-generated audio for state 5", "time": "2025-03-21 14:40:06,908"}
-{"level": "INFO", "message": "Starting DemoServer", "time": "2025-03-21 14:40:06,908"}
-{"level": "INFO", "message": "Setting up server routes", "time": "2025-03-21 14:40:06,908"}
-{"level": "INFO", "message": "Configuring server to listen on 0.0.0.0:8000", "time": "2025-03-21 14:40:06,909"}
-{"level": "INFO", "message": "Starting server on 0.0.0.0:8000", "time": "2025-03-21 14:40:06,909"}
-{"level": "INFO", "message": "Server started successfully", "time": "2025-03-21 14:40:06,910"}
-{"level": "INFO", "message": "127.0.0.1 [21/Mar/2025:14:40:31 +0530] "GET /health HTTP/1.1" 200 153 "-" "python-requests/2.31.0"", "time": "2025-03-21 14:40:31,580"}
-{"level": "INFO", "message": "127.0.0.1 [21/Mar/2025:14:41:18 +0530] "GET /health HTTP/1.1" 200 153 "-" "python-requests/2.31.0"", "time": "2025-03-21 14:41:18,993"}
+{"level": "INFO", "message": "Initializing Demo AI Call Server", "time": "2025-03-27 01:30:42,104"}
+{"level": "INFO", "message": "ConversationManager initialized", "time": "2025-03-27 01:30:42,139"}
+{"level": "INFO", "message": "WebSocketManager initialized", "time": "2025-03-27 01:30:42,139"}
+{"level": "INFO", "message": "Demo AI Call Server initialized", "time": "2025-03-27 01:30:42,139"}
+{"level": "INFO", "message": "Loaded 5 questions into Memory A", "time": "2025-03-27 01:30:42,139"}
+{"level": "INFO", "message": "Pre-warming LLM to reduce cold start latency", "time": "2025-03-27 01:30:42,139"}
+{"level": "INFO", "message": "LLM pre-warmed successfully", "time": "2025-03-27 01:30:45,250"}
+{"level": "INFO", "message": "Generating full audio for text: How many years of professional...", "time": "2025-03-27 01:30:45,250"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 01:30:46,582"}
+{"level": "INFO", "message": "Generated 26360 bytes of audio", "time": "2025-03-27 01:30:46,668"}
+{"level": "INFO", "message": "Pre-generated audio for state 1", "time": "2025-03-27 01:30:46,669"}
+{"level": "INFO", "message": "Generating full audio for text: What is your current or last C...", "time": "2025-03-27 01:30:46,669"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 01:30:47,399"}
+{"level": "INFO", "message": "Generated 16329 bytes of audio", "time": "2025-03-27 01:30:47,430"}
+{"level": "INFO", "message": "Pre-generated audio for state 2", "time": "2025-03-27 01:30:47,430"}
+{"level": "INFO", "message": "Generating full audio for text: What is your expected CTC?...", "time": "2025-03-27 01:30:47,430"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 01:30:48,116"}
+{"level": "INFO", "message": "Generated 14471 bytes of audio", "time": "2025-03-27 01:30:48,118"}
+{"level": "INFO", "message": "Pre-generated audio for state 3", "time": "2025-03-27 01:30:48,118"}
+{"level": "INFO", "message": "Generating full audio for text: Do you currently have any othe...", "time": "2025-03-27 01:30:48,118"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 01:30:49,039"}
+{"level": "INFO", "message": "Generated 23388 bytes of audio", "time": "2025-03-27 01:30:49,057"}
+{"level": "INFO", "message": "Pre-generated audio for state 4", "time": "2025-03-27 01:30:49,057"}
+{"level": "INFO", "message": "Generating full audio for text: What is the duration of your n...", "time": "2025-03-27 01:30:49,057"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 01:30:49,758"}
+{"level": "INFO", "message": "Generated 18558 bytes of audio", "time": "2025-03-27 01:30:49,760"}
+{"level": "INFO", "message": "Pre-generated audio for state 5", "time": "2025-03-27 01:30:49,760"}
+{"level": "INFO", "message": "Web server started on port 8000", "time": "2025-03-27 01:30:49,762"}
+{"level": "INFO", "message": "server listening on 0.0.0.0:8001", "time": "2025-03-27 01:30:49,764"}
+{"level": "INFO", "message": "WebSocket server started on port 8001", "time": "2025-03-27 01:30:49,765"}
+{"level": "INFO", "message": "127.0.0.1 [27/Mar/2025:01:31:02 +0530] "GET /health HTTP/1.1" 200 153 "-" "python-requests/2.31.0"", "time": "2025-03-27 01:31:02,382"}
+{"level": "INFO", "message": "connection open", "time": "2025-03-27 01:31:15,696"}
+{"level": "INFO", "message": "Starting WebSocket handler for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:15,696"}
+{"level": "INFO", "message": "Connecting to Deepgram for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:15,696"}
+{"level": "INFO", "message": "Connected to Deepgram for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:17,592"}
+{"level": "INFO", "message": "Received message: connected for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:17,592"}
+{"level": "INFO", "message": "Connected event data: {'event': 'connected', 'protocol': 'Call', 'version': '1.0.0'}", "time": "2025-03-27 01:31:17,592"}
+{"level": "INFO", "message": "Connected to stream None for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:17,592"}
+{"level": "INFO", "message": "Received message: start for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:17,592"}
+{"level": "INFO", "message": "Call SID from start event: CAaab64f19371769bc3d6feb4676fa89c3 for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:17,592"}
+{"level": "INFO", "message": "Initialized conversation state for call CAaab64f19371769bc3d6feb4676fa89c3", "time": "2025-03-27 01:31:17,593"}
+{"level": "INFO", "message": "Stream SID from start event: MZb92ca7d21685ffe81ee9382ac32c7d7c for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:17,593"}
+{"level": "INFO", "message": "Start event data: {'event': 'start', 'sequenceNumber': '1', 'start': {'accountSid': 'ACe190ece5f3c3191c28a7e6ba1776c473', 'streamSid': 'MZb92ca7d21685ffe81ee9382ac32c7d7c', 'callSid': 'CAaab64f19371769bc3d6feb4676fa89c3', 'tracks': ['inbound'], 'mediaFormat': {'encoding': 'audio/x-mulaw', 'sampleRate': 8000, 'channels': 1}, 'customParameters': {'greeting': 'Hello, this is an AI screening call. Please say something to start the call.'}}, 'streamSid': 'MZb92ca7d21685ffe81ee9382ac32c7d7c'}", "time": "2025-03-27 01:31:17,593"}
+{"level": "INFO", "message": "Playing immediate greeting: Hello, this is an AI screening call. Please say something to start the call. for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:17,593"}
+{"level": "INFO", "message": "Set speaking flag for immediate greeting playback: 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:17,593"}
+{"level": "INFO", "message": "Stream SID for 38caa2e0-75ee-4e21-8460-ddcb057c91c2 is MZb92ca7d21685ffe81ee9382ac32c7d7c", "time": "2025-03-27 01:31:17,593"}
+{"level": "INFO", "message": "Streaming audio for text: Hello, this is an AI screening...", "time": "2025-03-27 01:31:17,593"}
+{"level": "INFO", "message": "Starting to stream audio chunks for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:17,593"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT/stream?optimize_streaming_latency=4&output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 01:31:18,250"}
+{"level": "INFO", "message": "Streamed 10 chunks (13912 bytes) for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:18,355"}
+{"level": "INFO", "message": "Streamed 20 chunks (24584 bytes) for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:18,367"}
+{"level": "INFO", "message": "Streamed 30 chunks (36900 bytes) for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:18,383"}
+{"level": "INFO", "message": "Finished streaming audio: 35 chunks, 40652 bytes for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:18,384"}
+{"level": "INFO", "message": "Completed streaming immediate greeting audio for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:18,384"}
+{"level": "INFO", "message": "Sent mark after immediate greeting for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:18,385"}
+{"level": "INFO", "message": "Cleared speaking flag after immediate greeting for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:18,385"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:18,385"}
+{"level": "INFO", "message": "Deepgram receiver started for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:18,386"}
+{"level": "INFO", "message": "Heartbeat for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:18,386"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:18,387"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:18,389"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:  ", "time": "2025-03-27 01:31:18,944"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:19,293"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:19,974"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:20,214"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:20,598"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:20,938"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:21,073"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:22,333"}
+{"level": "INFO", "message": "Received message: mark for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:22,366"}
+{"level": "INFO", "message": "Mark received: 4abd41f6-0663-4d2f-b401-f5c907383723 for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:22,366"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:   ", "time": "2025-03-27 01:31:22,424"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:23,473"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: start the", "time": "2025-03-27 01:31:24,166"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:    start the call", "time": "2025-03-27 01:31:24,684"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:24,733"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:24,872"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:31:25,687"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:25,713"}
+{"level": "INFO", "message": "Processing after 1.0074551105499268s silence:    start the call", "time": "2025-03-27 01:31:26,694"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743019286.6951602", "time": "2025-03-27 01:31:26,695"}
+{"level": "INFO", "message": "Sending user response to conversation manager for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:26,695"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743019286.695341", "time": "2025-03-27 01:31:26,695"}
+{"level": "INFO", "message": "Buffered response for call CAaab64f19371769bc3d6feb4676fa89c3: start the call...", "time": "2025-03-27 01:31:26,695"}
+{"level": "INFO", "message": "State 0 detected for CAaab64f19371769bc3d6feb4676fa89c3, processing initial response: start the call", "time": "2025-03-27 01:31:26,695"}
+{"level": "INFO", "message": "LLM warmed up with initial response for CAaab64f19371769bc3d6feb4676fa89c3", "time": "2025-03-27 01:31:28,191"}
+{"level": "INFO", "message": "Automatically advancing from state 0 to state 1 for CAaab64f19371769bc3d6feb4676fa89c3", "time": "2025-03-27 01:31:28,191"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743019288.192, duration: 1.50s", "time": "2025-03-27 01:31:28,192"}
+{"level": "INFO", "message": "State change detected for 38caa2e0-75ee-4e21-8460-ddcb057c91c2, advancing state", "time": "2025-03-27 01:31:28,192"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing started at 1743019288.192096", "time": "2025-03-27 01:31:28,192"}
+{"level": "INFO", "message": "Set question data for call_sid: CAaab64f19371769bc3d6feb4676fa89c3", "time": "2025-03-27 01:31:28,192"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing completed at 1743019288.1922429, duration: 0.00s", "time": "2025-03-27 01:31:28,192"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing started at 1743019288.1922839", "time": "2025-03-27 01:31:28,192"}
+{"level": "INFO", "message": "Playing pre-generated audio for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:28,192"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing completed at 1743019288.192977, duration: 0.00s", "time": "2025-03-27 01:31:28,192"}
+{"level": "INFO", "message": "LATENCY_TOTAL_STATE: From user silence to AI speaking next question: 1.50s", "time": "2025-03-27 01:31:28,193"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:31:28,196"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:28,197"}
+{"level": "INFO", "message": "Heartbeat for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:28,387"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:28,398"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:28,854"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:29,213"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:29,318"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:29,660"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:  ", "time": "2025-03-27 01:31:29,661"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:29,793"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:31,018"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:31,513"}
+{"level": "INFO", "message": "Received message: mark for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:31,786"}
+{"level": "INFO", "message": "Mark received: 466be196-080d-4b87-b5e6-622aa2599bfa for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:31,786"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:31,832"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:32,153"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:   ", "time": "2025-03-27 01:31:32,604"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:32,713"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:33,093"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:33,254"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:33,433"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: i have", "time": "2025-03-27 01:31:33,480"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:34,458"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: i have seven years of", "time": "2025-03-27 01:31:34,529"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:34,806"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: i have seven years of professional experience", "time": "2025-03-27 01:31:35,446"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:35,518"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:    i have seven years of professional experience", "time": "2025-03-27 01:31:35,902"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:35,954"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:36,231"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:36,500"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:36,843"}
+{"level": "INFO", "message": "Processing after 1.0097899436950684s silence:    i have seven years of professional experience", "time": "2025-03-27 01:31:36,912"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743019296.9124548", "time": "2025-03-27 01:31:36,912"}
+{"level": "INFO", "message": "Sending user response to conversation manager for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:36,912"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743019296.912524", "time": "2025-03-27 01:31:36,912"}
+{"level": "INFO", "message": "Buffered response for call CAaab64f19371769bc3d6feb4676fa89c3: i have seven years of professi...", "time": "2025-03-27 01:31:36,912"}
+{"level": "INFO", "message": "Set response type for call_sid: CAaab64f19371769bc3d6feb4676fa89c3, type: years", "time": "2025-03-27 01:31:37,448"}
+{"level": "INFO", "message": "Set extracted value for call_sid: CAaab64f19371769bc3d6feb4676fa89c3, key: extracted_value, value: 7", "time": "2025-03-27 01:31:37,448"}
+{"level": "INFO", "message": "Generated follow-up question for CAaab64f19371769bc3d6feb4676fa89c3: Out of 7 years, how many years are relevant to this role?", "time": "2025-03-27 01:31:37,448"}
+{"level": "INFO", "message": "Added followup Q&A for call_sid: CAaab64f19371769bc3d6feb4676fa89c3, attempt: 1", "time": "2025-03-27 01:31:37,448"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743019297.4489632, duration: 0.54s", "time": "2025-03-27 01:31:37,448"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS: Processing started at 1743019297.4490619", "time": "2025-03-27 01:31:37,449"}
+{"level": "INFO", "message": "Playing follow-up: Out of 7 years, how many years are relevant to thi... for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:37,449"}
+{"level": "INFO", "message": "Stream SID for 38caa2e0-75ee-4e21-8460-ddcb057c91c2 is MZb92ca7d21685ffe81ee9382ac32c7d7c", "time": "2025-03-27 01:31:37,449"}
+{"level": "INFO", "message": "Streaming audio for text: Out of 7 years, how many years...", "time": "2025-03-27 01:31:37,449"}
+{"level": "INFO", "message": "Starting to stream audio chunks for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:37,449"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT/stream?optimize_streaming_latency=4&output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 01:31:38,075"}
+{"level": "INFO", "message": "Streamed 10 chunks (13920 bytes) for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:38,184"}
+{"level": "INFO", "message": "Streamed 20 chunks (24592 bytes) for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:38,196"}
+{"level": "INFO", "message": "Finished streaming audio: 29 chunks, 32720 bytes for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:38,208"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS: Processing completed at 1743019298.20907, duration: 0.76s", "time": "2025-03-27 01:31:38,209"}
+{"level": "INFO", "message": "LATENCY_TOTAL: From user silence to AI speaking: 1.30s", "time": "2025-03-27 01:31:38,209"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:31:38,211"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:38,356"}
+{"level": "INFO", "message": "Heartbeat for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:38,389"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:38,413"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:38,773"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:  ", "time": "2025-03-27 01:31:40,250"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:40,476"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:40,534"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:40,806"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:   ", "time": "2025-03-27 01:31:40,835"}
+{"level": "INFO", "message": "Received message: mark for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:41,450"}
+{"level": "INFO", "message": "Mark received: 5d9b4cd7-dda9-46bd-857f-233c737ecc73 for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:41,450"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:    ", "time": "2025-03-27 01:31:41,490"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:     ", "time": "2025-03-27 01:31:42,031"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:42,226"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:      ", "time": "2025-03-27 01:31:42,491"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:42,574"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:42,834"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:43,197"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:43,314"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: four years that", "time": "2025-03-27 01:31:43,507"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: four years are relevant to this role", "time": "2025-03-27 01:31:44,499"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:       four years are relevant to this role", "time": "2025-03-27 01:31:44,680"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:45,073"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:31:45,667"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:46,634"}
+{"level": "INFO", "message": "Processing after 1.0078668594360352s silence:       four years are relevant to this role", "time": "2025-03-27 01:31:46,675"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743019306.676021", "time": "2025-03-27 01:31:46,676"}
+{"level": "INFO", "message": "Sending user response to conversation manager for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:46,676"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743019306.6760461", "time": "2025-03-27 01:31:46,676"}
+{"level": "INFO", "message": "Buffered response for call CAaab64f19371769bc3d6feb4676fa89c3: four years are relevant to thi...", "time": "2025-03-27 01:31:46,676"}
+{"level": "INFO", "message": "Set response type for call_sid: CAaab64f19371769bc3d6feb4676fa89c3, type: years", "time": "2025-03-27 01:31:47,266"}
+{"level": "INFO", "message": "Set extracted value for call_sid: CAaab64f19371769bc3d6feb4676fa89c3, key: extracted_value, value: 4", "time": "2025-03-27 01:31:47,266"}
+{"level": "INFO", "message": "No follow-up needed or max attempts reached for call_sid: CAaab64f19371769bc3d6feb4676fa89c3. Advancing state.", "time": "2025-03-27 01:31:47,266"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743019307.266421, duration: 0.59s", "time": "2025-03-27 01:31:47,266"}
+{"level": "INFO", "message": "State change detected for 38caa2e0-75ee-4e21-8460-ddcb057c91c2, advancing state", "time": "2025-03-27 01:31:47,266"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing started at 1743019307.266495", "time": "2025-03-27 01:31:47,266"}
+{"level": "INFO", "message": "Set question data for call_sid: CAaab64f19371769bc3d6feb4676fa89c3", "time": "2025-03-27 01:31:47,266"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing completed at 1743019307.266604, duration: 0.00s", "time": "2025-03-27 01:31:47,266"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing started at 1743019307.266633", "time": "2025-03-27 01:31:47,266"}
+{"level": "INFO", "message": "Playing pre-generated audio for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:47,266"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing completed at 1743019307.267118, duration: 0.00s", "time": "2025-03-27 01:31:47,267"}
+{"level": "INFO", "message": "LATENCY_TOTAL_STATE: From user silence to AI speaking next question: 0.59s", "time": "2025-03-27 01:31:47,267"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:47,269"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:31:47,269"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:31:47,681"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:47,828"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:48,124"}
+{"level": "INFO", "message": "Heartbeat for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:48,390"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:48,488"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:49,044"}
+{"level": "INFO", "message": "Received message: mark for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:49,634"}
+{"level": "INFO", "message": "Mark received: ff9a3415-0944-4c8a-906e-6cbc5a343c47 for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:49,634"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:  ", "time": "2025-03-27 01:31:49,674"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:50,016"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:   ", "time": "2025-03-27 01:31:50,888"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:50,933"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:51,274"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:52,056"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:52,654"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:53,174"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:    my current ctc is thirty l p", "time": "2025-03-27 01:31:53,704"}
+{"level": "INFO", "message": "Processing after 1.0102050304412842s silence:    my current ctc is thirty l p", "time": "2025-03-27 01:31:54,715"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743019314.715584", "time": "2025-03-27 01:31:54,715"}
+{"level": "INFO", "message": "Sending user response to conversation manager for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:54,715"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743019314.715689", "time": "2025-03-27 01:31:54,715"}
+{"level": "INFO", "message": "Buffered response for call CAaab64f19371769bc3d6feb4676fa89c3: my current ctc is thirty l p...", "time": "2025-03-27 01:31:54,715"}
+{"level": "INFO", "message": "Set response type for call_sid: CAaab64f19371769bc3d6feb4676fa89c3, type: amount", "time": "2025-03-27 01:31:55,293"}
+{"level": "INFO", "message": "Set extracted value for call_sid: CAaab64f19371769bc3d6feb4676fa89c3, key: extracted_value, value: 30", "time": "2025-03-27 01:31:55,293"}
+{"level": "INFO", "message": "Added followup Q&A for call_sid: CAaab64f19371769bc3d6feb4676fa89c3, attempt: 2", "time": "2025-03-27 01:31:55,293"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743019315.293996, duration: 0.58s", "time": "2025-03-27 01:31:55,294"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS: Processing started at 1743019315.2940512", "time": "2025-03-27 01:31:55,294"}
+{"level": "INFO", "message": "Playing follow-up: Out of 30, how much is fixed and how much is varia... for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:55,294"}
+{"level": "INFO", "message": "Stream SID for 38caa2e0-75ee-4e21-8460-ddcb057c91c2 is MZb92ca7d21685ffe81ee9382ac32c7d7c", "time": "2025-03-27 01:31:55,294"}
+{"level": "INFO", "message": "Streaming audio for text: Out of 30, how much is fixed a...", "time": "2025-03-27 01:31:55,294"}
+{"level": "INFO", "message": "Starting to stream audio chunks for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:55,294"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT/stream?optimize_streaming_latency=4&output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 01:31:57,231"}
+{"level": "INFO", "message": "Streamed 10 chunks (13912 bytes) for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:57,323"}
+{"level": "INFO", "message": "Streamed 20 chunks (26676 bytes) for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:57,340"}
+{"level": "INFO", "message": "Finished streaming audio: 25 chunks, 32216 bytes for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:57,346"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS: Processing completed at 1743019317.346463, duration: 2.05s", "time": "2025-03-27 01:31:57,346"}
+{"level": "INFO", "message": "LATENCY_TOTAL: From user silence to AI speaking: 2.63s", "time": "2025-03-27 01:31:57,346"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:31:57,348"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:57,349"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:57,350"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:57,350"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: a", "time": "2025-03-27 01:31:57,758"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:31:57,758"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:57,833"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:31:57,873"}
+{"level": "INFO", "message": "Heartbeat for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:58,391"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:58,580"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:  ", "time": "2025-03-27 01:31:58,685"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:59,647"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:   ", "time": "2025-03-27 01:31:59,753"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:59,896"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:59,957"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:31:59,977"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:00,033"}
+{"level": "INFO", "message": "Received message: mark for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:00,546"}
+{"level": "INFO", "message": "Mark received: 009bfd68-7144-4fc1-b7cf-f8138625bc39 for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:00,546"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:    ", "time": "2025-03-27 01:32:00,946"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:01,136"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:01,340"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:01,394"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:     ", "time": "2025-03-27 01:32:02,009"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:02,273"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:03,334"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: out of thirty twenty is fixed and ten is", "time": "2025-03-27 01:32:03,926"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:04,093"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:04,236"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:      out of thirty twenty is fixed and ten is variable", "time": "2025-03-27 01:32:04,914"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:32:05,883"}
+{"level": "INFO", "message": "Processing after 1.0112791061401367s silence:      out of thirty twenty is fixed and ten is variable", "time": "2025-03-27 01:32:06,895"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743019326.895593", "time": "2025-03-27 01:32:06,895"}
+{"level": "INFO", "message": "Sending user response to conversation manager for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:06,895"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743019326.895659", "time": "2025-03-27 01:32:06,895"}
+{"level": "INFO", "message": "Buffered response for call CAaab64f19371769bc3d6feb4676fa89c3: out of thirty twenty is fixed ...", "time": "2025-03-27 01:32:06,895"}
+{"level": "INFO", "message": "Received response to follow-up question for CAaab64f19371769bc3d6feb4676fa89c3. Advancing state.", "time": "2025-03-27 01:32:06,895"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743019326.895741, duration: 0.00s", "time": "2025-03-27 01:32:06,895"}
+{"level": "INFO", "message": "State change detected for 38caa2e0-75ee-4e21-8460-ddcb057c91c2, advancing state", "time": "2025-03-27 01:32:06,895"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing started at 1743019326.8957891", "time": "2025-03-27 01:32:06,895"}
+{"level": "INFO", "message": "Set question data for call_sid: CAaab64f19371769bc3d6feb4676fa89c3", "time": "2025-03-27 01:32:06,895"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing completed at 1743019326.8958578, duration: 0.00s", "time": "2025-03-27 01:32:06,895"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing started at 1743019326.895884", "time": "2025-03-27 01:32:06,895"}
+{"level": "INFO", "message": "Playing pre-generated audio for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:06,895"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing completed at 1743019326.896192, duration: 0.00s", "time": "2025-03-27 01:32:06,896"}
+{"level": "INFO", "message": "LATENCY_TOTAL_STATE: From user silence to AI speaking next question: 0.00s", "time": "2025-03-27 01:32:06,896"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:32:06,998"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:32:07,883"}
+{"level": "INFO", "message": "Heartbeat for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:08,392"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:08,591"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:08,896"}
+{"level": "INFO", "message": "Received message: mark for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:09,026"}
+{"level": "INFO", "message": "Mark received: 534d63b3-f9eb-4ba8-82aa-65302596cd03 for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:09,026"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:  ", "time": "2025-03-27 01:32:09,441"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:09,860"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:   ", "time": "2025-03-27 01:32:10,160"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:10,460"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:10,574"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:10,654"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:    ", "time": "2025-03-27 01:32:10,663"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:10,733"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:     expected service is forty l p a", "time": "2025-03-27 01:32:12,968"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:13,032"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:     expected service is forty l p a ", "time": "2025-03-27 01:32:13,798"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:14,354"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:32:14,804"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:15,274"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:32:15,709"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:16,233"}
+{"level": "INFO", "message": "Processing after 1.0076360702514648s silence:     expected service is forty l p a ", "time": "2025-03-27 01:32:16,717"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743019336.7175722", "time": "2025-03-27 01:32:16,717"}
+{"level": "INFO", "message": "Sending user response to conversation manager for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:16,717"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743019336.717751", "time": "2025-03-27 01:32:16,717"}
+{"level": "INFO", "message": "Buffered response for call CAaab64f19371769bc3d6feb4676fa89c3: expected service is forty l p ...", "time": "2025-03-27 01:32:16,717"}
+{"level": "INFO", "message": "Received response to follow-up question for CAaab64f19371769bc3d6feb4676fa89c3. Advancing state.", "time": "2025-03-27 01:32:16,717"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743019336.71803, duration: 0.00s", "time": "2025-03-27 01:32:16,718"}
+{"level": "INFO", "message": "State change detected for 38caa2e0-75ee-4e21-8460-ddcb057c91c2, advancing state", "time": "2025-03-27 01:32:16,718"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing started at 1743019336.718185", "time": "2025-03-27 01:32:16,718"}
+{"level": "INFO", "message": "Set question data for call_sid: CAaab64f19371769bc3d6feb4676fa89c3", "time": "2025-03-27 01:32:16,718"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing completed at 1743019336.718412, duration: 0.00s", "time": "2025-03-27 01:32:16,718"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing started at 1743019336.7184901", "time": "2025-03-27 01:32:16,718"}
+{"level": "INFO", "message": "Playing pre-generated audio for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:16,718"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing completed at 1743019336.7195442, duration: 0.00s", "time": "2025-03-27 01:32:16,719"}
+{"level": "INFO", "message": "LATENCY_TOTAL_STATE: From user silence to AI speaking next question: 0.00s", "time": "2025-03-27 01:32:16,719"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:32:16,784"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:16,934"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:17,794"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:17,933"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:32:17,967"}
+{"level": "INFO", "message": "Heartbeat for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:18,393"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:18,673"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:  ", "time": "2025-03-27 01:32:18,738"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:18,876"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:18,974"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:   ", "time": "2025-03-27 01:32:19,785"}
+{"level": "INFO", "message": "Received message: mark for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:19,966"}
+{"level": "INFO", "message": "Mark received: 333b8322-ccd0-4295-8783-2291c6bfe597 for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:19,966"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:20,474"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:20,498"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:    ", "time": "2025-03-27 01:32:20,678"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:20,754"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:20,773"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:     ", "time": "2025-03-27 01:32:21,065"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:      yes", "time": "2025-03-27 01:32:22,248"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:22,313"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:22,659"}
+{"level": "INFO", "message": "Processing after 1.0097968578338623s silence:      yes", "time": "2025-03-27 01:32:23,258"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743019343.259275", "time": "2025-03-27 01:32:23,259"}
+{"level": "INFO", "message": "Sending user response to conversation manager for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:23,259"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743019343.2594619", "time": "2025-03-27 01:32:23,259"}
+{"level": "INFO", "message": "Buffered response for call CAaab64f19371769bc3d6feb4676fa89c3: yes...", "time": "2025-03-27 01:32:23,259"}
+{"level": "INFO", "message": "Received response to follow-up question for CAaab64f19371769bc3d6feb4676fa89c3. Advancing state.", "time": "2025-03-27 01:32:23,259"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743019343.259755, duration: 0.00s", "time": "2025-03-27 01:32:23,259"}
+{"level": "INFO", "message": "State change detected for 38caa2e0-75ee-4e21-8460-ddcb057c91c2, advancing state", "time": "2025-03-27 01:32:23,259"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing started at 1743019343.259913", "time": "2025-03-27 01:32:23,259"}
+{"level": "INFO", "message": "Set question data for call_sid: CAaab64f19371769bc3d6feb4676fa89c3", "time": "2025-03-27 01:32:23,260"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing completed at 1743019343.260153, duration: 0.00s", "time": "2025-03-27 01:32:23,260"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing started at 1743019343.260235", "time": "2025-03-27 01:32:23,260"}
+{"level": "INFO", "message": "Playing pre-generated audio for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:23,260"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing completed at 1743019343.261258, duration: 0.00s", "time": "2025-03-27 01:32:23,261"}
+{"level": "INFO", "message": "LATENCY_TOTAL_STATE: From user silence to AI speaking next question: 0.00s", "time": "2025-03-27 01:32:23,261"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:23,874"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:32:24,540"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:24,913"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:25,244"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:  ", "time": "2025-03-27 01:32:25,514"}
+{"level": "INFO", "message": "Received message: mark for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:25,894"}
+{"level": "INFO", "message": "Mark received: 2a353899-45f8-4237-a747-ca7d1430b434 for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:25,894"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:32:26,490"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:26,812"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:   ", "time": "2025-03-27 01:32:26,838"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:26,853"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:    ", "time": "2025-03-27 01:32:27,085"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:28,094"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:     ninety days", "time": "2025-03-27 01:32:28,126"}
+{"level": "INFO", "message": "Heartbeat for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:28,395"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:28,553"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:28,732"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:29,456"}
+{"level": "INFO", "message": "Processing after 1.0101962089538574s silence:     ninety days", "time": "2025-03-27 01:32:30,063"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743019350.063402", "time": "2025-03-27 01:32:30,063"}
+{"level": "INFO", "message": "Sending user response to conversation manager for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:30,063"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743019350.063605", "time": "2025-03-27 01:32:30,063"}
+{"level": "INFO", "message": "Buffered response for call CAaab64f19371769bc3d6feb4676fa89c3: ninety days...", "time": "2025-03-27 01:32:30,063"}
+{"level": "INFO", "message": "Received response to follow-up question for CAaab64f19371769bc3d6feb4676fa89c3. Advancing state.", "time": "2025-03-27 01:32:30,063"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743019350.063901, duration: 0.00s", "time": "2025-03-27 01:32:30,063"}
+{"level": "INFO", "message": "State change detected for 38caa2e0-75ee-4e21-8460-ddcb057c91c2, advancing state", "time": "2025-03-27 01:32:30,063"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing started at 1743019350.0640588", "time": "2025-03-27 01:32:30,064"}
+{"level": "INFO", "message": "Cleared conversation data for call CAaab64f19371769bc3d6feb4676fa89c3", "time": "2025-03-27 01:32:30,064"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing completed at 1743019350.0642428, duration: 0.00s", "time": "2025-03-27 01:32:30,064"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing started at 1743019350.064327", "time": "2025-03-27 01:32:30,064"}
+{"level": "INFO", "message": "Playing generated audio for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: Thank you for your time. The interview is now comp...", "time": "2025-03-27 01:32:30,064"}
+{"level": "INFO", "message": "Stream SID for 38caa2e0-75ee-4e21-8460-ddcb057c91c2 is MZb92ca7d21685ffe81ee9382ac32c7d7c", "time": "2025-03-27 01:32:30,064"}
+{"level": "INFO", "message": "Streaming audio for text: Thank you for your time. The i...", "time": "2025-03-27 01:32:30,064"}
+{"level": "INFO", "message": "Starting to stream audio chunks for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:30,064"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT/stream?optimize_streaming_latency=4&output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 01:32:30,710"}
+{"level": "INFO", "message": "Streamed 10 chunks (13916 bytes) for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:30,796"}
+{"level": "INFO", "message": "Streamed 20 chunks (26220 bytes) for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:30,813"}
+{"level": "INFO", "message": "Finished streaming audio: 26 chunks, 31720 bytes for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:30,819"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing completed at 1743019350.819345, duration: 0.76s", "time": "2025-03-27 01:32:30,819"}
+{"level": "INFO", "message": "LATENCY_TOTAL_STATE: From user silence to AI speaking next question: 0.76s", "time": "2025-03-27 01:32:30,819"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:30,984"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:31,564"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:31,565"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:31,576"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:32,283"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:32,536"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:  ", "time": "2025-03-27 01:32:32,932"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:33,156"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:32:33,886"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:33,973"}
+{"level": "INFO", "message": "Received message: mark for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:34,006"}
+{"level": "INFO", "message": "Mark received: 2e5262c0-043d-416b-b848-8e6897c7c026 for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:34,006"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:34,158"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:   ", "time": "2025-03-27 01:32:34,249"}
+{"level": "INFO", "message": "Received message: media for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:34,274"}
+{"level": "INFO", "message": "Final transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2:    ", "time": "2025-03-27 01:32:34,464"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:32:35,445"}
+{"level": "INFO", "message": "Received message: stop for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:36,473"}
+{"level": "INFO", "message": "Interim transcript for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: ", "time": "2025-03-27 01:32:36,490"}
+{"level": "INFO", "message": "WebSocket connection closed for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:37,580"}
+{"level": "INFO", "message": "Cleaning up connection 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:37,580"}
+{"level": "INFO", "message": "Sent close stream to Deepgram for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:37,581"}
+{"level": "INFO", "message": "Ending conversation for call CAaab64f19371769bc3d6feb4676fa89c3", "time": "2025-03-27 01:32:37,581"}
+{"level": "INFO", "message": "Connection cleanup completed for 38caa2e0-75ee-4e21-8460-ddcb057c91c2", "time": "2025-03-27 01:32:37,581"}
+{"level": "INFO", "message": "WebSocket handler for 38caa2e0-75ee-4e21-8460-ddcb057c91c2 completed", "time": "2025-03-27 01:32:37,581"}
+{"level": "WARNING", "message": "Attempted to end non-existent conversation for call CAaab64f19371769bc3d6feb4676fa89c3", "time": "2025-03-27 01:32:37,581"}
+{"level": "ERROR", "message": "Error in heartbeat for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: '38caa2e0-75ee-4e21-8460-ddcb057c91c2'", "time": "2025-03-27 01:32:37,581"}
+{"level": "INFO", "message": "connection closed", "time": "2025-03-27 01:32:37,581"}
+{"level": "ERROR", "message": "Error in Deepgram receiver for 38caa2e0-75ee-4e21-8460-ddcb057c91c2: '38caa2e0-75ee-4e21-8460-ddcb057c91c2'", "time": "2025-03-27 01:32:37,604"}
+{"level": "ERROR", "message": "Traceback (most recent call last):
+  File "/Users/growlt285/Downloads/AI-Call/handlers/websocket_manager.py", line 412, in _handle_deepgram_receiving
+    if self.speaking_flags[ws_id].is_set():
+KeyError: '38caa2e0-75ee-4e21-8460-ddcb057c91c2'
+", "time": "2025-03-27 01:32:37,604"}
+{"level": "ERROR", "message": "Task exception was never retrieved
+future: <Task finished name='Task-17' coro=<WebSocketManager._handle_deepgram_receiving() done, defined at /Users/growlt285/Downloads/AI-Call/handlers/websocket_manager.py:370> exception=KeyError('38caa2e0-75ee-4e21-8460-ddcb057c91c2')>
+Traceback (most recent call last):
+  File "/Users/growlt285/Downloads/AI-Call/handlers/websocket_manager.py", line 412, in _handle_deepgram_receiving
+    if self.speaking_flags[ws_id].is_set():
+KeyError: '38caa2e0-75ee-4e21-8460-ddcb057c91c2'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/growlt285/Downloads/AI-Call/handlers/websocket_manager.py", line 540, in _handle_deepgram_receiving
+    if self.exit_events[ws_id].is_set():
+KeyError: '38caa2e0-75ee-4e21-8460-ddcb057c91c2'", "time": "2025-03-27 01:32:37,604"}
+{"level": "INFO", "message": "Initializing Demo AI Call Server", "time": "2025-03-27 01:50:46,023"}
+{"level": "INFO", "message": "ConversationManager initialized", "time": "2025-03-27 01:50:46,084"}
+{"level": "INFO", "message": "WebSocketManager initialized", "time": "2025-03-27 01:50:46,084"}
+{"level": "INFO", "message": "Demo AI Call Server initialized", "time": "2025-03-27 01:50:46,084"}
+{"level": "INFO", "message": "Loaded 5 questions into Memory A", "time": "2025-03-27 01:50:46,084"}
+{"level": "INFO", "message": "Pre-warming LLM to reduce cold start latency", "time": "2025-03-27 01:50:46,084"}
+{"level": "INFO", "message": "LLM pre-warmed successfully", "time": "2025-03-27 01:50:48,874"}
+{"level": "INFO", "message": "Generating full audio for text: How many years of professional...", "time": "2025-03-27 01:50:48,874"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 01:50:53,476"}
+{"level": "INFO", "message": "Generated 23759 bytes of audio", "time": "2025-03-27 01:50:53,586"}
+{"level": "INFO", "message": "Pre-generated audio for state 1", "time": "2025-03-27 01:50:53,587"}
+{"level": "INFO", "message": "Generating full audio for text: What is your current or last C...", "time": "2025-03-27 01:50:53,587"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 01:50:54,208"}
+{"level": "INFO", "message": "Generated 17072 bytes of audio", "time": "2025-03-27 01:50:54,248"}
+{"level": "INFO", "message": "Pre-generated audio for state 2", "time": "2025-03-27 01:50:54,248"}
+{"level": "INFO", "message": "Generating full audio for text: What is your expected CTC?...", "time": "2025-03-27 01:50:54,248"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 01:50:54,812"}
+{"level": "INFO", "message": "Generated 13728 bytes of audio", "time": "2025-03-27 01:50:54,814"}
+{"level": "INFO", "message": "Pre-generated audio for state 3", "time": "2025-03-27 01:50:54,814"}
+{"level": "INFO", "message": "Generating full audio for text: Do you currently have any othe...", "time": "2025-03-27 01:50:54,814"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 01:50:55,425"}
+{"level": "INFO", "message": "Generated 23016 bytes of audio", "time": "2025-03-27 01:50:55,466"}
+{"level": "INFO", "message": "Pre-generated audio for state 4", "time": "2025-03-27 01:50:55,467"}
+{"level": "INFO", "message": "Generating full audio for text: What is the duration of your n...", "time": "2025-03-27 01:50:55,467"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 01:50:56,042"}
+{"level": "INFO", "message": "Generated 17443 bytes of audio", "time": "2025-03-27 01:50:56,048"}
+{"level": "INFO", "message": "Pre-generated audio for state 5", "time": "2025-03-27 01:50:56,048"}
+{"level": "INFO", "message": "Web server started on port 8000", "time": "2025-03-27 01:50:56,049"}
+{"level": "INFO", "message": "server listening on 0.0.0.0:8001", "time": "2025-03-27 01:50:56,050"}
+{"level": "INFO", "message": "WebSocket server started on port 8001", "time": "2025-03-27 01:50:56,050"}
+{"level": "INFO", "message": "127.0.0.1 [27/Mar/2025:01:51:00 +0530] "GET /health HTTP/1.1" 200 153 "-" "python-requests/2.31.0"", "time": "2025-03-27 01:51:00,620"}
+{"level": "INFO", "message": "connection open", "time": "2025-03-27 01:51:15,652"}
+{"level": "INFO", "message": "Starting WebSocket handler for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:15,652"}
+{"level": "INFO", "message": "Connecting to Deepgram for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:15,652"}
+{"level": "INFO", "message": "Connected to Deepgram for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:17,646"}
+{"level": "INFO", "message": "Received message: connected for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:17,646"}
+{"level": "INFO", "message": "Connected event data: {'event': 'connected', 'protocol': 'Call', 'version': '1.0.0'}", "time": "2025-03-27 01:51:17,646"}
+{"level": "INFO", "message": "Connected to stream None for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:17,646"}
+{"level": "INFO", "message": "Received message: start for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:17,647"}
+{"level": "INFO", "message": "Call SID from start event: CA52a0a9c3a7aa95a85c7232591336cc70 for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:17,647"}
+{"level": "INFO", "message": "Initialized conversation state for call CA52a0a9c3a7aa95a85c7232591336cc70", "time": "2025-03-27 01:51:17,647"}
+{"level": "INFO", "message": "Stream SID from start event: MZ4539e39e9c53e4c816ae5f41b0ce70f3 for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:17,647"}
+{"level": "INFO", "message": "Start event data: {'event': 'start', 'sequenceNumber': '1', 'start': {'accountSid': 'ACe190ece5f3c3191c28a7e6ba1776c473', 'streamSid': 'MZ4539e39e9c53e4c816ae5f41b0ce70f3', 'callSid': 'CA52a0a9c3a7aa95a85c7232591336cc70', 'tracks': ['inbound'], 'mediaFormat': {'encoding': 'audio/x-mulaw', 'sampleRate': 8000, 'channels': 1}, 'customParameters': {'greeting': 'Hello, this is an AI screening call. Please say something to start the call.'}}, 'streamSid': 'MZ4539e39e9c53e4c816ae5f41b0ce70f3'}", "time": "2025-03-27 01:51:17,647"}
+{"level": "INFO", "message": "Playing immediate greeting: Hello, this is an AI screening call. Please say something to start the call. for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:17,647"}
+{"level": "INFO", "message": "Set speaking flag for immediate greeting playback: b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:17,647"}
+{"level": "INFO", "message": "Stream SID for b3da9de9-01f1-4154-8bde-3ee91cd0ab12 is MZ4539e39e9c53e4c816ae5f41b0ce70f3", "time": "2025-03-27 01:51:17,647"}
+{"level": "INFO", "message": "Streaming audio for text: Hello, this is an AI screening...", "time": "2025-03-27 01:51:17,647"}
+{"level": "INFO", "message": "Starting to stream audio chunks for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:17,647"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT/stream?optimize_streaming_latency=4&output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 01:51:18,250"}
+{"level": "INFO", "message": "Streamed 10 chunks (13908 bytes) for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:18,418"}
+{"level": "INFO", "message": "Streamed 20 chunks (26676 bytes) for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:18,436"}
+{"level": "INFO", "message": "Streamed 30 chunks (40600 bytes) for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:18,478"}
+{"level": "INFO", "message": "Finished streaming audio: 32 chunks, 42632 bytes for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:18,484"}
+{"level": "INFO", "message": "Completed streaming immediate greeting audio for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:18,484"}
+{"level": "INFO", "message": "Sent mark after immediate greeting for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:18,484"}
+{"level": "INFO", "message": "Cleared speaking flag after immediate greeting for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:18,484"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:18,485"}
+{"level": "INFO", "message": "Deepgram receiver started for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:18,486"}
+{"level": "INFO", "message": "Heartbeat for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:18,486"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:18,489"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:  ", "time": "2025-03-27 01:51:18,931"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:   ", "time": "2025-03-27 01:51:18,932"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:20,012"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:20,337"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:20,600"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:21,097"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:21,367"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:21,884"}
+{"level": "INFO", "message": "Received message: mark for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:22,572"}
+{"level": "INFO", "message": "Mark received: 344f05ea-6a7f-432d-abd0-7191678dfbe6 for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:22,572"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:    ", "time": "2025-03-27 01:51:22,718"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:     ", "time": "2025-03-27 01:51:22,719"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:23,192"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:23,432"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:23,492"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:51:23,543"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:23,932"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: start the", "time": "2025-03-27 01:51:24,285"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:      start the call", "time": "2025-03-27 01:51:24,953"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:24,958"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:25,347"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:51:25,899"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:26,405"}
+{"level": "INFO", "message": "Processing after 1.009162187576294s silence:      start the call", "time": "2025-03-27 01:51:26,908"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743020486.9090502", "time": "2025-03-27 01:51:26,909"}
+{"level": "INFO", "message": "Sending user response to conversation manager for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:26,909"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743020486.9092312", "time": "2025-03-27 01:51:26,909"}
+{"level": "INFO", "message": "Buffered response for call CA52a0a9c3a7aa95a85c7232591336cc70: start the call...", "time": "2025-03-27 01:51:26,909"}
+{"level": "INFO", "message": "State 0 detected for CA52a0a9c3a7aa95a85c7232591336cc70, processing initial response: start the call", "time": "2025-03-27 01:51:26,909"}
+{"level": "INFO", "message": "LLM warmed up with initial response for CA52a0a9c3a7aa95a85c7232591336cc70", "time": "2025-03-27 01:51:28,239"}
+{"level": "INFO", "message": "Automatically advancing from state 0 to state 1 for CA52a0a9c3a7aa95a85c7232591336cc70", "time": "2025-03-27 01:51:28,240"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743020488.240111, duration: 1.33s", "time": "2025-03-27 01:51:28,240"}
+{"level": "INFO", "message": "State change detected for b3da9de9-01f1-4154-8bde-3ee91cd0ab12, advancing state", "time": "2025-03-27 01:51:28,240"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing started at 1743020488.240296", "time": "2025-03-27 01:51:28,240"}
+{"level": "INFO", "message": "Set question data for call_sid: CA52a0a9c3a7aa95a85c7232591336cc70", "time": "2025-03-27 01:51:28,240"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing completed at 1743020488.2405381, duration: 0.00s", "time": "2025-03-27 01:51:28,240"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing started at 1743020488.240615", "time": "2025-03-27 01:51:28,240"}
+{"level": "INFO", "message": "Playing pre-generated audio for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:28,240"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing completed at 1743020488.24174, duration: 0.00s", "time": "2025-03-27 01:51:28,241"}
+{"level": "INFO", "message": "LATENCY_TOTAL_STATE: From user silence to AI speaking next question: 1.33s", "time": "2025-03-27 01:51:28,241"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:51:28,245"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:28,245"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:28,245"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:28,245"}
+{"level": "INFO", "message": "Heartbeat for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:28,487"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:28,548"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:  ", "time": "2025-03-27 01:51:29,819"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:   ", "time": "2025-03-27 01:51:30,208"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:30,472"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:31,238"}
+{"level": "INFO", "message": "Received message: mark for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:31,525"}
+{"level": "INFO", "message": "Mark received: ffafa111-becd-4d76-ad8e-7e5a486e8106 for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:31,525"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:    ", "time": "2025-03-27 01:51:32,008"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:32,092"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:32,252"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:     ", "time": "2025-03-27 01:51:32,839"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:33,597"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:33,763"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: seven seven", "time": "2025-03-27 01:51:33,951"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:34,003"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:34,112"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:34,458"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: seven seven years of professional experience", "time": "2025-03-27 01:51:35,142"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:      seven seven years of professional experience", "time": "2025-03-27 01:51:35,690"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:36,107"}
+{"level": "INFO", "message": "Processing after 1.0103418827056885s silence:      seven seven years of professional experience", "time": "2025-03-27 01:51:36,700"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743020496.7010639", "time": "2025-03-27 01:51:36,701"}
+{"level": "INFO", "message": "Sending user response to conversation manager for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:36,701"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743020496.7011158", "time": "2025-03-27 01:51:36,701"}
+{"level": "INFO", "message": "Buffered response for call CA52a0a9c3a7aa95a85c7232591336cc70: seven seven years of professio...", "time": "2025-03-27 01:51:36,701"}
+{"level": "INFO", "message": "Set response type for call_sid: CA52a0a9c3a7aa95a85c7232591336cc70, type: years", "time": "2025-03-27 01:51:37,229"}
+{"level": "INFO", "message": "Set extracted value for call_sid: CA52a0a9c3a7aa95a85c7232591336cc70, key: extracted_value, value: 7", "time": "2025-03-27 01:51:37,229"}
+{"level": "INFO", "message": "Generated follow-up question for CA52a0a9c3a7aa95a85c7232591336cc70: Out of 7 years, how many years are relevant to this role?", "time": "2025-03-27 01:51:37,229"}
+{"level": "INFO", "message": "Added followup Q&A for call_sid: CA52a0a9c3a7aa95a85c7232591336cc70, attempt: 1", "time": "2025-03-27 01:51:37,229"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743020497.230073, duration: 0.53s", "time": "2025-03-27 01:51:37,230"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS: Processing started at 1743020497.230172", "time": "2025-03-27 01:51:37,230"}
+{"level": "INFO", "message": "Playing follow-up: Out of 7 years, how many years are relevant to thi... for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:37,230"}
+{"level": "INFO", "message": "Stream SID for b3da9de9-01f1-4154-8bde-3ee91cd0ab12 is MZ4539e39e9c53e4c816ae5f41b0ce70f3", "time": "2025-03-27 01:51:37,230"}
+{"level": "INFO", "message": "Streaming audio for text: Out of 7 years, how many years...", "time": "2025-03-27 01:51:37,230"}
+{"level": "INFO", "message": "Starting to stream audio chunks for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:37,230"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT/stream?optimize_streaming_latency=4&output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 01:51:37,850"}
+{"level": "INFO", "message": "Streamed 10 chunks (13904 bytes) for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:37,940"}
+{"level": "INFO", "message": "Streamed 20 chunks (26220 bytes) for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:37,955"}
+{"level": "INFO", "message": "Finished streaming audio: 26 chunks, 31720 bytes for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:37,961"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS: Processing completed at 1743020497.9621592, duration: 0.73s", "time": "2025-03-27 01:51:37,962"}
+{"level": "INFO", "message": "LATENCY_TOTAL: From user silence to AI speaking: 1.26s", "time": "2025-03-27 01:51:37,962"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:51:37,964"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:37,965"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:51:38,385"}
+{"level": "INFO", "message": "Heartbeat for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:38,487"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:38,554"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:38,588"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:38,796"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:38,932"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:  ", "time": "2025-03-27 01:51:40,245"}
+{"level": "INFO", "message": "Received message: mark for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:41,125"}
+{"level": "INFO", "message": "Mark received: cd3fd58e-d5c6-425f-a62c-369cd3a0d55b for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:41,125"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:   ", "time": "2025-03-27 01:51:41,271"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:43,052"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: four years are relevant to this", "time": "2025-03-27 01:51:44,424"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:44,554"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:    four years are relevant to this role", "time": "2025-03-27 01:51:45,108"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:51:46,049"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:46,372"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:46,512"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:46,852"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:51:46,958"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:47,393"}
+{"level": "INFO", "message": "Processing after 1.0131900310516357s silence:    four years are relevant to this role", "time": "2025-03-27 01:51:47,972"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743020507.972662", "time": "2025-03-27 01:51:47,972"}
+{"level": "INFO", "message": "Sending user response to conversation manager for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:47,972"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743020507.972781", "time": "2025-03-27 01:51:47,972"}
+{"level": "INFO", "message": "Buffered response for call CA52a0a9c3a7aa95a85c7232591336cc70: four years are relevant to thi...", "time": "2025-03-27 01:51:47,972"}
+{"level": "INFO", "message": "Set response type for call_sid: CA52a0a9c3a7aa95a85c7232591336cc70, type: years", "time": "2025-03-27 01:51:48,549"}
+{"level": "INFO", "message": "Set extracted value for call_sid: CA52a0a9c3a7aa95a85c7232591336cc70, key: extracted_value, value: 4", "time": "2025-03-27 01:51:48,549"}
+{"level": "INFO", "message": "No follow-up needed or max attempts reached for call_sid: CA52a0a9c3a7aa95a85c7232591336cc70. Advancing state.", "time": "2025-03-27 01:51:48,549"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743020508.549984, duration: 0.58s", "time": "2025-03-27 01:51:48,550"}
+{"level": "INFO", "message": "State change detected for b3da9de9-01f1-4154-8bde-3ee91cd0ab12, advancing state", "time": "2025-03-27 01:51:48,550"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing started at 1743020508.550076", "time": "2025-03-27 01:51:48,550"}
+{"level": "INFO", "message": "Set question data for call_sid: CA52a0a9c3a7aa95a85c7232591336cc70", "time": "2025-03-27 01:51:48,550"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing completed at 1743020508.5502038, duration: 0.00s", "time": "2025-03-27 01:51:48,550"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing started at 1743020508.550242", "time": "2025-03-27 01:51:48,550"}
+{"level": "INFO", "message": "Playing pre-generated audio for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:48,550"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing completed at 1743020508.55082, duration: 0.00s", "time": "2025-03-27 01:51:48,550"}
+{"level": "INFO", "message": "LATENCY_TOTAL_STATE: From user silence to AI speaking next question: 0.58s", "time": "2025-03-27 01:51:48,550"}
+{"level": "INFO", "message": "Heartbeat for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:48,553"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:51:48,553"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:48,654"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:49,632"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:  ", "time": "2025-03-27 01:51:50,010"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:50,617"}
+{"level": "INFO", "message": "Received message: mark for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:51,017"}
+{"level": "INFO", "message": "Mark received: c682630c-9a97-480e-b1db-4ce1b1748da0 for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:51,017"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:   ", "time": "2025-03-27 01:51:52,236"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:52,512"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:52,952"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:    it is thirty l b a", "time": "2025-03-27 01:51:53,809"}
+{"level": "INFO", "message": "Processing after 1.0091187953948975s silence:    it is thirty l b a", "time": "2025-03-27 01:51:54,818"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743020514.818593", "time": "2025-03-27 01:51:54,818"}
+{"level": "INFO", "message": "Sending user response to conversation manager for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:54,818"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743020514.818624", "time": "2025-03-27 01:51:54,818"}
+{"level": "INFO", "message": "Buffered response for call CA52a0a9c3a7aa95a85c7232591336cc70: it is thirty l b a...", "time": "2025-03-27 01:51:54,818"}
+{"level": "INFO", "message": "Set response type for call_sid: CA52a0a9c3a7aa95a85c7232591336cc70, type: amount", "time": "2025-03-27 01:51:55,367"}
+{"level": "INFO", "message": "Set extracted value for call_sid: CA52a0a9c3a7aa95a85c7232591336cc70, key: extracted_value, value: 30", "time": "2025-03-27 01:51:55,367"}
+{"level": "INFO", "message": "Added followup Q&A for call_sid: CA52a0a9c3a7aa95a85c7232591336cc70, attempt: 2", "time": "2025-03-27 01:51:55,367"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743020515.3678389, duration: 0.55s", "time": "2025-03-27 01:51:55,367"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS: Processing started at 1743020515.367897", "time": "2025-03-27 01:51:55,367"}
+{"level": "INFO", "message": "Playing follow-up: Out of 30, how much is fixed and how much is varia... for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:55,367"}
+{"level": "INFO", "message": "Stream SID for b3da9de9-01f1-4154-8bde-3ee91cd0ab12 is MZ4539e39e9c53e4c816ae5f41b0ce70f3", "time": "2025-03-27 01:51:55,367"}
+{"level": "INFO", "message": "Streaming audio for text: Out of 30, how much is fixed a...", "time": "2025-03-27 01:51:55,368"}
+{"level": "INFO", "message": "Starting to stream audio chunks for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:55,368"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT/stream?optimize_streaming_latency=4&output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 01:51:55,992"}
+{"level": "INFO", "message": "Streamed 10 chunks (13912 bytes) for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:56,078"}
+{"level": "INFO", "message": "Streamed 20 chunks (26676 bytes) for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:56,089"}
+{"level": "INFO", "message": "Finished streaming audio: 23 chunks, 30232 bytes for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:56,094"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS: Processing completed at 1743020516.095047, duration: 0.73s", "time": "2025-03-27 01:51:56,095"}
+{"level": "INFO", "message": "LATENCY_TOTAL: From user silence to AI speaking: 1.28s", "time": "2025-03-27 01:51:56,095"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:51:56,096"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:56,100"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:51:56,443"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:51:56,854"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:51:57,854"}
+{"level": "INFO", "message": "Heartbeat for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:58,554"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:58,661"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:58,787"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:  ", "time": "2025-03-27 01:51:58,944"}
+{"level": "INFO", "message": "Received message: mark for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:59,128"}
+{"level": "INFO", "message": "Mark received: 0228ac8b-1ec6-467d-a842-50d7860abfaa for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:51:59,128"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:00,117"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:   ", "time": "2025-03-27 01:52:00,489"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:02,452"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:    out of thirty twenty is fixed and ten is variable", "time": "2025-03-27 01:52:03,606"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:03,692"}
+{"level": "INFO", "message": "Processing after 1.0103480815887451s silence:    out of thirty twenty is fixed and ten is variable", "time": "2025-03-27 01:52:04,617"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743020524.6178079", "time": "2025-03-27 01:52:04,617"}
+{"level": "INFO", "message": "Sending user response to conversation manager for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:04,617"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743020524.617996", "time": "2025-03-27 01:52:04,618"}
+{"level": "INFO", "message": "Buffered response for call CA52a0a9c3a7aa95a85c7232591336cc70: out of thirty twenty is fixed ...", "time": "2025-03-27 01:52:04,618"}
+{"level": "INFO", "message": "Received response to follow-up question for CA52a0a9c3a7aa95a85c7232591336cc70. Advancing state.", "time": "2025-03-27 01:52:04,618"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743020524.618289, duration: 0.00s", "time": "2025-03-27 01:52:04,618"}
+{"level": "INFO", "message": "State change detected for b3da9de9-01f1-4154-8bde-3ee91cd0ab12, advancing state", "time": "2025-03-27 01:52:04,618"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing started at 1743020524.618436", "time": "2025-03-27 01:52:04,618"}
+{"level": "INFO", "message": "Set question data for call_sid: CA52a0a9c3a7aa95a85c7232591336cc70", "time": "2025-03-27 01:52:04,618"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing completed at 1743020524.618659, duration: 0.00s", "time": "2025-03-27 01:52:04,618"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing started at 1743020524.618738", "time": "2025-03-27 01:52:04,618"}
+{"level": "INFO", "message": "Playing pre-generated audio for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:04,618"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing completed at 1743020524.619574, duration: 0.00s", "time": "2025-03-27 01:52:04,619"}
+{"level": "INFO", "message": "LATENCY_TOTAL_STATE: From user silence to AI speaking next question: 0.00s", "time": "2025-03-27 01:52:04,619"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:52:04,669"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:05,363"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:52:05,651"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:05,697"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:05,996"}
+{"level": "INFO", "message": "Received message: mark for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:06,647"}
+{"level": "INFO", "message": "Mark received: f7872e7b-7764-4d38-8783-0c02f44606f7 for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:06,647"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:  ", "time": "2025-03-27 01:52:06,659"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:07,347"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:52:07,673"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:   ", "time": "2025-03-27 01:52:08,161"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:08,312"}
+{"level": "INFO", "message": "Heartbeat for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:08,555"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:08,666"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:09,617"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:09,637"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:    forty l p a", "time": "2025-03-27 01:52:09,724"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:09,976"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:10,257"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:10,692"}
+{"level": "INFO", "message": "Processing after 1.0095858573913574s silence:    forty l p a", "time": "2025-03-27 01:52:11,655"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743020531.656134", "time": "2025-03-27 01:52:11,656"}
+{"level": "INFO", "message": "Sending user response to conversation manager for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:11,656"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743020531.65631", "time": "2025-03-27 01:52:11,656"}
+{"level": "INFO", "message": "Buffered response for call CA52a0a9c3a7aa95a85c7232591336cc70: forty l p a...", "time": "2025-03-27 01:52:11,656"}
+{"level": "INFO", "message": "Received response to follow-up question for CA52a0a9c3a7aa95a85c7232591336cc70. Advancing state.", "time": "2025-03-27 01:52:11,656"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743020531.656566, duration: 0.00s", "time": "2025-03-27 01:52:11,656"}
+{"level": "INFO", "message": "State change detected for b3da9de9-01f1-4154-8bde-3ee91cd0ab12, advancing state", "time": "2025-03-27 01:52:11,656"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing started at 1743020531.656712", "time": "2025-03-27 01:52:11,656"}
+{"level": "INFO", "message": "Set question data for call_sid: CA52a0a9c3a7aa95a85c7232591336cc70", "time": "2025-03-27 01:52:11,656"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing completed at 1743020531.65694, duration: 0.00s", "time": "2025-03-27 01:52:11,656"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing started at 1743020531.657015", "time": "2025-03-27 01:52:11,657"}
+{"level": "INFO", "message": "Playing pre-generated audio for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:11,657"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing completed at 1743020531.658091, duration: 0.00s", "time": "2025-03-27 01:52:11,658"}
+{"level": "INFO", "message": "LATENCY_TOTAL_STATE: From user silence to AI speaking next question: 0.00s", "time": "2025-03-27 01:52:11,658"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:12,597"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:  ", "time": "2025-03-27 01:52:13,898"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:52:14,824"}
+{"level": "INFO", "message": "Received message: mark for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:14,845"}
+{"level": "INFO", "message": "Mark received: 03da1088-7645-466c-8d29-ee233ef660dc for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:14,845"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:14,992"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:15,412"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: this", "time": "2025-03-27 01:52:15,850"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:   yes", "time": "2025-03-27 01:52:16,644"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:17,465"}
+{"level": "INFO", "message": "Processing after 1.0093481540679932s silence:   yes", "time": "2025-03-27 01:52:17,654"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743020537.654749", "time": "2025-03-27 01:52:17,654"}
+{"level": "INFO", "message": "Sending user response to conversation manager for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:17,654"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743020537.654936", "time": "2025-03-27 01:52:17,654"}
+{"level": "INFO", "message": "Buffered response for call CA52a0a9c3a7aa95a85c7232591336cc70: yes...", "time": "2025-03-27 01:52:17,655"}
+{"level": "INFO", "message": "Received response to follow-up question for CA52a0a9c3a7aa95a85c7232591336cc70. Advancing state.", "time": "2025-03-27 01:52:17,655"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743020537.655218, duration: 0.00s", "time": "2025-03-27 01:52:17,655"}
+{"level": "INFO", "message": "State change detected for b3da9de9-01f1-4154-8bde-3ee91cd0ab12, advancing state", "time": "2025-03-27 01:52:17,655"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing started at 1743020537.6553679", "time": "2025-03-27 01:52:17,655"}
+{"level": "INFO", "message": "Set question data for call_sid: CA52a0a9c3a7aa95a85c7232591336cc70", "time": "2025-03-27 01:52:17,655"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing completed at 1743020537.655606, duration: 0.00s", "time": "2025-03-27 01:52:17,655"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing started at 1743020537.655682", "time": "2025-03-27 01:52:17,655"}
+{"level": "INFO", "message": "Playing pre-generated audio for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:17,655"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing completed at 1743020537.656523, duration: 0.00s", "time": "2025-03-27 01:52:17,656"}
+{"level": "INFO", "message": "LATENCY_TOTAL_STATE: From user silence to AI speaking next question: 0.00s", "time": "2025-03-27 01:52:17,656"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:52:17,732"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:17,937"}
+{"level": "INFO", "message": "Heartbeat for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:18,556"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:18,736"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:18,742"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:19,462"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:19,982"}
+{"level": "INFO", "message": "Received message: mark for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:20,165"}
+{"level": "INFO", "message": "Mark received: 2cf0dc72-29e3-413a-b043-a4c036d46fbc for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:20,165"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:  ", "time": "2025-03-27 01:52:21,539"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:22,732"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:   ninety days", "time": "2025-03-27 01:52:22,895"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:52:23,898"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:24,608"}
+{"level": "INFO", "message": "Processing after 1.0092267990112305s silence:   ninety days", "time": "2025-03-27 01:52:24,908"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743020544.908412", "time": "2025-03-27 01:52:24,908"}
+{"level": "INFO", "message": "Sending user response to conversation manager for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:24,908"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743020544.9084558", "time": "2025-03-27 01:52:24,908"}
+{"level": "INFO", "message": "Buffered response for call CA52a0a9c3a7aa95a85c7232591336cc70: ninety days...", "time": "2025-03-27 01:52:24,908"}
+{"level": "INFO", "message": "Received response to follow-up question for CA52a0a9c3a7aa95a85c7232591336cc70. Advancing state.", "time": "2025-03-27 01:52:24,908"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743020544.908523, duration: 0.00s", "time": "2025-03-27 01:52:24,908"}
+{"level": "INFO", "message": "State change detected for b3da9de9-01f1-4154-8bde-3ee91cd0ab12, advancing state", "time": "2025-03-27 01:52:24,908"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing started at 1743020544.908557", "time": "2025-03-27 01:52:24,908"}
+{"level": "INFO", "message": "Cleared conversation data for call CA52a0a9c3a7aa95a85c7232591336cc70", "time": "2025-03-27 01:52:24,908"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing completed at 1743020544.908597, duration: 0.00s", "time": "2025-03-27 01:52:24,908"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing started at 1743020544.908614", "time": "2025-03-27 01:52:24,908"}
+{"level": "INFO", "message": "Playing generated audio for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: Thank you for your time. The interview is now comp...", "time": "2025-03-27 01:52:24,908"}
+{"level": "INFO", "message": "Stream SID for b3da9de9-01f1-4154-8bde-3ee91cd0ab12 is MZ4539e39e9c53e4c816ae5f41b0ce70f3", "time": "2025-03-27 01:52:24,908"}
+{"level": "INFO", "message": "Streaming audio for text: Thank you for your time. The i...", "time": "2025-03-27 01:52:24,908"}
+{"level": "INFO", "message": "Starting to stream audio chunks for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:24,908"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT/stream?optimize_streaming_latency=4&output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 01:52:25,558"}
+{"level": "INFO", "message": "Streamed 10 chunks (13912 bytes) for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:25,647"}
+{"level": "INFO", "message": "Streamed 20 chunks (25356 bytes) for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:25,674"}
+{"level": "INFO", "message": "Finished streaming audio: 29 chunks, 33708 bytes for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:25,685"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing completed at 1743020545.685297, duration: 0.78s", "time": "2025-03-27 01:52:25,685"}
+{"level": "INFO", "message": "LATENCY_TOTAL_STATE: From user silence to AI speaking next question: 0.78s", "time": "2025-03-27 01:52:25,685"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:52:25,689"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:25,744"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:25,976"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:52:26,158"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:26,592"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:26,732"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:52:27,170"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:27,572"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:  ", "time": "2025-03-27 01:52:27,799"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:28,127"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:28,160"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:52:28,295"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:28,306"}
+{"level": "INFO", "message": "Heartbeat for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:28,557"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:28,800"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:28,918"}
+{"level": "INFO", "message": "Received message: mark for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:29,050"}
+{"level": "INFO", "message": "Mark received: 02dd4887-7496-462f-ac51-7d3ad33d2a89 for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:29,050"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:29,417"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:29,639"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:   ", "time": "2025-03-27 01:52:29,732"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:30,334"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:    ", "time": "2025-03-27 01:52:30,862"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:30,927"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:31,838"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:32,132"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:52:33,945"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:34,852"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:52:34,944"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:35,118"}
+{"level": "INFO", "message": "Received message: media for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:35,201"}
+{"level": "INFO", "message": "Final transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12:     ", "time": "2025-03-27 01:52:35,605"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:52:35,645"}
+{"level": "INFO", "message": "Interim transcript for b3da9de9-01f1-4154-8bde-3ee91cd0ab12: ", "time": "2025-03-27 01:52:36,735"}
+{"level": "INFO", "message": "Received message: stop for b3da9de9-01f1-4154-8bde-3ee91cd0ab12", "time": "2025-03-27 01:52:36,784"}
+{"level": "INFO", "message": "Initializing Demo AI Call Server", "time": "2025-03-27 02:03:41,654"}
+{"level": "INFO", "message": "ConversationManager initialized", "time": "2025-03-27 02:03:41,714"}
+{"level": "INFO", "message": "WebSocketManager initialized", "time": "2025-03-27 02:03:41,714"}
+{"level": "INFO", "message": "Demo AI Call Server initialized", "time": "2025-03-27 02:03:41,715"}
+{"level": "INFO", "message": "Loaded 5 questions into Memory A", "time": "2025-03-27 02:03:41,715"}
+{"level": "INFO", "message": "Pre-warming LLM to reduce cold start latency", "time": "2025-03-27 02:03:41,715"}
+{"level": "INFO", "message": "LLM pre-warmed successfully", "time": "2025-03-27 02:03:44,116"}
+{"level": "INFO", "message": "Generating full audio for text: How many years of professional...", "time": "2025-03-27 02:03:44,116"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 02:03:46,302"}
+{"level": "INFO", "message": "Generated 23016 bytes of audio", "time": "2025-03-27 02:03:46,382"}
+{"level": "INFO", "message": "Pre-generated audio for state 1", "time": "2025-03-27 02:03:46,382"}
+{"level": "INFO", "message": "Generating full audio for text: What is your current or last C...", "time": "2025-03-27 02:03:46,382"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 02:03:47,019"}
+{"level": "INFO", "message": "Generated 16329 bytes of audio", "time": "2025-03-27 02:03:47,022"}
+{"level": "INFO", "message": "Pre-generated audio for state 2", "time": "2025-03-27 02:03:47,022"}
+{"level": "INFO", "message": "Generating full audio for text: What is your expected CTC?...", "time": "2025-03-27 02:03:47,022"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 02:03:47,530"}
+{"level": "INFO", "message": "Generated 13728 bytes of audio", "time": "2025-03-27 02:03:47,536"}
+{"level": "INFO", "message": "Pre-generated audio for state 3", "time": "2025-03-27 02:03:47,536"}
+{"level": "INFO", "message": "Generating full audio for text: Do you currently have any othe...", "time": "2025-03-27 02:03:47,537"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 02:03:48,215"}
+{"level": "INFO", "message": "Generated 22645 bytes of audio", "time": "2025-03-27 02:03:48,267"}
+{"level": "INFO", "message": "Pre-generated audio for state 4", "time": "2025-03-27 02:03:48,267"}
+{"level": "INFO", "message": "Generating full audio for text: What is the duration of your n...", "time": "2025-03-27 02:03:48,267"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT?output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 02:03:48,859"}
+{"level": "INFO", "message": "Generated 17072 bytes of audio", "time": "2025-03-27 02:03:48,884"}
+{"level": "INFO", "message": "Pre-generated audio for state 5", "time": "2025-03-27 02:03:48,884"}
+{"level": "INFO", "message": "Web server started on port 8000", "time": "2025-03-27 02:03:48,886"}
+{"level": "INFO", "message": "server listening on 0.0.0.0:8001", "time": "2025-03-27 02:03:48,889"}
+{"level": "INFO", "message": "WebSocket server started on port 8001", "time": "2025-03-27 02:03:48,889"}
+{"level": "INFO", "message": "127.0.0.1 [27/Mar/2025:02:04:01 +0530] "GET /health HTTP/1.1" 200 153 "-" "python-requests/2.31.0"", "time": "2025-03-27 02:04:01,965"}
+{"level": "INFO", "message": "connection open", "time": "2025-03-27 02:04:13,772"}
+{"level": "INFO", "message": "Starting WebSocket handler for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:13,772"}
+{"level": "INFO", "message": "Connecting to Deepgram for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:13,772"}
+{"level": "INFO", "message": "Connected to Deepgram for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:15,700"}
+{"level": "INFO", "message": "Received message: connected for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:15,701"}
+{"level": "INFO", "message": "Connected event data: {'event': 'connected', 'protocol': 'Call', 'version': '1.0.0'}", "time": "2025-03-27 02:04:15,701"}
+{"level": "INFO", "message": "Connected to stream None for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:15,701"}
+{"level": "INFO", "message": "Received message: start for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:15,701"}
+{"level": "INFO", "message": "Call SID from start event: CA1998b2d9efcb7bb98af9e38e745022a7 for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:15,701"}
+{"level": "INFO", "message": "Initialized conversation state for call CA1998b2d9efcb7bb98af9e38e745022a7", "time": "2025-03-27 02:04:15,701"}
+{"level": "INFO", "message": "Stream SID from start event: MZd2081b6ded13170e76000a3b7153a9d7 for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:15,701"}
+{"level": "INFO", "message": "Start event data: {'event': 'start', 'sequenceNumber': '1', 'start': {'accountSid': 'ACe190ece5f3c3191c28a7e6ba1776c473', 'streamSid': 'MZd2081b6ded13170e76000a3b7153a9d7', 'callSid': 'CA1998b2d9efcb7bb98af9e38e745022a7', 'tracks': ['inbound'], 'mediaFormat': {'encoding': 'audio/x-mulaw', 'sampleRate': 8000, 'channels': 1}, 'customParameters': {'greeting': 'Hello, this is an AI screening call. Please say something to start the call.'}}, 'streamSid': 'MZd2081b6ded13170e76000a3b7153a9d7'}", "time": "2025-03-27 02:04:15,701"}
+{"level": "INFO", "message": "Playing immediate greeting: Hello, this is an AI screening call. Please say something to start the call. for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:15,701"}
+{"level": "INFO", "message": "Set speaking flag for immediate greeting playback: e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:15,701"}
+{"level": "INFO", "message": "Stream SID for e72bb809-05ee-404e-b0cc-5f820e4a81df is MZd2081b6ded13170e76000a3b7153a9d7", "time": "2025-03-27 02:04:15,701"}
+{"level": "INFO", "message": "Streaming audio for text: Hello, this is an AI screening...", "time": "2025-03-27 02:04:15,701"}
+{"level": "INFO", "message": "Starting to stream audio chunks for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:15,702"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT/stream?optimize_streaming_latency=4&output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 02:04:16,327"}
+{"level": "INFO", "message": "Streamed 10 chunks (13912 bytes) for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:16,446"}
+{"level": "INFO", "message": "Streamed 20 chunks (26676 bytes) for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:16,460"}
+{"level": "INFO", "message": "Streamed 30 chunks (40608 bytes) for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:16,508"}
+{"level": "INFO", "message": "Finished streaming audio: 34 chunks, 45112 bytes for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:16,514"}
+{"level": "INFO", "message": "Completed streaming immediate greeting audio for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:16,514"}
+{"level": "INFO", "message": "Sent mark after immediate greeting for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:16,514"}
+{"level": "INFO", "message": "Cleared speaking flag after immediate greeting for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:16,515"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:16,515"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:16,515"}
+{"level": "INFO", "message": "Deepgram receiver started for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:16,516"}
+{"level": "INFO", "message": "Heartbeat for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:16,516"}
+{"level": "INFO", "message": "Pre-warming LLM to reduce cold start latency", "time": "2025-03-27 02:04:16,516"}
+{"level": "INFO", "message": "LLM pre-warmed successfully", "time": "2025-03-27 02:04:17,078"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:17,082"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:17,087"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:17,088"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:17,745"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:18,467"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:  ", "time": "2025-03-27 02:04:19,814"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:20,247"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:20,404"}
+{"level": "INFO", "message": "Received message: mark for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:20,874"}
+{"level": "INFO", "message": "Mark received: f12747a0-ff5a-42cd-b3e5-45a861e23000 for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:20,874"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:21,350"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:   ", "time": "2025-03-27 02:04:21,493"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:04:22,193"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:22,504"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: start the call", "time": "2025-03-27 02:04:23,117"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:    start the call", "time": "2025-03-27 02:04:23,351"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:04:24,307"}
+{"level": "INFO", "message": "Processing after 1.0067040920257568s silence:    start the call", "time": "2025-03-27 02:04:25,314"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743021265.314464", "time": "2025-03-27 02:04:25,314"}
+{"level": "INFO", "message": "Sending user response to conversation manager for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:25,314"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743021265.3146439", "time": "2025-03-27 02:04:25,314"}
+{"level": "INFO", "message": "Buffered response for call CA1998b2d9efcb7bb98af9e38e745022a7: start the call...", "time": "2025-03-27 02:04:25,314"}
+{"level": "INFO", "message": "State 0 detected for CA1998b2d9efcb7bb98af9e38e745022a7, processing initial response: start the call", "time": "2025-03-27 02:04:25,314"}
+{"level": "INFO", "message": "LLM warmed up with initial response for CA1998b2d9efcb7bb98af9e38e745022a7", "time": "2025-03-27 02:04:26,140"}
+{"level": "INFO", "message": "Automatically advancing from state 0 to state 1 for CA1998b2d9efcb7bb98af9e38e745022a7", "time": "2025-03-27 02:04:26,140"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743021266.140791, duration: 0.83s", "time": "2025-03-27 02:04:26,140"}
+{"level": "INFO", "message": "State change detected for e72bb809-05ee-404e-b0cc-5f820e4a81df, advancing state", "time": "2025-03-27 02:04:26,140"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing started at 1743021266.1408849", "time": "2025-03-27 02:04:26,140"}
+{"level": "INFO", "message": "Set question data for call_sid: CA1998b2d9efcb7bb98af9e38e745022a7", "time": "2025-03-27 02:04:26,140"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing completed at 1743021266.141026, duration: 0.00s", "time": "2025-03-27 02:04:26,141"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing started at 1743021266.141068", "time": "2025-03-27 02:04:26,141"}
+{"level": "INFO", "message": "Playing pre-generated audio for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:26,141"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing completed at 1743021266.141792, duration: 0.00s", "time": "2025-03-27 02:04:26,141"}
+{"level": "INFO", "message": "LATENCY_TOTAL_STATE: From user silence to AI speaking next question: 0.83s", "time": "2025-03-27 02:04:26,141"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:26,144"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:04:26,145"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:26,227"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:26,411"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:04:26,481"}
+{"level": "INFO", "message": "Heartbeat for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:26,518"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:26,582"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:26,866"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:27,140"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:27,610"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:  ", "time": "2025-03-27 02:04:28,313"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:28,844"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:28,944"}
+{"level": "INFO", "message": "Received message: mark for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:29,326"}
+{"level": "INFO", "message": "Mark received: 82f469a8-e3f0-48fd-8026-a05913a95519 for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:29,327"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:   ", "time": "2025-03-27 02:04:30,523"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:30,880"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:31,288"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:    i have seven years of", "time": "2025-03-27 02:04:32,081"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:32,426"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: professional experience", "time": "2025-03-27 02:04:32,920"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:    i have seven years of professional experience in total", "time": "2025-03-27 02:04:33,687"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:    i have seven years of professional experience in total ", "time": "2025-03-27 02:04:33,688"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:04:34,695"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:35,204"}
+{"level": "INFO", "message": "Processing after 1.009584903717041s silence:    i have seven years of professional experience in total ", "time": "2025-03-27 02:04:35,705"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743021275.705481", "time": "2025-03-27 02:04:35,705"}
+{"level": "INFO", "message": "Sending user response to conversation manager for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:35,705"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743021275.705656", "time": "2025-03-27 02:04:35,705"}
+{"level": "INFO", "message": "Buffered response for call CA1998b2d9efcb7bb98af9e38e745022a7: i have seven years of professi...", "time": "2025-03-27 02:04:35,705"}
+{"level": "INFO", "message": "Set response type for call_sid: CA1998b2d9efcb7bb98af9e38e745022a7, type: years", "time": "2025-03-27 02:04:36,296"}
+{"level": "INFO", "message": "Set extracted value for call_sid: CA1998b2d9efcb7bb98af9e38e745022a7, key: extracted_value, value: 7", "time": "2025-03-27 02:04:36,296"}
+{"level": "INFO", "message": "Generated follow-up question for CA1998b2d9efcb7bb98af9e38e745022a7: Out of 7 years, how many years are relevant to this role?", "time": "2025-03-27 02:04:36,296"}
+{"level": "INFO", "message": "Added followup Q&A for call_sid: CA1998b2d9efcb7bb98af9e38e745022a7, attempt: 1", "time": "2025-03-27 02:04:36,297"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743021276.297055, duration: 0.59s", "time": "2025-03-27 02:04:36,297"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS: Processing started at 1743021276.29711", "time": "2025-03-27 02:04:36,297"}
+{"level": "INFO", "message": "Playing follow-up: Out of 7 years, how many years are relevant to thi... for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:36,297"}
+{"level": "INFO", "message": "Stream SID for e72bb809-05ee-404e-b0cc-5f820e4a81df is MZd2081b6ded13170e76000a3b7153a9d7", "time": "2025-03-27 02:04:36,297"}
+{"level": "INFO", "message": "Streaming audio for text: Out of 7 years, how many years...", "time": "2025-03-27 02:04:36,297"}
+{"level": "INFO", "message": "Starting to stream audio chunks for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:36,297"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT/stream?optimize_streaming_latency=4&output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 02:04:36,948"}
+{"level": "INFO", "message": "Streamed 10 chunks (13916 bytes) for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:37,036"}
+{"level": "INFO", "message": "Streamed 20 chunks (26216 bytes) for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:37,055"}
+{"level": "INFO", "message": "Finished streaming audio: 28 chunks, 34696 bytes for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:37,066"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS: Processing completed at 1743021277.066967, duration: 0.77s", "time": "2025-03-27 02:04:37,066"}
+{"level": "INFO", "message": "LATENCY_TOTAL: From user silence to AI speaking: 1.36s", "time": "2025-03-27 02:04:37,067"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:37,067"}
+{"level": "INFO", "message": "Heartbeat for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:37,069"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:37,104"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:  ", "time": "2025-03-27 02:04:38,839"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:38,947"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:39,879"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:   ", "time": "2025-03-27 02:04:40,137"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:40,260"}
+{"level": "INFO", "message": "Received message: mark for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:40,482"}
+{"level": "INFO", "message": "Mark received: 53c6d950-9a63-443e-8b6f-b296fc0d284b for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:40,482"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:40,540"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:    ", "time": "2025-03-27 02:04:41,280"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:41,599"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:     ", "time": "2025-03-27 02:04:41,719"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: out of", "time": "2025-03-27 02:04:42,472"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:42,584"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:42,744"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: out of seven years four", "time": "2025-03-27 02:04:43,498"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:43,524"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:43,899"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: out of seven years four years are relevant to this", "time": "2025-03-27 02:04:44,479"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:      out of seven years four years are relevant to this role", "time": "2025-03-27 02:04:45,085"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:45,487"}
+{"level": "INFO", "message": "Processing after 1.006737232208252s silence:      out of seven years four years are relevant to this role", "time": "2025-03-27 02:04:46,092"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743021286.093279", "time": "2025-03-27 02:04:46,093"}
+{"level": "INFO", "message": "Sending user response to conversation manager for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:46,093"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743021286.093461", "time": "2025-03-27 02:04:46,093"}
+{"level": "INFO", "message": "Buffered response for call CA1998b2d9efcb7bb98af9e38e745022a7: out of seven years four years ...", "time": "2025-03-27 02:04:46,093"}
+{"level": "INFO", "message": "Set response type for call_sid: CA1998b2d9efcb7bb98af9e38e745022a7, type: years", "time": "2025-03-27 02:04:46,730"}
+{"level": "INFO", "message": "Set extracted value for call_sid: CA1998b2d9efcb7bb98af9e38e745022a7, key: extracted_value, value: 4", "time": "2025-03-27 02:04:46,731"}
+{"level": "INFO", "message": "No follow-up needed or max attempts reached for call_sid: CA1998b2d9efcb7bb98af9e38e745022a7. Advancing state.", "time": "2025-03-27 02:04:46,731"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743021286.731377, duration: 0.64s", "time": "2025-03-27 02:04:46,731"}
+{"level": "INFO", "message": "State change detected for e72bb809-05ee-404e-b0cc-5f820e4a81df, advancing state", "time": "2025-03-27 02:04:46,731"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing started at 1743021286.731545", "time": "2025-03-27 02:04:46,731"}
+{"level": "INFO", "message": "Set question data for call_sid: CA1998b2d9efcb7bb98af9e38e745022a7", "time": "2025-03-27 02:04:46,731"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing completed at 1743021286.73176, duration: 0.00s", "time": "2025-03-27 02:04:46,731"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing started at 1743021286.7318358", "time": "2025-03-27 02:04:46,731"}
+{"level": "INFO", "message": "Playing pre-generated audio for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:46,731"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing completed at 1743021286.732801, duration: 0.00s", "time": "2025-03-27 02:04:46,732"}
+{"level": "INFO", "message": "LATENCY_TOTAL_STATE: From user silence to AI speaking next question: 0.64s", "time": "2025-03-27 02:04:46,732"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:04:46,736"}
+{"level": "INFO", "message": "Heartbeat for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:47,070"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:47,139"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:  ", "time": "2025-03-27 02:04:49,102"}
+{"level": "INFO", "message": "Received message: mark for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:49,124"}
+{"level": "INFO", "message": "Mark received: b20cfec9-67e9-45a1-92e6-724774269fc0 for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:49,124"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:49,479"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:   ", "time": "2025-03-27 02:04:50,067"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:51,367"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:    my current status is thirty l p a", "time": "2025-03-27 02:04:52,542"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:53,101"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:53,409"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:04:53,517"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:53,737"}
+{"level": "INFO", "message": "Processing after 1.010622262954712s silence:    my current status is thirty l p a", "time": "2025-03-27 02:04:54,528"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743021294.5285828", "time": "2025-03-27 02:04:54,528"}
+{"level": "INFO", "message": "Sending user response to conversation manager for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:54,528"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743021294.5287611", "time": "2025-03-27 02:04:54,528"}
+{"level": "INFO", "message": "Buffered response for call CA1998b2d9efcb7bb98af9e38e745022a7: my current status is thirty l ...", "time": "2025-03-27 02:04:54,528"}
+{"level": "INFO", "message": "Set response type for call_sid: CA1998b2d9efcb7bb98af9e38e745022a7, type: amount", "time": "2025-03-27 02:04:55,192"}
+{"level": "INFO", "message": "Set extracted value for call_sid: CA1998b2d9efcb7bb98af9e38e745022a7, key: extracted_value, value: 30", "time": "2025-03-27 02:04:55,192"}
+{"level": "INFO", "message": "Added followup Q&A for call_sid: CA1998b2d9efcb7bb98af9e38e745022a7, attempt: 2", "time": "2025-03-27 02:04:55,192"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743021295.192611, duration: 0.66s", "time": "2025-03-27 02:04:55,192"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS: Processing started at 1743021295.192706", "time": "2025-03-27 02:04:55,192"}
+{"level": "INFO", "message": "Playing follow-up: Out of 30, how much is fixed and how much is varia... for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:55,192"}
+{"level": "INFO", "message": "Stream SID for e72bb809-05ee-404e-b0cc-5f820e4a81df is MZd2081b6ded13170e76000a3b7153a9d7", "time": "2025-03-27 02:04:55,192"}
+{"level": "INFO", "message": "Streaming audio for text: Out of 30, how much is fixed a...", "time": "2025-03-27 02:04:55,192"}
+{"level": "INFO", "message": "Starting to stream audio chunks for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:55,193"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT/stream?optimize_streaming_latency=4&output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 02:04:56,000"}
+{"level": "INFO", "message": "Streamed 10 chunks (13928 bytes) for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:56,091"}
+{"level": "INFO", "message": "Streamed 20 chunks (26676 bytes) for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:56,108"}
+{"level": "INFO", "message": "Finished streaming audio: 23 chunks, 30728 bytes for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:56,114"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS: Processing completed at 1743021296.115092, duration: 0.92s", "time": "2025-03-27 02:04:56,115"}
+{"level": "INFO", "message": "LATENCY_TOTAL: From user silence to AI speaking: 1.59s", "time": "2025-03-27 02:04:56,115"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:04:56,117"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:56,118"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:56,118"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:04:56,411"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:56,540"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:04:56,691"}
+{"level": "INFO", "message": "Heartbeat for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:57,072"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:57,197"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:  ", "time": "2025-03-27 02:04:57,498"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:   ", "time": "2025-03-27 02:04:57,876"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:57,984"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:    ", "time": "2025-03-27 02:04:58,364"}
+{"level": "INFO", "message": "Received message: mark for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:59,262"}
+{"level": "INFO", "message": "Mark received: 014ffdb9-e198-4eca-ac60-ac6cb528eacb for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:04:59,262"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:     ", "time": "2025-03-27 02:04:59,358"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:      ", "time": "2025-03-27 02:04:59,775"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:00,870"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:01,317"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:01,544"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:01,732"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: out of thirty twenty is fixed and ten", "time": "2025-03-27 02:05:02,753"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:03,099"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:       out of thirty twenty is fixed and ten is variable", "time": "2025-03-27 02:05:03,513"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:03,828"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:05:04,511"}
+{"level": "INFO", "message": "Processing after 1.011444091796875s silence:       out of thirty twenty is fixed and ten is variable", "time": "2025-03-27 02:05:05,523"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743021305.523486", "time": "2025-03-27 02:05:05,523"}
+{"level": "INFO", "message": "Sending user response to conversation manager for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:05,523"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743021305.52367", "time": "2025-03-27 02:05:05,523"}
+{"level": "INFO", "message": "Buffered response for call CA1998b2d9efcb7bb98af9e38e745022a7: out of thirty twenty is fixed ...", "time": "2025-03-27 02:05:05,523"}
+{"level": "INFO", "message": "Received response to follow-up question for CA1998b2d9efcb7bb98af9e38e745022a7. Advancing state.", "time": "2025-03-27 02:05:05,523"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743021305.523946, duration: 0.00s", "time": "2025-03-27 02:05:05,523"}
+{"level": "INFO", "message": "State change detected for e72bb809-05ee-404e-b0cc-5f820e4a81df, advancing state", "time": "2025-03-27 02:05:05,524"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing started at 1743021305.524097", "time": "2025-03-27 02:05:05,524"}
+{"level": "INFO", "message": "Set question data for call_sid: CA1998b2d9efcb7bb98af9e38e745022a7", "time": "2025-03-27 02:05:05,524"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing completed at 1743021305.524321, duration: 0.00s", "time": "2025-03-27 02:05:05,524"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing started at 1743021305.5243971", "time": "2025-03-27 02:05:05,524"}
+{"level": "INFO", "message": "Playing pre-generated audio for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:05,524"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing completed at 1743021305.525202, duration: 0.00s", "time": "2025-03-27 02:05:05,525"}
+{"level": "INFO", "message": "LATENCY_TOTAL_STATE: From user silence to AI speaking next question: 0.00s", "time": "2025-03-27 02:05:05,525"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:05:05,529"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:06,452"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:05:06,495"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:06,504"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:06,708"}
+{"level": "INFO", "message": "Heartbeat for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:07,073"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:07,202"}
+{"level": "INFO", "message": "Received message: mark for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:07,550"}
+{"level": "INFO", "message": "Mark received: 5a5be9a6-a941-47aa-a04f-b6eb6d0845bf for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:07,550"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:  ", "time": "2025-03-27 02:05:07,891"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:08,635"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:   ", "time": "2025-03-27 02:05:08,823"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:08,848"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:10,399"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:    forty l p a", "time": "2025-03-27 02:05:10,412"}
+{"level": "INFO", "message": "Processing after 1.0098938941955566s silence:    forty l p a", "time": "2025-03-27 02:05:12,284"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743021312.284876", "time": "2025-03-27 02:05:12,284"}
+{"level": "INFO", "message": "Sending user response to conversation manager for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:12,284"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743021312.2850611", "time": "2025-03-27 02:05:12,285"}
+{"level": "INFO", "message": "Buffered response for call CA1998b2d9efcb7bb98af9e38e745022a7: forty l p a...", "time": "2025-03-27 02:05:12,285"}
+{"level": "INFO", "message": "Received response to follow-up question for CA1998b2d9efcb7bb98af9e38e745022a7. Advancing state.", "time": "2025-03-27 02:05:12,285"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743021312.285337, duration: 0.00s", "time": "2025-03-27 02:05:12,285"}
+{"level": "INFO", "message": "State change detected for e72bb809-05ee-404e-b0cc-5f820e4a81df, advancing state", "time": "2025-03-27 02:05:12,285"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing started at 1743021312.285496", "time": "2025-03-27 02:05:12,285"}
+{"level": "INFO", "message": "Set question data for call_sid: CA1998b2d9efcb7bb98af9e38e745022a7", "time": "2025-03-27 02:05:12,285"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing completed at 1743021312.285728, duration: 0.00s", "time": "2025-03-27 02:05:12,285"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing started at 1743021312.285811", "time": "2025-03-27 02:05:12,285"}
+{"level": "INFO", "message": "Playing pre-generated audio for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:12,285"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing completed at 1743021312.286939, duration: 0.00s", "time": "2025-03-27 02:05:12,286"}
+{"level": "INFO", "message": "LATENCY_TOTAL_STATE: From user silence to AI speaking next question: 0.00s", "time": "2025-03-27 02:05:12,287"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:05:12,595"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:13,088"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:05:13,589"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:13,688"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:14,207"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:05:14,569"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:  ", "time": "2025-03-27 02:05:14,780"}
+{"level": "INFO", "message": "Received message: mark for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:15,436"}
+{"level": "INFO", "message": "Mark received: a2e1390e-1006-4c57-9952-6692ff38a741 for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:15,436"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:   ", "time": "2025-03-27 02:05:15,743"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:16,167"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:05:16,716"}
+{"level": "INFO", "message": "Heartbeat for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:17,074"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:17,144"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:17,220"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:17,300"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:    no", "time": "2025-03-27 02:05:17,331"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:18,524"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:18,900"}
+{"level": "INFO", "message": "Processing after 1.0094618797302246s silence:    no", "time": "2025-03-27 02:05:19,300"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743021319.3008902", "time": "2025-03-27 02:05:19,300"}
+{"level": "INFO", "message": "Sending user response to conversation manager for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:19,301"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743021319.30108", "time": "2025-03-27 02:05:19,301"}
+{"level": "INFO", "message": "Buffered response for call CA1998b2d9efcb7bb98af9e38e745022a7: no...", "time": "2025-03-27 02:05:19,301"}
+{"level": "INFO", "message": "Received response to follow-up question for CA1998b2d9efcb7bb98af9e38e745022a7. Advancing state.", "time": "2025-03-27 02:05:19,301"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743021319.301345, duration: 0.00s", "time": "2025-03-27 02:05:19,301"}
+{"level": "INFO", "message": "State change detected for e72bb809-05ee-404e-b0cc-5f820e4a81df, advancing state", "time": "2025-03-27 02:05:19,301"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing started at 1743021319.3014421", "time": "2025-03-27 02:05:19,301"}
+{"level": "INFO", "message": "Set question data for call_sid: CA1998b2d9efcb7bb98af9e38e745022a7", "time": "2025-03-27 02:05:19,301"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing completed at 1743021319.301574, duration: 0.00s", "time": "2025-03-27 02:05:19,301"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing started at 1743021319.301614", "time": "2025-03-27 02:05:19,301"}
+{"level": "INFO", "message": "Playing pre-generated audio for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:19,301"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing completed at 1743021319.302148, duration: 0.00s", "time": "2025-03-27 02:05:19,302"}
+{"level": "INFO", "message": "LATENCY_TOTAL_STATE: From user silence to AI speaking next question: 0.00s", "time": "2025-03-27 02:05:19,302"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:19,824"}
+{"level": "INFO", "message": "Received message: mark for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:21,787"}
+{"level": "INFO", "message": "Mark received: bb33f7da-ec24-4ebc-be58-74f760148f75 for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:21,787"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:  ", "time": "2025-03-27 02:05:22,291"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:05:22,292"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:22,529"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:23,088"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:23,388"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:05:23,410"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: two months", "time": "2025-03-27 02:05:24,303"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:24,368"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:   two months", "time": "2025-03-27 02:05:24,551"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:24,708"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:25,147"}
+{"level": "INFO", "message": "Interim transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df: ", "time": "2025-03-27 02:05:25,478"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:26,399"}
+{"level": "INFO", "message": "Processing after 1.009382963180542s silence:   two months", "time": "2025-03-27 02:05:26,487"}
+{"level": "INFO", "message": "LATENCY_DEEPGRAM: Processing completed at 1743021326.488161", "time": "2025-03-27 02:05:26,488"}
+{"level": "INFO", "message": "Sending user response to conversation manager for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:26,488"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing started at 1743021326.4883368", "time": "2025-03-27 02:05:26,488"}
+{"level": "INFO", "message": "Buffered response for call CA1998b2d9efcb7bb98af9e38e745022a7: two months...", "time": "2025-03-27 02:05:26,488"}
+{"level": "INFO", "message": "Received response to follow-up question for CA1998b2d9efcb7bb98af9e38e745022a7. Advancing state.", "time": "2025-03-27 02:05:26,488"}
+{"level": "INFO", "message": "LATENCY_LLM: Processing completed at 1743021326.488592, duration: 0.00s", "time": "2025-03-27 02:05:26,488"}
+{"level": "INFO", "message": "State change detected for e72bb809-05ee-404e-b0cc-5f820e4a81df, advancing state", "time": "2025-03-27 02:05:26,488"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing started at 1743021326.4887412", "time": "2025-03-27 02:05:26,488"}
+{"level": "INFO", "message": "Cleared conversation data for call CA1998b2d9efcb7bb98af9e38e745022a7", "time": "2025-03-27 02:05:26,488"}
+{"level": "INFO", "message": "LATENCY_STATE_CHANGE: Processing completed at 1743021326.488915, duration: 0.00s", "time": "2025-03-27 02:05:26,488"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing started at 1743021326.488991", "time": "2025-03-27 02:05:26,489"}
+{"level": "INFO", "message": "Playing generated audio for e72bb809-05ee-404e-b0cc-5f820e4a81df: Thank you for your time. The interview is now comp...", "time": "2025-03-27 02:05:26,489"}
+{"level": "INFO", "message": "Stream SID for e72bb809-05ee-404e-b0cc-5f820e4a81df is MZd2081b6ded13170e76000a3b7153a9d7", "time": "2025-03-27 02:05:26,489"}
+{"level": "INFO", "message": "Streaming audio for text: Thank you for your time. The i...", "time": "2025-03-27 02:05:26,489"}
+{"level": "INFO", "message": "Starting to stream audio chunks for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:26,489"}
+{"level": "INFO", "message": "HTTP Request: POST https://api.elevenlabs.io/v1/text-to-speech/BlVn1o6Ez6Yr4lplj2dT/stream?optimize_streaming_latency=4&output_format=ulaw_8000 "HTTP/1.1 200 OK"", "time": "2025-03-27 02:05:27,133"}
+{"level": "INFO", "message": "Streamed 10 chunks (13908 bytes) for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:27,222"}
+{"level": "INFO", "message": "Streamed 20 chunks (23712 bytes) for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:27,236"}
+{"level": "INFO", "message": "Finished streaming audio: 28 chunks, 31224 bytes for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:27,250"}
+{"level": "INFO", "message": "LATENCY_ELEVENLABS_STATE: Processing completed at 1743021327.2503319, duration: 0.76s", "time": "2025-03-27 02:05:27,250"}
+{"level": "INFO", "message": "LATENCY_TOTAL_STATE: From user silence to AI speaking next question: 0.76s", "time": "2025-03-27 02:05:27,250"}
+{"level": "INFO", "message": "Deepgram receiver heartbeat for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:27,250"}
+{"level": "INFO", "message": "Heartbeat for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:27,252"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:28,060"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:  ", "time": "2025-03-27 02:05:29,470"}
+{"level": "INFO", "message": "Final transcript for e72bb809-05ee-404e-b0cc-5f820e4a81df:   ", "time": "2025-03-27 02:05:30,111"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:30,385"}
+{"level": "INFO", "message": "Received message: mark for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:30,385"}
+{"level": "INFO", "message": "Mark received: 4ef25756-6928-4641-92e4-34845a65db5a for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:30,385"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:30,579"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:31,299"}
+{"level": "INFO", "message": "Received message: media for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:31,804"}
+{"level": "INFO", "message": "Received message: stop for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:32,020"}
+{"level": "INFO", "message": "WebSocket connection closed for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:33,022"}
+{"level": "INFO", "message": "Cleaning up connection e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:33,023"}
+{"level": "INFO", "message": "Sent close stream to Deepgram for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:33,024"}
+{"level": "INFO", "message": "Ending conversation for call CA1998b2d9efcb7bb98af9e38e745022a7", "time": "2025-03-27 02:05:33,024"}
+{"level": "INFO", "message": "Connection cleanup completed for e72bb809-05ee-404e-b0cc-5f820e4a81df", "time": "2025-03-27 02:05:33,024"}
+{"level": "INFO", "message": "WebSocket handler for e72bb809-05ee-404e-b0cc-5f820e4a81df completed", "time": "2025-03-27 02:05:33,024"}
+{"level": "WARNING", "message": "Attempted to end non-existent conversation for call CA1998b2d9efcb7bb98af9e38e745022a7", "time": "2025-03-27 02:05:33,024"}
+{"level": "ERROR", "message": "Error in heartbeat for e72bb809-05ee-404e-b0cc-5f820e4a81df: 'e72bb809-05ee-404e-b0cc-5f820e4a81df'", "time": "2025-03-27 02:05:33,024"}
+{"level": "INFO", "message": "connection closed", "time": "2025-03-27 02:05:33,024"}
+{"level": "ERROR", "message": "Error in Deepgram receiver for e72bb809-05ee-404e-b0cc-5f820e4a81df: 'e72bb809-05ee-404e-b0cc-5f820e4a81df'", "time": "2025-03-27 02:05:33,103"}
+{"level": "ERROR", "message": "Traceback (most recent call last):
+  File "/Users/growlt285/Downloads/AI-Call/handlers/websocket_manager.py", line 415, in _handle_deepgram_receiving
+    if self.speaking_flags[ws_id].is_set():
+KeyError: 'e72bb809-05ee-404e-b0cc-5f820e4a81df'
+", "time": "2025-03-27 02:05:33,103"}
+{"level": "ERROR", "message": "Task exception was never retrieved
+future: <Task finished name='Task-17' coro=<WebSocketManager._handle_deepgram_receiving() done, defined at /Users/growlt285/Downloads/AI-Call/handlers/websocket_manager.py:373> exception=KeyError('e72bb809-05ee-404e-b0cc-5f820e4a81df')>
+Traceback (most recent call last):
+  File "/Users/growlt285/Downloads/AI-Call/handlers/websocket_manager.py", line 415, in _handle_deepgram_receiving
+    if self.speaking_flags[ws_id].is_set():
+KeyError: 'e72bb809-05ee-404e-b0cc-5f820e4a81df'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/growlt285/Downloads/AI-Call/handlers/websocket_manager.py", line 543, in _handle_deepgram_receiving
+    if self.exit_events[ws_id].is_set():
+KeyError: 'e72bb809-05ee-404e-b0cc-5f820e4a81df'", "time": "2025-03-27 02:05:33,103"}

@@ -160,17 +160,22 @@ class MemoryB:
             
         state = self.conversation_states[call_sid]
         
-        # If we have a valid response type that's not "irrelevant" or "default", advance state
-        if state.response_type and state.response_type not in ["irrelevant", "default"]:
-            return True
-            
-        # Check notice period threshold (if relevant)
+        # Special case for notice period
         if state.state_index == 5 and "notice_period_threshold" in state.extracted_values:
             if state.response_type == "immediate" or state.response_type == "short_notice":
                 return True
                 
         # Advance if max followup attempts reached
-        return state.followup_attempts >= state.max_followup_attempts
+        if state.followup_attempts >= state.max_followup_attempts:
+            return True
+            
+        # Only auto-advance for response types that don't need follow-ups
+        # For other response types, let the conversation manager handle follow-ups
+        if state.response_type in ["not_comfortable"]:
+            return True
+            
+        # Don't auto-advance for response types that might need follow-ups
+        return False
         
     async def clear_conversation(self, call_sid: str) -> None:
         """Clear all conversation data for a call"""

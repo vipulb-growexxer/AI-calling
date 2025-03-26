@@ -32,6 +32,44 @@ class ConversationManager:
         self.elevenlabs_service = elevenlabs_service
         self.logger = logging.getLogger(__name__)
         self.logger.info("ConversationManager initialized")
+        
+    async def warm_up_llm(self):
+        """
+        Pre-warm the LLM to reduce cold start latency.
+        This should be called during system initialization.
+        """
+        try:
+            self.logger.info("Pre-warming LLM to reduce cold start latency")
+            warm_up_prompt = """State: 0
+Question: How many years of professional experience do you have?
+User response: I have 5 years of experience.
+
+Analyze the user's response and determine which category it falls into. Categories:
+- years: Candidate has provided a specific number of years
+- irrelevant: Candidate has provided an answer that doesn't clearly indicate years
+
+Follow-up instructions for each response type:
+- years: How many years are relevant to this role?
+- irrelevant: I need to know your years of experience. Could you please provide a number?
+
+Provide your analysis in JSON format:
+{
+  "response_type": [one of: "years", "irrelevant", or "default"],
+  "extracted_value": [extracted value if applicable],
+  "needs_followup": [true/false]
+}
+
+IMPORTANT: 
+1. Set needs_followup=true if:
+   - The user's response requires a follow-up question based on the follow-up instructions
+   - The user hasn't already provided the information that would be asked in the follow-up
+2. Return ONLY valid JSON. Do not include any explanations, notes, or text outside the JSON structure."""
+            self.llm_service.process(warm_up_prompt)
+            self.logger.info("LLM pre-warmed successfully")
+            return True
+        except Exception as e:
+            self.logger.error(f"Error pre-warming LLM: {e}")
+            return False
     
     async def initialize_call(self, call_sid: str) -> Tuple[bool, Optional[str], Optional[str]]:
         """
@@ -139,6 +177,19 @@ class ConversationManager:
             if not conv_state:
                 return False, None, "No active conversation found"
             
+            # Special handling for state 0 (greeting state)
+            if conv_state.state_index == 0:
+                self.logger.info(f"State 0 detected for {call_sid}, processing initial response: {response_text}")
+                
+                # Make a simple LLM call to warm it up
+                warm_up_prompt = "Analyze this greeting response: " + response_text
+                self.llm_service.process(warm_up_prompt)
+                self.logger.info(f"LLM warmed up with initial response for {call_sid}")
+                
+                # Automatically advance to state 1
+                self.logger.info(f"Automatically advancing from state 0 to state 1 for {call_sid}")
+                return True, None, None
+            
             # If this is a response to a follow-up question, update the answer in the followup_qa_pairs
             if conv_state.followup_qa_pairs and len(conv_state.followup_qa_pairs) > 0:
                 # Get the most recent follow-up question
@@ -147,6 +198,13 @@ class ConversationManager:
                 
                 # Update the answer for this follow-up
                 conv_state.followup_qa_pairs[last_qa_idx] = (last_question, response_text)
+                
+                # After receiving a response to a follow-up, advance to the next state
+                # But only if we've already asked at least one follow-up for this question
+                # This prevents asking another follow-up on the same topic
+                if conv_state.followup_attempts > 1:
+                    self.logger.info(f"Received response to follow-up question for {call_sid}. Advancing state.")
+                    return True, None, None
             
             # Get question data
             question_data = self.memory_a.get_question_data(conv_state.state_index)
@@ -180,6 +238,14 @@ Analyze the user's response and determine which category it falls into. Categori
             for category, description in response_categories.items():
                 prompt += f"- {category}: {description}\n"
 
+            # Add follow-up instructions to the prompt
+            follow_up_instructions = question_data.get("follow_up_instructions", {})
+            if follow_up_instructions:
+                prompt += "\nFollow-up instructions for each response type:\n"
+                for response_type, instruction in follow_up_instructions.items():
+                    if instruction:  # Only include non-empty instructions
+                        prompt += f"- {response_type}: {instruction}\n"
+
             # Create category list as a string
             category_list = ', '.join([f'"{c}"' for c in response_categories.keys()])
             
@@ -190,7 +256,11 @@ Analyze the user's response and determine which category it falls into. Categori
   "needs_followup": [true/false]
 }}
 
-IMPORTANT: Return ONLY valid JSON. Do not include any explanations, notes, or text outside the JSON structure."""
+IMPORTANT: 
+1. Set needs_followup=true if:
+   - The user's response requires a follow-up question based on the follow-up instructions
+   - The user hasn't already provided the information that would be asked in the follow-up
+2. Return ONLY valid JSON. Do not include any explanations, notes, or text outside the JSON structure."""
             
             # Process with LLM
             llm_response = self.llm_service.process(prompt)
@@ -221,6 +291,27 @@ IMPORTANT: Return ONLY valid JSON. Do not include any explanations, notes, or te
             # Store extracted value if present
             if extracted_value is not None:
                 await self.memory_b.set_extracted_value(call_sid, "extracted_value", str(extracted_value))
+            
+            # Check if there's a follow-up instruction for this response type
+            follow_up_instructions = question_data.get("follow_up_instructions", {})
+            follow_up_text = follow_up_instructions.get(response_type, "")
+            
+            # If we have a follow-up question for this response type and no follow-up QA pairs exist yet
+            if follow_up_text and not conv_state.followup_qa_pairs:
+                # Format the follow-up question with extracted values
+                formatted_follow_up = follow_up_text
+                for key, value in conv_state.extracted_values.items():
+                    placeholder = "{" + key + "}"
+                    if placeholder in formatted_follow_up:
+                        formatted_follow_up = formatted_follow_up.replace(placeholder, str(value))
+                
+                self.logger.info(f"Generated follow-up question for {call_sid}: {formatted_follow_up}")
+                
+                # Add this follow-up to the conversation state
+                await self.memory_b.add_followup_qa(call_sid, formatted_follow_up, "")
+                
+                # Return the follow-up question to be asked
+                return False, formatted_follow_up, None
             
             # Check if we should advance to next state based on response type
             if await self.memory_b.should_advance_state(call_sid):

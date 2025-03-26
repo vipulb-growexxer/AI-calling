@@ -26,36 +26,22 @@ def make_demo_call(phone_number=None):
         phone_number (str): Phone number to call with country code (e.g., +1234567890)
     """
     # Load configuration
-    config_loader = ConfigLoader(config_file="config.ini")
+    config = ConfigLoader(config_file="config.ini")
+    account_sid = config.get('twilio', 'TWILIO_ACCOUNT_SID')
+    auth_token = config.get('twilio', 'TWILIO_TOKEN')
+    from_number = config.get('twilio', 'TWILIO_PHONE_NO')
     
-    # Get Twilio credentials
-    account_sid = config_loader.get("twilio", "TWILIO_ACCOUNT_SID")
-    auth_token = config_loader.get("twilio", "TWILIO_TOKEN")
-    from_number = config_loader.get("twilio", "TWILIO_PHONE_NO")
-    
-    # Get WebSocket URL - use local URL if we're running locally
-    # This helps ensure we connect to the correct port
-    try:
-        websocket_url = config_loader.get("twilio", "LOCAL_WEBSOCKET_URL")
-        logger.info(f"Using local WebSocket URL: {websocket_url}")
-        # Check if server is running on local port
-        response = requests.get("http://localhost:8000/health", timeout=2)
-        if response.status_code != 200:
-            # Fall back to regular WebSocket URL
-            websocket_url = config_loader.get("twilio", "WEBSOCKET_URL")
-            logger.info(f"Local server not responding, using remote WebSocket URL: {websocket_url}")
-    except Exception:
-        # If local URL fails or doesn't exist, use regular WebSocket URL
-        websocket_url = config_loader.get("twilio", "WEBSOCKET_URL")
-        logger.info(f"Using WebSocket URL: {websocket_url}")
+    # Use the ngrok URL from config for external calls
+    websocket_url = config.get('twilio', 'WEBSOCKET_URL')
     
     # Log configuration (without secrets)
     logger.info(f"Using Twilio phone: {from_number}")
     logger.info(f"Using WebSocket URL: {websocket_url}")
     
-    # Get phone number from command line if not provided
+    # Use hardcoded phone number if not provided
     if not phone_number:
-        phone_number = input("Enter phone number to call (with country code, e.g., +1234567890): ")
+        phone_number = "+917038589244"  # Hardcoded phone number
+        logger.info(f"Using hardcoded phone number: {phone_number}")
     
     # Initialize Twilio client
     logger.info(f"Initializing Twilio client with SID: {account_sid[:5]}...")
@@ -77,7 +63,9 @@ def make_demo_call(phone_number=None):
         twiml = f'''
         <Response>
             <Connect>
-                <Stream url="{websocket_url}"/>
+                <Stream url="{websocket_url}" track="inbound_track">
+                    <Parameter name="greeting" value="Hello, this is an AI screening call. Please say something to start the call." />
+                </Stream>
             </Connect>
         </Response>
         '''
@@ -130,8 +118,8 @@ def is_server_running():
 
 if __name__ == "__main__":
     # Parse command line arguments
-    parser = argparse.ArgumentParser(description="Make a demo call with the AI Call System")
-    parser.add_argument("--phone", help="Phone number to call (with country code, e.g., +1234567890)")
+    parser = argparse.ArgumentParser(description="Make a demo call using Twilio")
+    parser.add_argument("--phone", help="Phone number to call with country code (e.g., +1234567890)")
     args = parser.parse_args()
     
     # Check if server is running
