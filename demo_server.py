@@ -14,6 +14,7 @@ import websockets
 
 from memory.memory_a import MemoryA
 from memory.memory_b import MemoryB
+from memory.memory_c import MemoryC
 from handlers.websocket_manager import WebSocketManager
 from handlers.conversation_manager import ConversationManager
 from handlers.twilio_webhook import handle_twilio_webhook
@@ -56,6 +57,7 @@ class DemoServer:
         # Initialize memory
         self.memory_a = MemoryA()
         self.memory_b = MemoryB()
+        self.memory_c = MemoryC()
         
         # Initialize conversation manager
         self.conversation_manager = ConversationManager(
@@ -69,6 +71,7 @@ class DemoServer:
         self.websocket_manager = WebSocketManager(
             memory_a=self.memory_a,
             memory_b=self.memory_b,
+            memory_c=self.memory_c,
             conversation_manager=self.conversation_manager,
             deepgram_service=self.deepgram_service,
             config_loader=self.config_loader,
@@ -122,6 +125,12 @@ class DemoServer:
             
             # Pre-generate audio for all questions
             await self.memory_a.pre_generate_audio(self.elevenlabs_service)
+
+            # Initialize Memory C with default fillers
+            await self.memory_c.initialize_with_fillers()
+
+            # Pre-generate audio for all fillers
+            await self.memory_c.pre_generate_audio(self.elevenlabs_service)
             
             # Create application
             self.app = web.Application()

@@ -1,71 +1,71 @@
-# import asyncio
-# import websockets
-# from handlers.websocket_handler import websocket_handler
+import asyncio
+import websockets
+from handlers.websocket_handler import websocket_handler
 
-# from tasks.poll_queue import poll_queue
-# from tasks.check_status_second import call_status_check
-# from logger.logger_config import logger
-# from config.config_loader import ConfigLoader
-
-
-# import websockets
+from tasks.poll_queue import poll_queue
+from tasks.check_status_second import call_status_check
+from logger.logger_config import logger
+from config.config_loader import ConfigLoader
 
 
-# # shared_data and queue_message are storing AWS sqs incoming messages ,
-# # Sending Twilio rest api request for call does not mean that use has picked up call. This creates ambiguity regarding call status.
-# # as we can only check call status of call that are picked up. 
-# # To solve this we store call requests from SQS in shared_data and queue_messages. and make a task whose sole purpose is to check call status every few seconds. 
-# # we ignore call status 5,6,7 and 0-4 indicate that the call has been completed.
+import websockets
+
+
+# shared_data and queue_message are storing AWS sqs incoming messages ,
+# Sending Twilio rest api request for call does not mean that use has picked up call. This creates ambiguity regarding call status.
+# as we can only check call status of call that are picked up. 
+# To solve this we store call requests from SQS in shared_data and queue_messages. and make a task whose sole purpose is to check call status every few seconds. 
+# we ignore call status 5,6,7 and 0-4 indicate that the call has been completed.
 
 
 
 
-# shared_data = {
-#     "call_instance_list":[]
-# }
-# queue_messages = {
-#     "message_list":[]
-# }
-# call_status_mapping = {
+shared_data = {
+    "call_instance_list":[]
+}
+queue_messages = {
+    "message_list":[]
+}
+call_status_mapping = {
 
-#     "canceled": 0,
-#     "completed": 1,
-#     "busy": 2,
-#     "no-answer": 3,
-#     "failed": 4,
-#     "queued":5,
-#     "ringing":6,
-#     "in-progress":7
-# }
+    "canceled": 0,
+    "completed": 1,
+    "busy": 2,
+    "no-answer": 3,
+    "failed": 4,
+    "queued":5,
+    "ringing":6,
+    "in-progress":7
+}
 
-# # duplicate_message_set is a small fix up and advised to be removed . It is essentially checking for unique messages in sqs . We needed it as we could not control asyncrnous deleteion of message.
-# # It wont affect in small scale. But needs to be change for project,
-# duplicate_message_set = set()
+# duplicate_message_set is a small fix up and advised to be removed . It is essentially checking for unique messages in sqs . We needed it as we could not control asyncrnous deleteion of message.
+# It wont affect in small scale. But needs to be change for project,
+duplicate_message_set = set()
 
 
-# async def main():
-#     config_loader = ConfigLoader(config_file="config.ini")
-#     logger.info("Starting application...")
+async def main():
+    config_loader = ConfigLoader(config_file="config.ini")
+    logger.info("Starting application...")
 
-#     # Poll queue  will look in aws sqs for unique message for outbound call request and if it is not called ,it will make twilio request to make call and 
-#     # make connection to our websocket connection
-#     asyncio.create_task(poll_queue(configloader=config_loader,shared_data=shared_data,queue_messages = queue_messages,dup_set = duplicate_message_set))
+    # Poll queue  will look in aws sqs for unique message for outbound call request and if it is not called ,it will make twilio request to make call and 
+    # make connection to our websocket connection
+    asyncio.create_task(poll_queue(configloader=config_loader,shared_data=shared_data,queue_messages = queue_messages,dup_set = duplicate_message_set))
     
-#     # Constantly checking status of call and if call status is ended, busy , not answering or completed. That is our queue to delete the call from AWS SQS. and we do the same.
-#     asyncio.create_task(call_status_check(shared_data=shared_data,call_status_mapping=call_status_mapping,configloader=config_loader,queue_messages=queue_messages,dup_set = duplicate_message_set))
+    # Constantly checking status of call and if call status is ended, busy , not answering or completed. That is our queue to delete the call from AWS SQS. and we do the same.
+    asyncio.create_task(call_status_check(shared_data=shared_data,call_status_mapping=call_status_mapping,configloader=config_loader,queue_messages=queue_messages,dup_set = duplicate_message_set))
     
-#     # This is a websocket function that is activate when a client(twilio) comes to us for connection. This is main function to handle Candidate Call
-#     ws_server = await websockets.serve(
-#         lambda websocket,
-#         path :websocket_handler(client_ws=websocket,configloader=config_loader,shared_data=shared_data,call_status_mapping=call_status_mapping,queue_messages=queue_messages),
-#         '0.0.0.0',
-#         5001
-#         )
-#     await ws_server.wait_closed()
-#     logger.info("WebSocket server closed.")
+    # This is a websocket function that is activate when a client(twilio) comes to us for connection. This is main function to handle Candidate Call
+    ws_server = await websockets.serve(
+        lambda websocket,
+        path :websocket_handler(client_ws=websocket,configloader=config_loader,shared_data=shared_data,call_status_mapping=call_status_mapping,queue_messages=queue_messages),
+        '0.0.0.0',
+        5001
+        )
+    await ws_server.wait_closed()
+    logger.info("WebSocket server closed.")
 
-# if __name__ == "__main__":
-#     asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())
 
 
 

@@ -18,24 +18,26 @@
     },
     {
       "state": 2,
-      "question": "What is your current or last CTC?",
+      "question": "What is your current or last CTC (Cost to Company)?",
       "expected_answer_type": "amount_with_unit",
       "max_followups": 2,
       "response_categories": {
         "amount": "Candidate has provided a specific amount or range for their CTC",
         "not_comfortable": "Candidate has explicitly refused to share their CTC information",
-        "irrelevant": "Candidate has provided an answer that doesn't address the CTC question"
+        "irrelevant": "Candidate has provided an answer that doesn't address the CTC question",
+        "misheard": "Candidate mentioned a number with terms like 'city', 'lp', 'lpa' which likely means CTC"
       },
       "follow_up_instructions": {
         "amount": "Out of {extracted_value}, how much is fixed and how much is variable?",
         "not_comfortable": "I understand. Let's move to the next question.",
         "irrelevant": "Could you share your CTC figure or a range if you're comfortable?",
+        "misheard": "Thank you. Out of {extracted_value}, how much is fixed and how much is variable?",
         "default": "Could you share your CTC figure or a range if you're comfortable?"
       }
     },
     {
       "state": 3,
-      "question": "What is your expected CTC?",
+      "question": "Okay. So what is your expected CTC?",
       "expected_answer_type": "amount_or_hike_or_range",
       "max_followups": 2,
       "response_categories": {
@@ -60,14 +62,16 @@
       "expected_answer_type": "yes_or_no_with_amount",
       "max_followups": 2,
       "response_categories": {
-        "yes": "Candidate has confirmed they have other offers",
+        "yes": "Candidate has confirmed they have other offers or mentioned details about offers (e.g., amount, percentage, company)",
         "no": "Candidate has confirmed they don't have other offers",
-        "irrelevant": "Candidate has provided an answer that doesn't clearly indicate yes or no"
+        "irrelevant": "Candidate has provided an answer that cannot be interpreted as yes or no even implicitly",
+        "percentage": "Candidate has mentioned a percentage hike or increment in their response"
       },
       "follow_up_instructions": {
-        "yes": "What amount are they offering?",
+        "yes": "What amount or hike are they offering?",
         "no": "",
         "irrelevant": "I need to know if you have other offers currently. Could you please answer with a yes or no?",
+        "percentage": "",
         "default": "I need to know if you have other offers currently. Could you please answer with a yes or no?"
       }
     },
@@ -77,18 +81,35 @@
       "expected_answer_type": "notice_period_duration",
       "max_followups": 2,
       "response_categories": {
-        "short_notice": "Candidate has a notice period less than 61 days",
-        "long_notice": "Candidate has a notice period of 90 days or more",
+        "short_notice": "Candidate has a notice period less than 31 days",
+        "long_notice": "Candidate has a notice period of 31 days or more",
         "immediate": "Candidate can join immediately with no notice period",
-        "irrelevant": "Candidate has provided an answer that doesn't clearly indicate their notice period"
+        "irrelevant": "Candidate has provided an answer that doesn't clearly indicate their notice period",
+        "yes_reduce": "Candidate has confirmed they can reduce their notice period with responses like 'yes', 'sure', 'possible'"
       },
       "follow_up_instructions": {
-        "long_notice": "Can you reduce your notice period?",
+        "long_notice": "Is there any possibility to reduce your notice period?",
         "short_notice": "",
         "immediate": "",
         "irrelevant": "Could you please specify your notice period in days or months?",
+        "yes_reduce": "",
         "default": "Could you please specify your notice period in days or months?"
       },
       "notice_period_threshold": 60
+    },
+
+    {
+      "state": 6,
+      "question": "What is your primary reason for seeking a new career opportunity at this time?",
+      "expected_answer_type": "free_text",
+      "max_followups": 0,
+      "response_categories": {
+        "any": "Any response is accepted without categorization"
+      },
+      "follow_up_instructions": {
+        "any": "",
+        "default": ""
+      },
+      "skip_llm_processing": true
     }
   ]

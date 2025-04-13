@@ -24,5 +24,3 @@ class DeepgramService:
     async def __aexit__(self, exc_type, exc, tb):
         if self.ws:
             await self.ws.close()
-
-   

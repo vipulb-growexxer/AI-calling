@@ -52,7 +52,9 @@ class MemoryA:
                 if not state or not question_text:
                     self.logger.warning(f"Skipping invalid question data: {question_data}")
                     continue
-                    
+                
+                # Skip check for skip_llm_processing - we still need audio for all questions
+                
                 # Generate audio using TTS service
                 audio_data = await tts_service.text_to_speech_full(question_text)
                 

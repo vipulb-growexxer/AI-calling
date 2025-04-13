@@ -120,7 +120,7 @@ IMPORTANT:
             if not question_data:
                 # No more questions, end the call
                 await self.memory_b.clear_conversation(call_sid)
-                end_message = "Thank you for your time. The interview is now complete. Goodbye."
+                end_message = "Thank you for your time. We have recorded all of your answers.. The interview is now complete. Goodbye."
                 
                 # For the end message, we'll return the text instead of generating audio
                 # This allows the WebSocketManager to stream it directly
@@ -128,6 +128,13 @@ IMPORTANT:
             
             # Update state in Memory B
             await self.memory_b.update_state(call_sid, state_index=next_state)
+            
+            # Reset follow-up tracking when advancing to a new state
+            await self.memory_b.update_state(
+                call_sid,
+                followup_attempts=0,
+                followup_qa_pairs=[]
+            )
             
             # Store question data in Memory B
             question_text = question_data.get("question", "")
@@ -183,6 +190,7 @@ IMPORTANT:
                 
                 # Make a simple LLM call to warm it up
                 warm_up_prompt = "Analyze this greeting response: " + response_text
+                self.logger.info(f"LLM CALL: Warming up with initial response for {call_sid}")
                 self.llm_service.process(warm_up_prompt)
                 self.logger.info(f"LLM warmed up with initial response for {call_sid}")
                 
@@ -199,12 +207,13 @@ IMPORTANT:
                 # Update the answer for this follow-up
                 conv_state.followup_qa_pairs[last_qa_idx] = (last_question, response_text)
                 
-                # After receiving a response to a follow-up, advance to the next state
-                # But only if we've already asked at least one follow-up for this question
-                # This prevents asking another follow-up on the same topic
-                if conv_state.followup_attempts > 1:
-                    self.logger.info(f"Received response to follow-up question for {call_sid}. Advancing state.")
-                    return True, None, None
+                # Store the response as the last response to ensure it's included in LLM processing
+                await self.memory_b.update_state(call_sid, last_response=response_text)
+                
+                self.logger.info(f"Received response to follow-up question for {call_sid}. Processing with LLM.")
+            else:
+                # If this is the first response to the main question, store it as the last response
+                await self.memory_b.update_state(call_sid, last_response=response_text)
             
             # Get question data
             question_data = self.memory_a.get_question_data(conv_state.state_index)
@@ -221,16 +230,26 @@ IMPORTANT:
             # Format the input for LLM
             prompt = f"""State: {conv_state.state_index}
 Question: {conv_state.original_question}
-User response: {response_text}
 """
-            # Add previous follow-up context if available
+
+            # Include original answer if this is a follow-up
             if conv_state.followup_qa_pairs and len(conv_state.followup_qa_pairs) > 0:
-                prompt += "\nPrevious follow-ups:\n"
+                prompt += f"Original answer: {conv_state.last_response}\n"
+                prompt += "\nFollow-up conversation:\n"
                 for idx, qa_pair in enumerate(conv_state.followup_qa_pairs):
                     # In Memory B, followup_qa_pairs is a list of tuples (question, answer)
                     question, answer = qa_pair
                     prompt += f"Follow-up {idx+1}: {question}\n"
-                    prompt += f"Response {idx+1}: {answer}\n"
+                    # Only include answer if it's not empty (the last follow-up might not have an answer yet)
+                    if answer:
+                        prompt += f"Response {idx+1}: {answer}\n"
+                
+                # Current response is the answer to the last follow-up
+                if response_text != conv_state.last_response:
+                    prompt += f"\nCurrent response: {response_text}\n"
+            else:
+                # This is the first response to the main question
+                prompt += f"User response: {response_text}\n"
             
             prompt += f"""
 Analyze the user's response and determine which category it falls into. Categories:
@@ -263,7 +282,9 @@ IMPORTANT:
 2. Return ONLY valid JSON. Do not include any explanations, notes, or text outside the JSON structure."""
             
             # Process with LLM
+            self.logger.info(f"LLM CALL: Processing response for state {conv_state.state_index}, question: '{conv_state.original_question}'")
             llm_response = self.llm_service.process(prompt)
+            self.logger.info(f"LLM RESPONSE: {llm_response[:100]}...")
             
             # Extract JSON from response
             json_start = llm_response.find('{')
@@ -317,6 +338,8 @@ IMPORTANT:
             if await self.memory_b.should_advance_state(call_sid):
                 self.logger.info(f"Advancing state based on response type: {response_type}")
                 return True, None, None
+
+            self.logger.info(f"DEBUG - needs_followup value: {needs_followup}")
             
             # Check if we can ask a follow-up question
             if not await self.memory_b.can_ask_followup(call_sid) or not needs_followup:
@@ -327,6 +350,14 @@ IMPORTANT:
             # Get the follow-up instruction template from question data
             follow_up_instructions = question_data.get("follow_up_instructions", {})
             template = follow_up_instructions.get(response_type, follow_up_instructions.get("default", ""))
+
+            # Check if we're processing a response to a follow-up question and it's irrelevant
+            if conv_state.followup_qa_pairs and len(conv_state.followup_qa_pairs) > 0 and (response_type == "irrelevant" or response_type == "default"):
+                # Get the most recent follow-up question
+                last_question, _ = conv_state.followup_qa_pairs[-1]
+                self.logger.info(f"Repeating last follow-up question for irrelevant response: {last_question}")
+                template = last_question
+
             
             if not template:
                 # No follow-up needed, advance to next state

@@ -11,7 +11,7 @@ class ElevenLabsService:
         self.elevenlabs_model = config_loader.get('tts', 'tts_model')
         
         self.client = ElevenLabs(api_key=self.elevenlabs_api_key)
-        self.voice_settings = VoiceSettings(stability=0.6, similarity_boost=1.0, style=0.1, use_speaker_boost=True)
+        self.voice_settings = VoiceSettings(stability=0.6, similarity_boost=1.0, style=0.7, use_speaker_boost=True)
         self.logger = logging.getLogger(__name__)
  
     async def text_to_speech(self, text: str):
@@ -25,7 +25,7 @@ class ElevenLabsService:
             model_id=self.elevenlabs_model,
             voice_settings=self.voice_settings,
             output_format="ulaw_8000",
-            optimize_streaming_latency=4
+            optimize_streaming_latency=2
         )
         for chunk in audio_stream:
             yield base64.b64encode(chunk).decode('utf-8')
