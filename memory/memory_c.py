@@ -37,16 +37,16 @@ class MemoryC:
             # Using hesitation markers and elongated vowels to sound more natural
             self.filler_data = {
                 # State 1 followup
-                "state_1_followup": "Okaaay... Can you please tell me",
+                "state_1_followup": "Okay... tell me",
                 
                 # State 2 followup
                 "state_2_followup": "Mmhmm... and",
                 
                 # State 4 followup
-                "state_4_followup": "Got it. Can you pleease share",
+                "state_4_followup": "Got it. Can you please share",
                 
                 # State 5 followup
-                "state_5_followup": "Okaay and",
+                "state_5_followup": "Okay and",
                 
                 # Generic fillers for fallback
                 "generic_1": "I see...",

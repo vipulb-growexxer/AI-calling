@@ -18,20 +18,20 @@
     },
     {
       "state": 2,
-      "question": "What is your current or last CTC (Cost to Company)?",
+      "question": "What is your current or last CTC?",
       "expected_answer_type": "amount_with_unit",
       "max_followups": 2,
       "response_categories": {
         "amount": "Candidate has provided a specific amount or range for their CTC",
         "not_comfortable": "Candidate has explicitly refused to share their CTC information",
         "irrelevant": "Candidate has provided an answer that doesn't address the CTC question",
-        "misheard": "Candidate mentioned a number with terms like 'city', 'lp', 'lpa' which likely means CTC"
+        "misheard": "Candidate mentioned a number with terms like 'city', 'lp', 'lpa' , 'lakhs' or any other curreny term of any country which likely means CTC"
       },
       "follow_up_instructions": {
         "amount": "Out of {extracted_value}, how much is fixed and how much is variable?",
         "not_comfortable": "I understand. Let's move to the next question.",
         "irrelevant": "Could you share your CTC figure or a range if you're comfortable?",
-        "misheard": "Thank you. Out of {extracted_value}, how much is fixed and how much is variable?",
+        "misheard": "Out of {extracted_value}, how much is fixed and how much is variable?",
         "default": "Could you share your CTC figure or a range if you're comfortable?"
       }
     },

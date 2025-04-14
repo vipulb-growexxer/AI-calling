@@ -77,6 +77,9 @@ class WebSocketManager:
         self.interruption_detected = {}
         self.replay_counts = {}  # Track number of replays per session
         
+        # Track first followup questions
+        self.first_followup_flags = {}  # Track if this is the first followup for a question
+        
         # Deepgram connections
         self.deepgram_connections = {}
         self.deepgram_ready_events = {}
@@ -158,6 +161,10 @@ class WebSocketManager:
                         
                         # Initialize conversation in Memory B
                         await self.memory_b.initialize_conversation(call_sid)
+                        
+                        # Initialize first followup flag for this call
+                        self.first_followup_flags[call_sid] = True
+                        self.logger.info(f"Initialized first followup flag for call {call_sid}")
                     
                 elif data.get('event') == 'start':
                     # Extract call SID if not already set
@@ -168,6 +175,10 @@ class WebSocketManager:
                         
                         # Initialize conversation in Memory B
                         await self.memory_b.initialize_conversation(call_sid)
+                        
+                        # Initialize first followup flag for this call
+                        self.first_followup_flags[call_sid] = True
+                        self.logger.info(f"Initialized first followup flag for call {call_sid}")
                     
                     # Extract stream SID if present in the start event
                     if 'streamSid' in data['start']:
@@ -494,9 +505,12 @@ class WebSocketManager:
                         
                     self.logger.info(f"Processing after {elapsed_time}s silence: {self.accumulated_texts[ws_id]}")
                     
-                    # Start timing - Deepgram processing complete
+                    # End timing - Deepgram processing
                     deepgram_end_time = time.time()
                     self.logger.info(f"LATENCY_DEEPGRAM: Processing completed at {deepgram_end_time}")
+                    
+                    # Record user silence detection time (1s + any additional processing)
+                    silence_detection_time = elapsed_time
                     
                     # Process the response through conversation manager
                     self.logger.info(f"Sending user response to conversation manager for {ws_id}")
@@ -520,22 +534,65 @@ class WebSocketManager:
                     
                     # If we have a follow-up question to play
                     if followup_question:
+                        # Check if this is the first followup for this question
+                        is_first_followup = self.first_followup_flags.get(call_sid, False)
+                        
                         # Start timing - ElevenLabs processing
                         elevenlabs_start_time = time.time()
                         self.logger.info(f"LATENCY_ELEVENLABS: Processing started at {elevenlabs_start_time}")
                         
-                        self.logger.info(f"Playing follow-up: {followup_question[:50]}... for {ws_id}")
-                        # Stream audio directly from ElevenLabs to Twilio
-                        await self._stream_elevenlabs_audio(ws_id, followup_question)
+                        # If this is the first followup, play filler audio while generating ElevenLabs audio
+                        if is_first_followup:
+                            filler_start_time = time.time()
+                            filler_delay = filler_start_time - llm_end_time
+                            self.logger.info(f"LATENCY_FILLER_START: Delay between LLM completion and filler start: {filler_delay:.4f}s")
+                            
+                            # Calculate time from user silence to filler audio
+                            time_to_filler = filler_start_time - deepgram_end_time
+                            self.logger.info(f"LATENCY_TO_FILLER: Time from silence detection to filler audio: {time_to_filler:.2f}s")
+                            
+                            # Calculate total time including silence detection
+                            total_to_filler = time_to_filler + silence_detection_time
+                            self.logger.info(f"LATENCY_TOTAL_TO_FILLER: Time from user stops speaking to filler audio: {total_to_filler:.2f}s")
+                            
+                            self.logger.info(f"Playing filler audio for first followup for call {call_sid}")
+                            
+                            # Start buffering ElevenLabs chunks in background
+                            chunk_queue = asyncio.Queue()
+                            buffer_task = asyncio.create_task(self._buffer_elevenlabs_chunks(followup_question, chunk_queue))
+                            
+                            # Get the current state from memory_b
+                            conversation_state = await self.memory_b.get_state(call_sid)
+                            current_state = conversation_state.state_index if conversation_state else None
+                            
+                            # Play appropriate filler audio
+                            await self.audio_service.play_filler_audio(ws_id, self.active_connections, self.stream_sids, current_state)
+                            
+                            # Mark that we've used the first followup
+                            self.first_followup_flags[call_sid] = False
+                            self.logger.info(f"First followup flag set to False for call {call_sid}")
+                            
+                            # Start streaming chunks as they become available
+                            self.logger.info(f"Filler complete, streaming ElevenLabs chunks for {ws_id}")
+                            self.logger.info(f"Playing follow-up: {followup_question[:50]}... for {ws_id}")
+                            await self._stream_from_queue(ws_id, chunk_queue, followup_question)
+                        else:
+                            self.logger.info(f"Playing follow-up: {followup_question[:50]}... for {ws_id}")
+                            # Stream audio directly from ElevenLabs to Twilio
+                            await self._stream_elevenlabs_audio(ws_id, followup_question)
                         
                         # End timing - ElevenLabs processing
                         elevenlabs_end_time = time.time()
                         elevenlabs_duration = elevenlabs_end_time - elevenlabs_start_time
                         self.logger.info(f"LATENCY_ELEVENLABS: Processing completed at {elevenlabs_end_time}, duration: {elevenlabs_duration:.2f}s")
                         
-                        # Calculate total latency
-                        total_latency = elevenlabs_end_time - deepgram_end_time
-                        self.logger.info(f"LATENCY_TOTAL: From user silence to AI speaking: {total_latency:.2f}s")
+                        # Calculate latency from silence detection to audio playing
+                        processing_latency = elevenlabs_end_time - deepgram_end_time
+                        self.logger.info(f"LATENCY_PROCESSING: From silence detection to AI speaking: {processing_latency:.2f}s")
+                        
+                        # Calculate total latency including silence detection
+                        total_latency = processing_latency + silence_detection_time
+                        self.logger.info(f"LATENCY_TOTAL: From user stops speaking to AI speaking: {total_latency:.2f}s")
                         
                         await self._send_mark(ws_id)
                         self.speaking_flags[ws_id].set()
@@ -566,6 +623,10 @@ class WebSocketManager:
                         if advance_success:
                             # Clear accumulated text when advancing to a new state
                             self.accumulated_texts[ws_id] = ""
+                            
+                            # Reset first followup flag for new question
+                            self.first_followup_flags[call_sid] = True
+                            self.logger.info(f"Reset first followup flag for call {call_sid} - new question")
                             
                             if next_audio_or_text:
                                 # Start timing - ElevenLabs processing for state change
@@ -831,7 +892,8 @@ class WebSocketManager:
             self.stream_sids, self.call_sids, self.exit_events,
             self.speaking_flags, self.deepgram_ready_events,
             self.current_audio_buffer, self.current_audio_text, self.interruption_detected, self.replay_counts,
-            self.audio_buffers, self.accumulated_texts, self.marks, self.interaction_times
+            self.audio_buffers, self.accumulated_texts, self.marks, self.interaction_times,
+            self.first_followup_flags
         ]:
             if ws_id in tracking_dict:
                 tracking_dict.pop(ws_id, None)
@@ -865,3 +927,56 @@ class WebSocketManager:
         self.replay_counts[ws_id] = 0
         
         return audio_buffer
+
+    async def _buffer_elevenlabs_chunks(self, text, chunk_queue):
+        """Buffer chunks from ElevenLabs async generator and put them in queue"""
+        buffer_start_time = time.time()
+        chunk_count = 0
+        async for chunk in self.conversation_manager.elevenlabs_service.text_to_speech(text):
+            await chunk_queue.put(chunk)
+            chunk_count += 1
+            if chunk_count % 5 == 0:  # Log every 5 chunks
+                current_time = time.time()
+                self.logger.info(f"BUFFER_PROGRESS: Collected {chunk_count} chunks in {current_time - buffer_start_time:.2f}s")
+        
+        # Signal end of chunks
+        await chunk_queue.put(None)
+        buffer_end_time = time.time()
+        buffer_duration = buffer_end_time - buffer_start_time
+        self.logger.info(f"BUFFER_COMPLETE: Collected all {chunk_count} chunks in {buffer_duration:.2f}s")
+        return chunk_count
+
+    async def _stream_from_queue(self, ws_id, chunk_queue, text):
+        """Stream chunks from queue as they become available"""
+        stream_start_time = time.time()
+        chunks = []
+        chunk_count = 0
+        
+        while True:
+            chunk = await chunk_queue.get()
+            if chunk is None:  # End of chunks
+                break
+                
+            # Stream the chunk
+            media_message = {
+                "event": "media",
+                "streamSid": self.stream_sids.get(ws_id),
+                "media": {"payload": chunk}
+            }
+            await self.active_connections[ws_id].send(json.dumps(media_message))
+            chunks.append(chunk)
+            chunk_count += 1
+            
+            if chunk_count % 5 == 0:
+                current_time = time.time()
+                self.logger.info(f"STREAM_PROGRESS: Streamed {chunk_count} chunks in {current_time - stream_start_time:.2f}s")
+        
+        stream_end_time = time.time()
+        stream_duration = stream_end_time - stream_start_time
+        self.logger.info(f"STREAM_COMPLETE: Streamed all {chunk_count} chunks in {stream_duration:.2f}s")
+        
+        # Store audio for potential replay
+        audio_data = b''.join([base64.b64decode(chunk) for chunk in chunks])
+        self.current_audio_buffer[ws_id] = audio_data
+        self.current_audio_text[ws_id] = text
+        self.replay_counts[ws_id] = 0

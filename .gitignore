@@ -9,3 +9,4 @@ venv/
 .vscode/
 *.log
 config.ini
+logs/
