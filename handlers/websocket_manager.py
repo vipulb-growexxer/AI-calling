@@ -65,6 +65,7 @@ class WebSocketManager:
         self.marks = {}
         self.speaking_flags = {}
         self.exit_events = {}
+        self.listening_flags = {}
         
         # Audio buffering
         self.BUFFER_SIZE = 10 * 160  # Same as used in old implementation
@@ -104,6 +105,8 @@ class WebSocketManager:
             self.active_connections[ws_id] = client_ws
             self.exit_events[ws_id] = asyncio.Event()
             self.speaking_flags[ws_id] = asyncio.Event()
+            self.listening_flags[ws_id] = asyncio.Event()
+            self.listening_flags[ws_id].clear()
             self.accumulated_texts[ws_id] = ""
             self.audio_buffers[ws_id] = bytearray()
             self.outboxes[ws_id] = asyncio.Queue()
@@ -190,7 +193,7 @@ class WebSocketManager:
                     self.logger.info(f"Start event data: {data}")
                     
                     # Play greeting message immediately when start event is received
-                    # This is the correct place to play the greeting as we now have the stream SID
+                    
                     greeting_text = "Hello, this is an AI screening call. Please say something to start the call."
                     self.logger.info(f"Playing greeting for {ws_id}")
                     audio_buffer = await self.audio_service.stream_elevenlabs_audio(
@@ -211,8 +214,8 @@ class WebSocketManager:
                     self.logger.info(f"Greeting played, waiting for user response for {ws_id}")
                 
                 elif data.get('event') == 'media':
-                    # Only log media messages occasionally (1 in 50) to reduce noise
-                    if random.random() < 0.02:  # ~2% chance to log
+                    # logging media messages occasionally (1 in 50) to reduce noise
+                    if random.random() < 0.02:  
                         self.logger.debug(f"Received media message for {ws_id}")
                     
                     # Process incoming audio
@@ -243,6 +246,9 @@ class WebSocketManager:
                             self.logger.info(f"Mark received: {mark_name} for {ws_id}")
                             # Clear speaking flag to allow processing user input
                             self.speaking_flags[ws_id].clear()
+                            # Activate listening mode
+                            self.listening_flags[ws_id].set()
+                            self.logger.info(f"Listening mode activated for {ws_id}")
                             # Reset interruption flag if it was set
                             if ws_id in self.interruption_detected and self.interruption_detected[ws_id]:
                                 self.logger.info(f"Resetting interruption flag for {ws_id}")
@@ -289,10 +295,10 @@ class WebSocketManager:
                     
                 data = json.loads(message)
                 
-                # Only log non-media messages at INFO level to reduce noise
+                
                 if data.get('event') != 'media':
                     self.logger.info(f"Received WebSocket message for {ws_id}: {message[:100]}...")
-                elif random.random() < 0.02:  # ~2% chance to log media messages at DEBUG level
+                elif random.random() < 0.02:  
                     self.logger.debug(f"Received WebSocket message for {ws_id}: {message[:100]}...")
                 
                 if data["event"] == "connected":
@@ -330,8 +336,8 @@ class WebSocketManager:
                     chunk = base64.b64decode(media["payload"])
                     
                     if chunk:
-                        # Only log media messages occasionally (1 in 50) to reduce noise
-                        if random.random() < 0.02:  # ~2% chance to log
+                        # logging media messages occasionally (1 in 50) to reduce noise
+                        if random.random() < 0.02: 
                             self.logger.debug(f"Received media chunk: {len(chunk)} bytes for {ws_id}")
                         self.audio_buffers[ws_id].extend(chunk)
                         if chunk == b'':
@@ -420,7 +426,7 @@ class WebSocketManager:
         
         while not self.exit_events[ws_id].is_set():
             try:
-                # Log heartbeat every 10 seconds to show the method is still running
+                # Logging heartbeat every 10 seconds to show the method is still running
                 current_time = time.time()
                 if current_time - last_log_time > 10:
                     self.logger.info(f"Deepgram receiver heartbeat for {ws_id}")
@@ -433,23 +439,36 @@ class WebSocketManager:
                     
                 message_json = await self._check_for_transcript(ws_id)
                 
-                # Reset interaction time whenever any message is received from Deepgram
+                # Only reset interaction time if there's actual content
                 if message_json is not None:
-                    interaction_time = time.time()
-                
+                    if "channel" in message_json and "alternatives" in message_json["channel"] and message_json["channel"]["alternatives"]:
+                        transcript = message_json["channel"]["alternatives"][0]["transcript"].strip()
+                        if transcript:
+                            interaction_time = time.time()
+                    
                 # If we got a transcription
                 if message_json:
+                    # Only process transcriptions when in listening mode
+                    if not self.listening_flags[ws_id].is_set():
+                        # Logging transcriptions received when not listening (for debugging)
+                        if random.random() < 0.1:  
+                            if "channel" in message_json and "alternatives" in message_json["channel"] and message_json["channel"]["alternatives"]:
+                                ignored_text = message_json["channel"]["alternatives"][0]["transcript"].strip()
+                                if ignored_text:
+                                    self.logger.info(f"Ignored transcription (not listening): {ignored_text[:30]}... for {ws_id}")
+                        continue
+                        
                     if message_json.get("speech_final"):
                         transcript = message_json["channel"]["alternatives"][0]["transcript"].strip()
                         if transcript:
-                            # Add space only if accumulated text is not empty
+                            
                             if self.accumulated_texts[ws_id].strip():
                                 self.accumulated_texts[ws_id] += " " + transcript
                             else:
                                 self.accumulated_texts[ws_id] = transcript
                             self.logger.info(f"Final transcript for {ws_id}: {self.accumulated_texts[ws_id]}")
                     elif message_json.get("is_final"):
-                        # Still accumulate is_final transcripts, but don't process them yet
+                       
                         transcript = message_json["channel"]["alternatives"][0]["transcript"].strip()
                         if transcript:
                             # Add space only if accumulated text is not empty
@@ -464,7 +483,11 @@ class WebSocketManager:
                             interim_text = message_json["channel"]["alternatives"][0]["transcript"].strip()
                             self.logger.info(f"Interim transcript for {ws_id}: {interim_text}")
                     
-                    interaction_time = time.time()
+                    # Only reset interaction time if there's actual content
+                    if "channel" in message_json and "alternatives" in message_json["channel"] and message_json["channel"]["alternatives"]:
+                        transcript = message_json["channel"]["alternatives"][0]["transcript"].strip()
+                        if transcript:
+                            interaction_time = time.time()
                     continue
                 
                 # Skip processing if AI is speaking
@@ -494,7 +517,7 @@ class WebSocketManager:
                 
                 # Check for silence
                 elapsed_time = time.time() - interaction_time
-                silence_threshold = 1 if len(self.accumulated_texts[ws_id].split()) < 30 else 1.2
+                silence_threshold = 1 if len(self.accumulated_texts[ws_id].split()) < 8 else 1.2
                 
                 # Process accumulated text after silence
                 if elapsed_time > silence_threshold and self.accumulated_texts[ws_id].strip():
@@ -504,6 +527,10 @@ class WebSocketManager:
                         continue
                         
                     self.logger.info(f"Processing after {elapsed_time}s silence: {self.accumulated_texts[ws_id]}")
+                    
+                    # Deactivate listening mode
+                    self.listening_flags[ws_id].clear()
+                    self.logger.info(f"Listening mode deactivated for {ws_id}")
                     
                     # End timing - Deepgram processing
                     deepgram_end_time = time.time()
@@ -598,7 +625,12 @@ class WebSocketManager:
                         self.speaking_flags[ws_id].set()
                         # Clear accumulated text after playing a follow-up question
                         self.accumulated_texts[ws_id] = ""
-                    
+                        
+                        # Check if this is the final goodbye message
+                        if followup_question and "thank you for your time" in followup_question.lower() and "goodbye" in followup_question.lower():
+                            self.logger.info(f"Final message detected for {ws_id}, will close connection after audio completes")
+                            # Set a flag to close the connection after the final message
+                            asyncio.create_task(self._close_after_final_message(ws_id))
                     # If we need to change state
                     if state_change:
                         self.logger.info(f"\nState change detected for {ws_id}, advancing state\n-------------------------------------------------\n")
@@ -636,13 +668,13 @@ class WebSocketManager:
                                 if isinstance(next_audio_or_text, bytes):
                                     # Play pre-generated audio
                                     self.logger.info(f"Playing pre-generated audio for {ws_id}")
-                                    # Log streaming start time
+                                   
                                     streaming_state_start_time = time.time()
                                     await self._stream_audio(ws_id, next_audio_or_text)
                                 else:
                                     # Generate and stream audio
                                     self.logger.info(f"Playing generated audio for {ws_id}: {next_audio_or_text[:50]}...")
-                                    # Log streaming start time
+                                    
                                     streaming_state_start_time = time.time()
                                     await self._stream_elevenlabs_audio(ws_id, next_audio_or_text)
                                     
@@ -658,10 +690,16 @@ class WebSocketManager:
                                 
                                 await self._send_mark(ws_id)
                                 self.speaking_flags[ws_id].set()
+                                
+                                # Check if this is the final goodbye message
+                                if isinstance(next_audio_or_text, str) and "thank you for your time" in next_audio_or_text.lower() and "goodbye" in next_audio_or_text.lower():
+                                    self.logger.info(f"Final message detected for {ws_id}, will close connection after audio completes")
+                                    # Set a flag to close the connection after the final message
+                                    asyncio.create_task(self._close_after_final_message(ws_id))
                             else:
                                 self.logger.warning(f"No audio to play after state advancement for {ws_id}")
                     
-                    # No need to clear accumulated text here as it's already cleared after follow-up questions and state changes
+                    
                 
                 # Handle long silence with no input
                 elif elapsed_time > 5 and not self.accumulated_texts[ws_id] and not self.speaking_flags[ws_id].is_set():
@@ -681,7 +719,7 @@ class WebSocketManager:
                 if self.exit_events[ws_id].is_set():
                     break
                 
-                # Sleep a bit to avoid tight loops in case of persistent errors
+                
                 await asyncio.sleep(0.5)
         
         self.logger.info(f"Deepgram receiver for {ws_id} exiting")
@@ -733,11 +771,11 @@ class WebSocketManager:
             return None
         
         except asyncio.TimeoutError:
-            # This is expected and not an error, so not logging it
+            
             return None
         except asyncio.CancelledError:
             self.logger.info(f"Deepgram transcript check cancelled for {ws_id}")
-            raise  # Re-raise cancellation to allow proper cleanup
+            raise  
         except Exception as e:
             self.logger.error(f"Error checking for transcript for {ws_id}: {e}")
             import traceback
@@ -831,7 +869,7 @@ class WebSocketManager:
                 try:
                     await asyncio.wait_for(self.exit_events[ws_id].wait(), timeout=10)
                 except asyncio.TimeoutError:
-                    # This is expected, just continue
+                    
                     pass
         except Exception as e:
             self.logger.error(f"Error in heartbeat for {ws_id}: {e}")
@@ -935,7 +973,7 @@ class WebSocketManager:
         async for chunk in self.conversation_manager.elevenlabs_service.text_to_speech(text):
             await chunk_queue.put(chunk)
             chunk_count += 1
-            if chunk_count % 5 == 0:  # Log every 5 chunks
+            if chunk_count % 5 == 0:  # Logging every 5 chunks
                 current_time = time.time()
                 self.logger.info(f"BUFFER_PROGRESS: Collected {chunk_count} chunks in {current_time - buffer_start_time:.2f}s")
         
@@ -980,3 +1018,15 @@ class WebSocketManager:
         self.current_audio_buffer[ws_id] = audio_data
         self.current_audio_text[ws_id] = text
         self.replay_counts[ws_id] = 0
+
+    async def _close_after_final_message(self, ws_id):
+        """Close the connection after the final message"""
+        try:
+            self.logger.info(f"Waiting for final message to complete for {ws_id}")
+            # Wait a few seconds for the audio to finish playing
+            await asyncio.sleep(5)
+            self.logger.info(f"Final message completed, closing connection for {ws_id}")
+            self.exit_events[ws_id].set()
+        except Exception as e:
+            self.logger.error(f"Error closing connection after final message for {ws_id}: {e}")
+

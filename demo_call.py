@@ -40,7 +40,7 @@ def make_demo_call(phone_number=None):
     
     # Use hardcoded phone number if not provided
     if not phone_number:
-        phone_number = "+917038589244"  # Hardcoded phone number
+        phone_number = "+919998391508"  # Hardcoded phone number
         logger.info(f"Using hardcoded phone number: {phone_number}")
     
     # Initialize Twilio client
