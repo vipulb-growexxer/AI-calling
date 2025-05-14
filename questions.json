@@ -5,7 +5,7 @@
       "expected_answer_type": "number_or_fresher_intern and relevant to current role",
       "max_followups": 2,
       "response_categories": {
-        "years": "Candidate has professional experience measured in years including in decimal 5.5 , 7.5 years etc",
+        "years": "Candidate has professional experience measured in years including in decimal 5.5, 7.5 years etc. If this is a response to a follow-up question about relevant experience, treat it as a complete answer with no further follow-up needed.",
         "months": "Candidate has professional experience measured in months (less than 1 year)",
         "fresher": "Candidate is a fresher or recent graduate with no full-time experience",
         "intern": "Candidate has internship or training experience but no full-time role",
@@ -26,7 +26,8 @@
       "expected_answer_type": "amount_with_unit",
       "max_followups": 2,
       "response_categories": {
-        "amount": "Candidate has provided a specific amount or range for their CTC including in decimal 4.4, 6.5 etc for their ctc using terms like 'lakhs', 'crores', 'million', 'thousand', 'k', 'USD', 'EUR', 'GBP', 'INR' or other currency denominations ",
+        "amount": "Candidate has provided a specific amount or range for their CTC including in decimal 4.4 etc for their ctc using terms like 'lakhs', 'crores', 'million',  'k', 'USD', 'EUR', 'INR' or other currency denominations ",
+        "amount_with_base": "Candidate has mentioned their CTC with specific reference to base/fixed component using terms like 'base', 'fixed', 'in-hand'",
         "not_comfortable": "Candidate has explicitly refused to share their CTC information",
         "irrelevant": "Candidate has provided an answer that doesn't address the CTC question",
         "misheard": "Candidate mentioned a number with terms like 'city', 'lp', 'lpa' , 'lakhs' or any other curreny term of any country which likely means CTC"
@@ -34,6 +35,7 @@
       "follow_up_instructions": {
         "amount": "Out of {extracted_value}, how much is fixed and how much is variable?",
         "not_comfortable": "",
+        "amount_with_base": "",
         "irrelevant": "Could you share your CTC figure or a range if you're comfortable?",
         "misheard": "Out of {extracted_value}, how much is fixed and how much is variable?",
         "default": "Could you share your CTC figure or a range if you're comfortable?"
@@ -92,7 +94,7 @@
         "irrelevant": "Candidate has provided an answer that doesn't clearly indicate their notice period",
         "serving_irrelevant": "Candidate has provided an answer that doesn't clearly indicate how much notice period is left to serve",
         "yes_reduce": "Candidate has confirmed they can reduce their notice period with responses like 'yes', 'sure', 'possible', 'will try' etc",
-        "no_reduce": "Candidate has confirmed they cannot reduce their notice period with responses like 'no', 'cannot', 'not possible','not sure at the moment' etc"
+        "no_reduce": "Candidate has confirmed they cannot reduce their notice period with responses like 'no', 'cannot', 'not possible','not sure at the moment', 'I am not sure','I don't know', 'will have to check', 'need to ask manager/HR' etc"
       },
       "follow_up_instructions": {
         "long_notice": "Is there any possibility to reduce your notice period?",
@@ -101,7 +103,7 @@
         "serving_notice": "How many days or months are left in your notice period?",
         "irrelevant": "Could you please specify your notice period in days or months?",
         "serving_irrelevant": "Could you specify how many days, weeks, or months are left to serve in your notice period?",
-        "yes_reduce": "How many days or months are left in your notice period?",
+        "yes_reduce": "",
         "no_reduce": "",
         "default": "Could you please specify your notice period in days or months?"
       },

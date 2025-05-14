@@ -5,6 +5,9 @@ import asyncio
 import uuid
 import time
 import random
+import difflib
+import os
+from datetime import datetime
 
 from typing import Dict, Any, Optional
 import random
@@ -15,6 +18,10 @@ from memory.memory_c import MemoryC
 from handlers.conversation_manager import ConversationManager
 from services.Deepgram_service import DeepgramService
 from services.audio_streaming_service import AudioStreamingService
+from utils.text_analysis import detect_callback_request
+from utils.merge_text import add_text_with_overlap_check
+from services.call_categorization_service import CallCategorizationService
+from utils.conversation_history_manager import ConversationHistoryManager
 
 
 class WebSocketManager:
@@ -38,6 +45,7 @@ class WebSocketManager:
         conversation_manager: ConversationManager,
         deepgram_service: DeepgramService,
         config_loader,
+        call_categorization_service: CallCategorizationService,
         shared_data: Dict = None,
         call_status_mapping: Dict = None,
         queue_messages: Dict = None
@@ -53,19 +61,26 @@ class WebSocketManager:
         # Initialize audio streaming service
         self.audio_service = AudioStreamingService(memory_c=memory_c, logger=self.logger)
         
+        # Initialize conversation history manager
+        self.history_manager = ConversationHistoryManager(logger=self.logger)
+        
         # Outbound call tracking
-        self.shared_data = shared_data or {"call_instance_list": []}
+        self.ws_to_call_sid = {}
+        self.call_sids = {}
+        self.stream_sids = {}
+        self.exit_events = {}
+        self.shared_data = shared_data or {}
         self.call_status_mapping = call_status_mapping or {}
-        self.queue_messages = queue_messages or {"message_list": []}
+        self.queue_messages = queue_messages or {}
+        self.call_start_times = {}  # Track when calls start
         
         # Client-specific data
         self.active_connections = {}
-        self.stream_sids = {}
-        self.call_sids = {}
         self.marks = {}
         self.speaking_flags = {}
         self.exit_events = {}
         self.listening_flags = {}
+        self.ws_to_call_sid = {}  # Mapping of WebSocket ID to call SID
         
         # Audio buffering
         self.BUFFER_SIZE = 10 * 160  # Same as used in old implementation
@@ -91,6 +106,17 @@ class WebSocketManager:
         # Track interaction times for silence detection
         self.interaction_times = {}
         
+        # Speech processing state tracking
+        self.speech_states = {}  # COLLECTING, FALLBACK, SILENCE
+        self.fallback_active = {}
+        self.fallback_start_times = {}
+        self.fallback_duration = 0.5  # 0.3 seconds fallback period
+        self.silence_threshold = 1.2  # 1 second silence threshold
+        
+        # Store complete call transcript history (question-answer pairs)
+        self.temporary_transcripts = {}
+        
+        self.call_categorization_service = call_categorization_service
         self.logger.info("WebSocketManager initialized")
     
     async def handle_websocket(self, client_ws):
@@ -120,6 +146,11 @@ class WebSocketManager:
             
             # Initialize interaction time
             self.interaction_times[ws_id] = time.time()  # Initialize interaction time
+            
+            # Initialize speech state tracking
+            self.speech_states[ws_id] = "COLLECTING"  # Start in collecting state
+            self.fallback_active[ws_id] = False
+            self.fallback_start_times[ws_id] = 0
             
             # Initialize stream_sid and call_sid
             stream_sid = None
@@ -160,6 +191,7 @@ class WebSocketManager:
                     if 'start' in data and 'callSid' in data['start']:
                         call_sid = data['start']['callSid']
                         self.call_sids[ws_id] = call_sid
+                        self.ws_to_call_sid[ws_id] = call_sid  # Ensure mapping exists
                         self.logger.info(f"Call SID: {call_sid} for {ws_id}")
                         
                         # Initialize conversation in Memory B
@@ -174,7 +206,41 @@ class WebSocketManager:
                     if not call_sid and 'callSid' in data['start']:
                         call_sid = data['start']['callSid']
                         self.call_sids[ws_id] = call_sid
+                        self.ws_to_call_sid[ws_id] = call_sid  # Ensure mapping exists
                         self.logger.info(f"Call SID from start event: {call_sid} for {ws_id}")
+
+                        # Log the entire start event structure for debugging
+                        self.logger.info(f"Full start event structure: {json.dumps(data['start'], indent=2)}")
+                        
+                        # Try to get phone number from different possible locations
+                        phone_number = 'unknown'
+                        
+                        # Check in customParameters if available
+                        if 'customParameters' in data['start'] and data['start']['customParameters']:
+                            self.logger.info(f"Custom parameters found: {data['start']['customParameters']}")
+                            if 'From' in data['start']['customParameters']:
+                                phone_number = data['start']['customParameters']['From']
+                            elif 'from' in data['start']['customParameters']:
+                                phone_number = data['start']['customParameters']['from']
+                            elif 'PhoneNumber' in data['start']['customParameters']:
+                                phone_number = data['start']['customParameters']['PhoneNumber']
+                        
+                        # Check directly in start object
+                        if phone_number == 'unknown':
+                            if 'from' in data['start']:
+                                phone_number = data['start']['from']
+                            elif 'From' in data['start']:
+                                phone_number = data['start']['From']
+                            elif 'to' in data['start']:
+                                phone_number = data['start']['to']
+                            elif 'To' in data['start']:
+                                phone_number = data['start']['To']
+                        
+                        # Log what we found
+                        self.logger.info(f"Call {call_sid} is from phone number {phone_number}")
+                        
+                        # Add phone number to transcript
+                        self.history_manager.add_phone_number(call_sid, phone_number)
                         
                         # Initialize conversation in Memory B
                         await self.memory_b.initialize_conversation(call_sid)
@@ -274,7 +340,7 @@ class WebSocketManager:
             
         finally:
             # Clean up resources
-            self._cleanup_connection(ws_id)
+            await self._cleanup_connection(ws_id)
             self.logger.info(f"WebSocket handler for {ws_id} completed")
     
     async def _handle_client_messages(self, ws_id):
@@ -313,13 +379,17 @@ class WebSocketManager:
                     # Store stream and call IDs
                     self.stream_sids[ws_id] = data["streamSid"]
                     self.call_sids[ws_id] = data["start"]["callSid"]
-                    self.logger.info(f"Call started with SID: {self.call_sids[ws_id]} for {ws_id}")
+                    call_sid = self.call_sids[ws_id]
+                    self.ws_to_call_sid[ws_id] = call_sid  # Ensure mapping exists
+                    self.logger.info(f"Call started with SID: {call_sid} for {ws_id}")
                     
                     # Initialize call in conversation manager
                     self.logger.info(f"Initializing call in conversation manager for {ws_id}")
                     success, greeting_text, error = await self.conversation_manager.initialize_call(
-                        self.call_sids[ws_id]
+                        call_sid
                     )
+                    
+                    self.logger.info(f"Call initialized with call_sid: {call_sid}")
                     
                     if success and greeting_text:
                         self.logger.info(f"Playing greeting: {greeting_text[:50]}... for {ws_id}")
@@ -411,6 +481,11 @@ class WebSocketManager:
                 self.logger.error(f"Error sending to Deepgram for {ws_id}: {e}")
                 if self.exit_events[ws_id].is_set():
                     break
+                
+                
+                await asyncio.sleep(0.5)
+        
+        self.logger.info(f"Deepgram sender for {ws_id} exiting")
     
     async def _handle_deepgram_receiving(self, ws_id):
         """Process transcriptions from Deepgram"""
@@ -459,74 +534,134 @@ class WebSocketManager:
                         continue
                         
                     if message_json.get("speech_final"):
+                        self.logger.info(f"SPEECH_STATE: Speech final flag detected for {ws_id}")
+                        
+                        # Set fallback active immediately to prevent silence detection from triggering
+                        self.fallback_active[ws_id] = True
+                        self.fallback_start_times[ws_id] = time.time()
+                        self.logger.info(f"SPEECH_STATE: Fallback activated immediately on speech_final for {ws_id}")
+                        
                         transcript = message_json["channel"]["alternatives"][0]["transcript"].strip()
+                        confidence = message_json["channel"]["alternatives"][0].get("confidence", 0)
                         if transcript:
+                            added_text = await add_text_with_overlap_check(self, ws_id, transcript)
+                            if added_text:
+                                self.logger.info(f"Final transcript for {ws_id}: {self.accumulated_texts[ws_id]} (confidence: {confidence:.2f})")
                             
-                            if self.accumulated_texts[ws_id].strip():
-                                self.accumulated_texts[ws_id] += " " + transcript
-                            else:
-                                self.accumulated_texts[ws_id] = transcript
-                            self.logger.info(f"Final transcript for {ws_id}: {self.accumulated_texts[ws_id]}")
+                            # Implement a 0.2s delay within the fallback period to catch additional speech
+                            self.logger.info(f"SPEECH_STATE: Speech final detected, implementing 0.3s delay for {ws_id}")
+                            await asyncio.sleep(0.3)
+                            
+                            # Schedule fallback after the delay
+                            self.logger.info(f"SPEECH_STATE: Delay complete, scheduling fallback for {ws_id}")
+                            asyncio.create_task(self._delayed_fallback_start(ws_id, 0))
                     elif message_json.get("is_final"):
                        
                         transcript = message_json["channel"]["alternatives"][0]["transcript"].strip()
+                        confidence = message_json["channel"]["alternatives"][0].get("confidence", 0)
                         if transcript:
-                            # Add space only if accumulated text is not empty
-                            if self.accumulated_texts[ws_id].strip():
-                                self.accumulated_texts[ws_id] += " " + transcript
-                            else:
-                                self.accumulated_texts[ws_id] = transcript
-                            self.logger.info(f"Interim final transcript for {ws_id}: {self.accumulated_texts[ws_id]}")
+                            added_text = await add_text_with_overlap_check(self, ws_id, transcript)
+                            if added_text:
+                                self.logger.info(f"Interim final transcript for {ws_id}: {self.accumulated_texts[ws_id]} (confidence: {confidence:.2f})")
                     else:
-                        # Log interim results occasionally
-                        if current_time - last_log_time > 5:
+                        # Process interim transcripts based on confidence
+                        if "channel" in message_json and "alternatives" in message_json["channel"] and message_json["channel"]["alternatives"]:
                             interim_text = message_json["channel"]["alternatives"][0]["transcript"].strip()
-                            self.logger.info(f"Interim transcript for {ws_id}: {interim_text}")
+                            confidence = message_json["channel"]["alternatives"][0].get("confidence", 0)
+                            
+                            # Log interim results occasionally
+                            if current_time - last_log_time > 5:
+                                self.logger.info(f"Interim transcript for {ws_id}: {interim_text} (confidence: {confidence:.2f})")
+                            
+                            # Only add high-confidence interim transcripts
+                            # Lower threshold during fallback period for better continuity
+                            confidence_threshold = 0.80 if self.fallback_active.get(ws_id, False) else 0.88
+                            if confidence > confidence_threshold and interim_text:
+                                added_text = await add_text_with_overlap_check(self, ws_id, interim_text)
+                                if added_text:
+                                    self.logger.info(f"High-confidence interim transcript added for {ws_id}: {added_text} (confidence: {confidence:.2f})")
+                                    
+                                # Reset fallback if we're in fallback period
+                                if self.fallback_active[ws_id]:
+                                    self.fallback_start_times[ws_id] = time.time()
+                                    self.logger.info(f"SPEECH_STATE: Fallback period reset due to new speech for {ws_id}")
+                                # Return to fallback if we're in silence threshold period
+                                elif self.speech_states[ws_id] == "SILENCE":
+                                    self.speech_states[ws_id] = "FALLBACK"
+                                    self.fallback_active[ws_id] = True
+                                    self.fallback_start_times[ws_id] = time.time()
+                                    interaction_time = time.time()  # Reset interaction time
+                                    self.logger.info(f"SPEECH_STATE: Returning to fallback period due to new speech during silence for {ws_id}")
                     
                     # Only reset interaction time if there's actual content
-                    if "channel" in message_json and "alternatives" in message_json["channel"] and message_json["channel"]["alternatives"]:
+                    if "channel" in message_json and "alternatives" in message_json["channel"] and len(message_json["channel"]["alternatives"]) > 0:
                         transcript = message_json["channel"]["alternatives"][0]["transcript"].strip()
                         if transcript:
                             interaction_time = time.time()
                     continue
                 
                 # Skip processing if AI is speaking
-                if self.speaking_flags[ws_id].is_set():
+                if ws_id in self.speaking_flags and self.speaking_flags[ws_id].is_set():
                     # Check if there's actual speech (interruption)
                     if message_json is not None:
-                        self.logger.info(f"INTERRUPTION_DEBUG: Received message during AI speech for {ws_id}")
+                        # AI speech interruption detected
                         
                         if "channel" in message_json and "alternatives" in message_json["channel"] and len(message_json["channel"]["alternatives"]) > 0:
                             interim_text = message_json["channel"]["alternatives"][0]["transcript"].strip()
                             if interim_text:
-                                self.logger.info(f"INTERRUPTION_DEBUG: User interrupted AI speech: '{interim_text}' for {ws_id}")
+                                # User interrupted AI speech
                                 # Set interruption flag
                                 self.interruption_detected[ws_id] = True
                                 # Clear accumulated text to prevent it from being sent to LLM
                                 self.accumulated_texts[ws_id] = ""
                                 # Replay the audio
                                 replay_result = await self._replay_audio(ws_id)
-                                self.logger.info(f"INTERRUPTION_DEBUG: Replay result: {replay_result} for {ws_id}")
+                                # Replay completed
                             else:
-                                self.logger.info(f"INTERRUPTION_DEBUG: Received empty transcript during AI speech for {ws_id}")
+                                pass  # Empty transcript during AI speech
                         else:
-                            self.logger.info(f"INTERRUPTION_DEBUG: Received message without valid transcript during AI speech for {ws_id}")
+                            pass  # No valid transcript during AI speech
                     
                     interaction_time = time.time()
                     continue
                 
-                # Check for silence
-                elapsed_time = time.time() - interaction_time
-                silence_threshold = 1 if len(self.accumulated_texts[ws_id].split()) < 8 else 1.2
+                current_time = time.time()
                 
-                # Process accumulated text after silence
-                if elapsed_time > silence_threshold and self.accumulated_texts[ws_id].strip():
-                    call_sid = self.call_sids.get(ws_id)
+                # Calculate elapsed time
+                elapsed_time = current_time - interaction_time
+                
+                # Check if we're in fallback period
+                if self.fallback_active[ws_id]:
+                    fallback_elapsed = current_time - self.fallback_start_times[ws_id]
+                    
+                    # If fallback period is complete, move to silence threshold state
+                    if fallback_elapsed > self.fallback_duration:
+                        self.fallback_active[ws_id] = False
+                        self.speech_states[ws_id] = "SILENCE"
+                        interaction_time = current_time  # Reset interaction time for silence threshold
+                        self.logger.info(f"SPEECH_STATE: Fallback period complete ({fallback_elapsed:.2f}s), starting silence threshold for {ws_id}")
+                    continue
+                
+                # Get current text and check if it ends with punctuation
+                current_text = self.accumulated_texts[ws_id].strip()
+                has_ending_punctuation = current_text and (current_text.endswith('.') or current_text.endswith('?') or current_text.endswith('!'))
+                
+                # Use standard threshold for punctuated text, extended for unpunctuated
+                effective_threshold = self.silence_threshold
+                if current_text and not has_ending_punctuation:
+                    effective_threshold = 1.4 # Extended threshold for unpunctuated text
+                    if elapsed_time > self.silence_threshold and elapsed_time <= effective_threshold:
+                        self.logger.info(f"SPEECH_STATE: Extended silence threshold (1.4s) for unpunctuated text for {ws_id}")
+                
+                # Process accumulated text after silence threshold is met
+                if elapsed_time > effective_threshold and current_text:
+                    call_sid = self.ws_to_call_sid.get(ws_id)
                     if not call_sid:
                         self.logger.warning(f"No call SID for {ws_id}, cannot process response")
                         continue
-                        
-                    self.logger.info(f"Processing after {elapsed_time}s silence: {self.accumulated_texts[ws_id]}")
+                    
+                    self.logger.info(f"SPEECH_STATE: Silence threshold met ({elapsed_time:.2f}s), processing final text for {ws_id}")    
+                    self.logger.info(f"SPEECH_FINAL_BUFFER: {self.accumulated_texts[ws_id]}")
                     
                     # Deactivate listening mode
                     self.listening_flags[ws_id].clear()
@@ -538,6 +673,36 @@ class WebSocketManager:
                     
                     # Record user silence detection time (1s + any additional processing)
                     silence_detection_time = elapsed_time
+                    
+                    # Get the current text
+                    user_text = self.accumulated_texts[ws_id].strip()
+                    
+                    # Check if this is the initial response after greeting
+                    conversation_state = await self.memory_b.get_state(call_sid)
+                    current_state = 0 if conversation_state is None else conversation_state.state_index
+                    is_initial_response = conversation_state is None or current_state == 0
+                    
+                    # Log user answer in conversation history
+                    self.history_manager.log_user_answer(call_sid, user_text, current_state)
+                    
+                    # Check for callback request in initial response
+                    if is_initial_response and detect_callback_request(user_text):
+                        self.logger.info(f"Callback request detected in initial response: '{user_text}' for {ws_id}")
+                        
+                        # Play callback message
+                        callback_message = "Okay, we will connect with you at a more suitable time. Thank you for your response."
+                        
+                        # Stream audio for silence message directly
+                        await self._stream_elevenlabs_audio(ws_id, callback_message)
+                        
+                        # Add delay to ensure message is fully played
+                        self.logger.info(f"Adding delay to ensure message is fully played for {ws_id}")
+                        await asyncio.sleep(4.0)
+                        
+                        # End the call
+                        self.logger.info(f"Ending call due to callback request for {ws_id}")
+                        self.exit_events[ws_id].set()
+                        return
                     
                     # Process the response through conversation manager
                     self.logger.info(f"Sending user response to conversation manager for {ws_id}")
@@ -568,7 +733,12 @@ class WebSocketManager:
                         elevenlabs_start_time = time.time()
                         self.logger.info(f"LATENCY_ELEVENLABS: Processing started at {elevenlabs_start_time}")
                         
-                        # If this is the first followup, play filler audio while generating ElevenLabs audio
+                        # Log followup question in conversation history
+                        current_state = conversation_state.state_index
+                        self.history_manager.log_ai_question(call_sid, followup_question, current_state)
+                        
+                        # Stream audio for follow-up question
+                        self.logger.info(f"Playing follow-up question for {ws_id}: {followup_question[:50]}...")
                         if is_first_followup:
                             filler_start_time = time.time()
                             filler_delay = filler_start_time - llm_end_time
@@ -661,6 +831,12 @@ class WebSocketManager:
                             self.logger.info(f"Reset first followup flag for call {call_sid} - new question")
                             
                             if next_audio_or_text:
+                                # Get the current state and question text from Memory B
+                                updated_state = await self.memory_b.get_state(call_sid)
+                                if updated_state:
+                                    # Log the main question in conversation history
+                                    self.history_manager.log_ai_question(call_sid, updated_state.original_question, updated_state.state_index)
+                                
                                 # Start timing - ElevenLabs processing for state change
                                 elevenlabs_state_start_time = time.time()
                                 self.logger.info(f"LATENCY_ELEVENLABS_STATE: Processing started at {elevenlabs_state_start_time}")
@@ -716,7 +892,7 @@ class WebSocketManager:
                 self.logger.error(f"Error in Deepgram receiver for {ws_id}: {e}")
                 import traceback
                 self.logger.error(traceback.format_exc())
-                if self.exit_events[ws_id].is_set():
+                if ws_id in self.exit_events and self.exit_events[ws_id].is_set():
                     break
                 
                 
@@ -724,6 +900,8 @@ class WebSocketManager:
         
         self.logger.info(f"Deepgram receiver for {ws_id} exiting")
     
+    
+
     async def _check_for_transcript(self, ws_id, timeout=0.1):
         """Check for new transcription from Deepgram"""
         try:
@@ -753,8 +931,15 @@ class WebSocketManager:
                 try:
                     message_json = json.loads(message)
                     
+                    # Debug log to see raw message structure
+                    if random.random() < 0.1:  # Log only 10% of messages to avoid flooding
+                        pass  # Deepgram message received
+                    
                     # Check for transcript in the response
                     if "channel" in message_json and "alternatives" in message_json["channel"]:
+                        # Debug log for speech_final flag
+                        # if message_json.get("speech_final"):
+                        #     self.logger.info(f"DEBUG: speech_final flag detected in Deepgram response for {ws_id}")
                         return message_json
                     
                     # If there's a closed message
@@ -805,19 +990,21 @@ class WebSocketManager:
             
         except Exception as e:
             self.logger.error(f"Error sending mark: {e}")
+
+            
     
     async def _replay_audio(self, ws_id):
         """Replay the current audio when interrupted"""
         try:
             # Check if buffer exists
             if ws_id not in self.current_audio_buffer or not self.current_audio_buffer[ws_id]:
-                self.logger.error(f"INTERRUPTION_DEBUG: No audio buffer to replay for {ws_id}")
+                self.logger.error(f"No audio buffer to replay for {ws_id}")
                 return False
             
             # Validate buffer size
             min_buffer_size = 1000  # Minimum size in bytes for a valid audio buffer
             if len(self.current_audio_buffer[ws_id]) < min_buffer_size:
-                self.logger.error(f"INTERRUPTION_DEBUG: Audio buffer too small ({len(self.current_audio_buffer[ws_id])} bytes) to replay for {ws_id}")
+                self.logger.error(f"Audio buffer too small to replay for {ws_id}")
                 return False
                 
             # Check replay count
@@ -826,19 +1013,19 @@ class WebSocketManager:
             
             # Increase replay limit to 3 for testing
             if self.replay_counts[ws_id] >= 3:
-                self.logger.error(f"INTERRUPTION_DEBUG: Replay limit reached ({self.replay_counts[ws_id]}/3) for {ws_id}, not replaying")
+                self.logger.error(f"Replay limit reached for {ws_id}, not replaying")
                 return False
             
             self.replay_counts[ws_id] += 1
             
-            self.logger.info(f"INTERRUPTION_DEBUG: Replaying audio due to interruption for {ws_id} (attempt {self.replay_counts[ws_id]}/3)")
+            self.logger.info(f"Replaying audio due to interruption for {ws_id}")
             
             # If we have text, log it
             if ws_id in self.current_audio_text and self.current_audio_text[ws_id]:
-                self.logger.info(f"INTERRUPTION_DEBUG: Replaying text: {self.current_audio_text[ws_id]}")
+                pass  # Replaying text
             
             # Stream the buffered audio
-            self.logger.info(f"INTERRUPTION_DEBUG: Streaming audio buffer of size {len(self.current_audio_buffer[ws_id])} bytes")
+            pass  # Streaming audio buffer
             await self.audio_service.stream_audio(
                 ws_id=ws_id,
                 audio_data=self.current_audio_buffer[ws_id],
@@ -847,14 +1034,14 @@ class WebSocketManager:
             )
             
             # Send mark and set speaking flag
-            self.logger.info(f"INTERRUPTION_DEBUG: Sending mark and setting speaking flag for {ws_id}")
+            # Setting speaking flag
             await self._send_mark(ws_id)
             self.speaking_flags[ws_id].set()
             
             return True
             
         except Exception as e:
-            self.logger.error(f"INTERRUPTION_DEBUG: Error replaying audio: {e}")
+            self.logger.error(f"Error replaying audio: {e}")
             import traceback
             self.logger.error(traceback.format_exc())
             return False
@@ -898,7 +1085,7 @@ class WebSocketManager:
             return False
             
 
-    def _cleanup_connection(self, ws_id):
+    async def _cleanup_connection(self, ws_id):
         """Clean up resources when a connection closes"""
         self.logger.info(f"Cleaning up connection {ws_id}")
         
@@ -909,7 +1096,7 @@ class WebSocketManager:
         # Close Deepgram connection
         if ws_id in self.deepgram_connections and self.deepgram_connections[ws_id]:
             try:
-                self.deepgram_connections[ws_id].send(json.dumps({"type": "CloseStream"}))
+                await self.deepgram_connections[ws_id].send(json.dumps({"type": "CloseStream"}))
                 self.logger.info(f"Sent close stream to Deepgram for {ws_id}")
             except Exception as e:
                 self.logger.error(f"Error closing Deepgram connection for {ws_id}: {e}")
@@ -931,12 +1118,20 @@ class WebSocketManager:
             self.speaking_flags, self.deepgram_ready_events,
             self.current_audio_buffer, self.current_audio_text, self.interruption_detected, self.replay_counts,
             self.audio_buffers, self.accumulated_texts, self.marks, self.interaction_times,
-            self.first_followup_flags
+            self.first_followup_flags, self.speech_states, self.fallback_active, self.fallback_start_times
         ]:
             if ws_id in tracking_dict:
                 tracking_dict.pop(ws_id, None)
                 
         self.logger.info(f"Connection cleanup completed for {ws_id}")
+        
+        # Process transcript and categorize call
+        try:
+            # Use asyncio.create_task to avoid blocking
+            asyncio.create_task(self.transcript_cleanup(ws_id))
+            self.logger.info(f"Started transcript cleanup for {ws_id}")
+        except Exception as e:
+            self.logger.error(f"Error starting transcript cleanup for {ws_id}: {e}")
 
     async def _stream_audio(self, ws_id, audio_data):
         """Stream pre-generated audio data to Twilio"""
@@ -947,7 +1142,7 @@ class WebSocketManager:
             stream_sids=self.stream_sids
         )
         
-    async def _stream_elevenlabs_audio(self, ws_id, text):
+    async def _stream_elevenlabs_audio(self, ws_id, text, is_final_message=False):
         """Stream audio generated by ElevenLabs to Twilio"""
         audio_buffer = await self.audio_service.stream_elevenlabs_audio(
             ws_id=ws_id,
@@ -963,6 +1158,13 @@ class WebSocketManager:
         self.current_audio_text[ws_id] = text
         # Reset replay counter for new audio
         self.replay_counts[ws_id] = 0
+        
+        # Detect if this is a final message
+        if is_final_message or text.startswith("Thank you for your time"):
+            self.logger.info(f"Final message detected for {ws_id}, will close connection after audio completes")
+            
+            # Schedule connection close after audio completes
+            asyncio.create_task(self._close_after_final_message(ws_id))
         
         return audio_buffer
 
@@ -1025,8 +1227,110 @@ class WebSocketManager:
             self.logger.info(f"Waiting for final message to complete for {ws_id}")
             # Wait a few seconds for the audio to finish playing
             await asyncio.sleep(5)
+
             self.logger.info(f"Final message completed, closing connection for {ws_id}")
+            
+            # Print the final transcript
+            call_sid = self.ws_to_call_sid.get(ws_id)
+            if call_sid:
+                self.logger.info(f"Final transcript for call {call_sid} processed")
+                
+                # Generate cleaned transcript
+                self.logger.info(f"Generating cleaned transcript for call {call_sid}")
+                cleaned_transcript = self.history_manager.get_cleaned_transcript(call_sid, self.config_loader)
+                if cleaned_transcript:
+                    self.logger.info(f"Cleaned transcript generated successfully for {call_sid}")
+            
             self.exit_events[ws_id].set()
+            
+            # Close Deepgram connection before cleanup
+            try:
+                if ws_id in self.deepgram_connections and self.deepgram_connections[ws_id]:
+                    await self.deepgram_connections[ws_id].send(json.dumps({"type": "CloseStream"}))
+                    self.logger.info(f"Closed Deepgram stream for {ws_id} in final message handler")
+            except Exception as dg_error:
+                self.logger.error(f"Error closing Deepgram connection for {ws_id}: {dg_error}")
+                
         except Exception as e:
             self.logger.error(f"Error closing connection after final message for {ws_id}: {e}")
+            # Still try to set exit event even if there was an error
+            try:
+                self.exit_events[ws_id].set()
+            except Exception:
+                pass
 
+    async def transcript_cleanup(self, ws_id):
+        """Process transcript and categorize call after connection closes"""
+        try:
+            self.logger.info(f"Processing transcript for {ws_id}")
+            
+            
+            # Get call_sid and generate cleaned transcript if not already done
+            call_sid = self.ws_to_call_sid.get(ws_id)
+            if call_sid:
+                self.logger.info(f"Generating cleaned transcript for call {call_sid} during cleanup")
+                try:
+                    # Check if transcript exists
+                    raw_transcript = self.history_manager.get_transcript(call_sid)
+                    if raw_transcript:
+                        # Generate cleaned transcript if not already done
+                        cleaned_transcript = self.history_manager.get_cleaned_transcript(call_sid, self.config_loader)
+                        if cleaned_transcript:
+                            self.logger.info(f"Cleaned transcript generated during cleanup for {call_sid}")
+                        
+                        # Get phone number for this call
+                        phone_number = self.history_manager.phone_numbers.get(call_sid, "unknown")
+                        
+                        # Categorize the call based on the transcript
+                        try:
+                            category = self.call_categorization_service.categorize_from_transcript(
+                                call_sid=call_sid,
+                                transcript=raw_transcript
+                            )
+                            self.logger.info(f"Call {call_sid} categorized as {category.name}")
+                            # Add call status to cleaned transcript
+                            if cleaned_transcript:
+                                # Create JSON data from cleaned transcript
+                                call_data = {
+                                    "call_sid": call_sid,
+                                    "phone_number": phone_number,
+                                    "call_status": category.name,
+                                    "timestamp": datetime.now().isoformat(),
+                                    "transcript": cleaned_transcript
+                                }
+                                
+                                # Print the call data directly
+                                self.logger.info("===== CALL DISCONNECTED: FRONTEND DATA GENERATED =====")
+                                print("\n===== FRONTEND JSON DATA =====")
+                                print(json.dumps(call_data, indent=2))
+                                print("===== END FRONTEND JSON DATA =====")
+                        except Exception as categorization_error:
+                            self.logger.error(f"Error categorizing call {call_sid}: {categorization_error}")
+                    else:
+                        self.logger.info(f"No transcript found for {call_sid} during cleanup")
+                except Exception as transcript_error:
+                    self.logger.error(f"Error generating cleaned transcript during cleanup: {transcript_error}")
+        except Exception as e:
+            self.logger.error(f"Error cleaning up connection for {ws_id}: {e}")
+    
+
+    async def _delayed_fallback_start(self, ws_id, delay_seconds):
+        """"""
+        try:
+            # Log when the delayed fallback is scheduled
+            self.logger.info(f"SPEECH_STATE: Scheduled fallback after {delay_seconds}s delay for {ws_id}")
+            
+            # Wait for the specified delay
+            await asyncio.sleep(delay_seconds)
+            
+            # Check if we should still enter fallback (might have been reset by new speech)
+            if ws_id in self.listening_flags and self.listening_flags[ws_id].is_set():
+                self.logger.info(f"SPEECH_STATE: Fallback state entered after delay for {ws_id}")
+                self.speech_states[ws_id] = "FALLBACK"
+                # No need to set fallback_active and fallback_start_times again as they're already set
+            else:
+                self.logger.info(f"SPEECH_STATE: Fallback state not entered (listening mode inactive) for {ws_id}")
+                # Reset fallback if listening mode was deactivated
+                self.fallback_active[ws_id] = False
+        except Exception as e:
+            self.logger.error(f"Error in delayed fallback start for {ws_id}: {e}")

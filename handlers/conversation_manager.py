@@ -413,7 +413,7 @@ IMPORTANT:
             User's response: {user_responses}
             Expected information: {expected_output}
             Response type detected: {response_type}
-            Extracted values: {extracted_values}
+            Current extracted value: {conversation_data.get("extracted_value")}
             
             Previous follow-ups:
             {previous_context}
@@ -422,6 +422,10 @@ IMPORTANT:
             
             Generate a natural, conversational follow-up question to help the user provide the expected information.
             The question should be friendly but direct, focusing on obtaining the missing information.
+            
+            IMPORTANT: Only reference the current extracted value in your follow-up question.
+            DO NOT reference any values from previous questions or states.
+            Your follow-up should be specific to the current question only.
             """
             
             # Call LLM service

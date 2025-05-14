@@ -8,5 +8,6 @@ venv/
 .env
 .vscode/
 *.log
-config.ini
-logs/
+# config.ini
+# logs/
+aicall/
