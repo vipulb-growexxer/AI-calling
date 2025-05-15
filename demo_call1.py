@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+# Use this to run locally
+
 """
 Demo Call Script for AI Call System
 This script directly initiates a call using Twilio and connects to the WebSocket server,
